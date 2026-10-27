@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MuseMeet — Autonomous Lounge Rendezvous</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(15, 18, 27, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gold: #f59e0b;
+      --accent-amber: #fbbf24;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-violet: #8b5cf6;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-subtle: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 0%, #15162c 0%, var(--bg) 75%);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Header */
+    .header {
+      background: rgba(10, 12, 19, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-violet));
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: 'Cinzel', serif;
+      color: #000;
+      font-size: 1rem;
+    }
+
+    .brand-text h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      line-height: 1.1;
+    }
+
+    .brand-text p {
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .scenario-select {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .scenario-select option {
+      background: #111420;
+      color: #fff;
+    }
+
+    .action-btn {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--accent-amber);
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .action-btn:hover {
+      background: rgba(245, 158, 11, 0.25);
+    }
+
+    .speed-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.65rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+    }
+
+    .speed-btn.active {
+      color: var(--accent-gold);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    /* Stage Progression Banner */
+    .stage-banner {
+      background: rgba(15, 17, 26, 0.6);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .stages-nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .stage-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .stage-pill.active {
+      color: var(--accent-amber);
+      font-weight: 600;
+    }
+
+    .stage-pill.completed {
+      color: var(--accent-emerald);
+    }
+
+    .stage-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .turn-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+    }
+
+    /* Main Dual-Track Split Layout */
+    .main-workspace {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 55% 45%;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .main-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+      }
+    }
+
+    /* Left Track: Dialogue Stream */
+    .track-left {
+      border-right: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      background: rgba(10, 12, 18, 0.4);
+      overflow: hidden;
+    }
+
+    .track-header {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 18, 27, 0.5);
+    }
+
+    .track-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stream-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      scroll-behavior: smooth;
+    }
+
+    .dialogue-msg {
+      max-width: 85%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-agent-a {
+      align-self: flex-start;
+    }
+
+    .msg-agent-b {
+      align-self: flex-end;
+    }
+
+    .msg-sender {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .msg-agent-b .msg-sender {
+      justify-content: flex-end;
+    }
+
+    .msg-bubble {
+      padding: 0.85rem 1.1rem;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .msg-agent-a .msg-bubble {
+      background: rgba(30, 27, 75, 0.6);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      border-bottom-left-radius: 3px;
+      color: #ede9fe;
+    }
+
+    .msg-agent-b .msg-bubble {
+      background: rgba(24, 27, 39, 0.8);
+      border: 1px solid var(--card-border);
+      border-bottom-right-radius: 3px;
+      color: var(--text-main);
+    }
+
+    /* Right Track: Subtext & Telemetry */
+    .track-right {
+      display: flex;
+      flex-direction: column;
+      background: rgba(12, 14, 22, 0.5);
+      overflow: hidden;
+    }
+
+    .telemetry-dashboard {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      background: rgba(15, 18, 27, 0.4);
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+    }
+
+    .stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: baseline;
+      gap: 0.2rem;
+    }
+
+    .stat-trend {
+      font-size: 0.7rem;
+      color: var(--accent-emerald);
+    }
+
+    /* Sparkline SVG Box */
+    .chart-container {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(10, 12, 18, 0.2);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+      margin-bottom: 0.4rem;
+    }
+
+    .sparkline-svg {
+      width: 100%;
+      height: 60px;
+      overflow: visible;
+    }
+
+    .sparkline-path {
+      fill: none;
+      stroke: var(--accent-gold);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: all 0.3s ease;
+    }
+
+    .sparkline-area {
+      fill: rgba(245, 158, 11, 0.08);
+    }
+
+    /* Subtext Monologue Feed */
+    .subtext-feed {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .monologue-card {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid var(--accent-gold);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .monologue-card.agent-b-thought {
+      border-left-color: var(--accent-violet);
+    }
+
+    .monologue-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-subtle);
+    }
+
+    .bid-tag {
+      font-size: 0.65rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .bid-toward {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .bid-away {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .monologue-text {
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Completion Overlay Card */
+    .finish-bar {
+      background: rgba(17, 20, 31, 0.95);
+      border-top: 1px solid var(--card-border);
+      padding: 1rem 1.5rem;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      animation: slideUp 0.3s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .verdict-announce {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .verdict-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .dossier-nav-btn {
+      background: linear-gradient(135deg, var(--accent-gold), #d97706);
+      color: #000;
+      font-weight: 700;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: opacity 0.2s;
+    }
+
+    .dossier-nav-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation Header -->
+  <header class="header">
+    <div class="brand-group">
+      <div class="brand-mark">M</div>
+      <div class="brand-text">
+        <h1>MuseMeet Live Lounge</h1>
+        <p>Dual-Track Autonomous Negotiation</p>
+      </div>
+    </div>
+
+    <div class="controls-group">
+      <select id="scenarioSelect" class="scenario-select" onchange="changeScenario(this.value)">
+        <option value="bookshop">Pair 1: Elena × Julian (Match, 92%)</option>
+        <option value="record_store">Pair 2: Elena × Marcus (Graceful Abort, 64%)</option>
+        <option value="market">Pair 3: Elena × David (Early Exit, 24%)</option>
+      </select>
+
+      <button id="playBtn" class="action-btn" onclick="togglePlay()">
+        <span id="playIcon">⏸</span> <span id="playLabel">Pause</span>
+      </button>
+
+      <button class="action-btn" onclick="restartStream()" style="background: rgba(255,255,255,0.05); color: var(--text-main); border-color: var(--card-border);">
+        ↺ Replay
+      </button>
+
+      <div style="display: flex; gap: 0.25rem;">
+        <button class="speed-btn active" onclick="setSpeed(1, this)">1x</button>
+        <button class="speed-btn" onclick="setSpeed(2, this)">2x</button>
+        <button class="speed-btn" onclick="setSpeed(5, this)">5x</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 4-Stage Progression Banner -->
+  <div class="stage-banner">
+    <div class="stages-nav">
+      <div id="stage-discovery" class="stage-pill active">
+        <span class="stage-indicator"></span>
+        <span>1. Discovery</span>
+      </div>
+      <div id="stage-banter" class="stage-pill">
+        <span class="stage-indicator"></span>
+        <span>2. Banter</span>
+      </div>
+      <div id="stage-friction" class="stage-pill">
+        <span class="stage-indicator"></span>
+        <span>3. Friction</span>
+      </div>
+      <div id="stage-synthesis" class="stage-pill">
+        <span class="stage-indicator"></span>
+        <span>4. Synthesis</span>
+      </div>
+    </div>
+
+    <div id="turnBadge" class="turn-counter">Turn 1 / 16</div>
+  </div>
+
+  <!-- Main Dual-Track Split Layout -->
+  <div class="main-workspace">
+    <!-- Left Track: Fast-Paced Dialogue Stream -->
+    <section class="track-left">
+      <div class="track-header">
+        <span class="track-title">
+          <span>●</span> Autonomous Dialogue Stream
+        </span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-subtle);">
+          Meta Muse Spark 1.3
+        </span>
+      </div>
+      <div id="dialogueStream" class="stream-scroll">
+        <!-- Messages stream in here dynamically -->
+      </div>
+    </section>
+
+    <!-- Right Track: Subtext Reasoning & Chemistry Telemetry -->
+    <section class="track-right">
+      <!-- Live Metrics Dashboard -->
+      <div class="telemetry-dashboard">
+        <div class="stat-pill">
+          <span class="stat-label">LSM Synchrony</span>
+          <div class="stat-val">
+            <span id="lsmStat">1.000</span>
+          </div>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Gottman Bid Ratio</span>
+          <div class="stat-val">
+            <span id="bidStat">1.00</span>
+          </div>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">PPR Composite</span>
+          <div class="stat-val">
+            <span id="pprStat">1.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time LSM Sparkline Chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <span>Linguistic Style Matching (Turn Progression)</span>
+          <span id="chartMinMax">Min: 0.50 | Current: 1.00</span>
+        </div>
+        <svg id="sparklineSvg" class="sparkline-svg" viewBox="0 0 400 60">
+          <path id="sparklineArea" class="sparkline-area" d="" />
+          <path id="sparklinePath" class="sparkline-path" d="" />
+        </svg>
+      </div>
+
+      <div class="track-header" style="background: transparent; border-top: 1px solid var(--card-border);">
+        <span class="track-title" style="color: var(--accent-violet);">
+          <span>✦</span> Subtext Reasoning Telemetry
+        </span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-subtle);">
+          Private Monologue Vault
+        </span>
+      </div>
+
+      <!-- Internal Monologue Stream -->
+      <div id="subtextStream" class="subtext-feed">
+        <!-- Internal thoughts stream in here dynamically -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Completion & Transition Footer -->
+  <footer id="finishBar" class="finish-bar">
+    <div class="verdict-announce">
+      <span id="finishBadge" class="verdict-badge" style="background: rgba(16,185,129,0.15); color: var(--accent-emerald); border: 1px solid rgba(16,185,129,0.3);">
+        Verified Match
+      </span>
+      <span id="finishText" style="font-size: 0.88rem; color: var(--text-main);">
+        Interaction synthesized by Neutral Moderator. 92% Dyadic Resonance verified.
+      </span>
+    </div>
+    <a id="dossierLink" href="dossier.html?scenario=bookshop" class="dossier-nav-btn">
+      <span>View Explainable Dossier</span>
+      <span>→</span>
+    </a>
+  </footer>
+
+  <script>
+    const BENCHMARKS = {
+      bookshop: {
+        maxTurns: 16,
+        outcome: 'match',
+        outcomeText: 'Verified Match (92% Resonance)',
+        badgeClass: 'background: rgba(16,185,129,0.15); color: var(--accent-emerald); border: 1px solid rgba(16,185,129,0.3);',
+        turns: [
+          {
+            turn_number: 1, speaker: "agent_a", stage: "discovery",
+            dialogue: "My human spends Friday nights smelling like fixer chemicals in a red-lit darkroom, developing 35mm film by hand. It's slow, unforgiving, and completely inefficient. Where does your human find that kind of tactile patience?",
+            internal_monologue: "Testing niche passion depth. Probing for appreciation of deliberate analog friction rather than passive digital consumerism.",
+            lsm: 1.0, bid: "toward"
+          },
+          {
+            turn_number: 2, speaker: "agent_b", stage: "discovery",
+            dialogue: "In the glow of vacuum tubes and the crackle of vinyl at 2 AM. He restores mid-century tube amplifiers. When you hear the warmth of a horn section through physical transformers, digital compression feels like instant coffee compared to pour-over. What film stock does she swear by?",
+            internal_monologue: "Validating analog ritual. Matching sensory depth with high-fidelity acoustic hardware. Reciprocating bid with specific technical curiosity.",
+            lsm: 0.792, bid: "toward"
+          },
+          {
+            turn_number: 3, speaker: "agent_a", stage: "discovery",
+            dialogue: "That hum is everything. When she was studying cortical microcircuits at Heidelberg, she kept a turntable in her apartment to decompress from confocal microscopy. Tri-X 400 pushed two stops in Rodinal. Grain like sandpaper, but the midtones are honest. What's the rarest record in his crates?",
+            internal_monologue: "Style matching accelerating. High intellectual resonance. Disclosing neurobiology background + technical photographic chemistry.",
+            lsm: 0.815, bid: "toward"
+          },
+          {
+            turn_number: 4, speaker: "agent_b", stage: "discovery",
+            dialogue: "It isn't nostalgia; it's resistance against instant gratification. A 1959 mono pressing of Miles Davis's Kind of Blue with handwritten studio notes on the dust jacket. He spent three months hunting it in Kyoto back-alleys. Is she looking for someone who joins her in the darkroom, or someone who respects the solitude of it?",
+            internal_monologue: "Probing relational dynamics. Testing boundary between shared activity and autonomous solitary space. Discovery stage completed with zero friction.",
+            lsm: 0.835, bid: "toward"
+          },
+          {
+            turn_number: 5, speaker: "agent_a", stage: "banter",
+            dialogue: "Careful, that almost sounded poetic. Before we decide they should open a boutique together, let's talk about the domestic reality. My human treats Sunday sourdough baking like a surgical operation. Flour weighed to the tenth of a gram. How does he handle quiet mornings?",
+            internal_monologue: "Pivoting to Banter stage. Deflecting sentimental romanticism with dry, playful skepticism. Probing weekend domestic cadence.",
+            lsm: 0.841, bid: "toward"
+          },
+          {
+            turn_number: 6, speaker: "agent_b", stage: "banter",
+            dialogue: "He weighs the flour to the tenth of a gram and holds an ongoing theological debate with himself over hydration percentages. He will happily sit across the counter with a pour-over cortado, taking notes in an unlined notebook while she measures yeast. But tell me she doesn't own three different pour-over drippers.",
+            internal_monologue: "Effortless witty synchrony. Turning domestic quirk into complementary morning ritual. Testing humor threshold.",
+            lsm: 0.852, bid: "toward"
+          },
+          {
+            turn_number: 7, speaker: "agent_a", stage: "banter",
+            dialogue: "Four. And every single one produces a distinctly different extraction curve, which she will defend with peer-reviewed literature if provoked. What's his unforgivable kitchen obsession?",
+            internal_monologue: "Self-deprecating wit. Pacing and banter synchrony (LSM 0.86) well above 90th percentile of baseline pairings.",
+            lsm: 0.864, bid: "toward"
+          },
+          {
+            turn_number: 8, speaker: "agent_b", stage: "banter",
+            dialogue: "It was legally named 'The Monolith' in 2021, and it has its own dedicated wooden board. If someone cuts citrus on it, he has to perform a 45-minute salt-scrub ritual while staring out the window. They might need a treaty before breakfast.",
+            internal_monologue: "Banter stage validated. Strong shared conversational tempo. Banter Bid Ratio remains 1.00.",
+            lsm: 0.872, bid: "toward"
+          },
+          {
+            turn_number: 9, speaker: "agent_a", stage: "friction",
+            dialogue: "Agreed. Now let's test where the seams tear. My human is in the middle of a major research grant and darkroom exhibitions. She enters periods of extreme focus where she barely texts for three days. Can he handle emotional autonomy, or does silence make him anxious?",
+            internal_monologue: "Transitioning to Stage 3 Friction. Probing Gottman vulnerability. Presenting non-negotiable attachment constraint.",
+            lsm: 0.869, bid: "toward"
+          },
+          {
+            turn_number: 10, speaker: "agent_b", stage: "friction",
+            dialogue: "He is in the workshop soldering cables or reading three books simultaneously. He finds constant texting invasive. Quiet companionate autonomy is his default state. But what about domestic clutter? His workshop has organized chaos, and her darkroom chemicals have strict containment rules.",
+            internal_monologue: "Turning toward attachment bid. Confirms complementary independence. Offering secondary potential friction point regarding spatial boundary management.",
+            lsm: 0.875, bid: "toward"
+          },
+          {
+            turn_number: 11, speaker: "agent_a", stage: "friction",
+            dialogue: "Parallel play is the holy grail. But here is the hard line: she will not compromise her research tenure or laboratory roots. Her life is anchored in this city. Does he have restless geographic feet, or is he committed to staying put?",
+            internal_monologue: "Testing geographical permanence dealbreaker.",
+            lsm: 0.871, bid: "toward"
+          },
+          {
+            turn_number: 12, speaker: "agent_b", stage: "friction",
+            dialogue: "You cannot pack fifty pounds of vintage cast-iron and vacuum-tube gear into a duffel bag. He bought his workshop loft to build roots. He is not going anywhere. Both agents agree the core dealbreakers are cleared.",
+            internal_monologue: "Confirmed local permanence. All friction probes resolved constructively. Zero dealbreaker collision.",
+            lsm: 0.878, bid: "toward"
+          },
+          {
+            turn_number: 13, speaker: "agent_a", stage: "synthesis",
+            dialogue: "Then I have exhausted my skepticism. We have matched on intellectual curiosity, conversational tempo, restorative quiet rhythms, and structural life commitments. I recommend introducing them.",
+            internal_monologue: "Entering Synthesis stage. Skeptical best friend persona satisfied. Authorizing human introduction.",
+            lsm: 0.876, bid: "toward"
+          },
+          {
+            turn_number: 14, speaker: "agent_b", stage: "synthesis",
+            dialogue: "Clear. And I have already located the venue: a quiet corner table at Daikanyama T-Site Book Lounge, with pour-over cortados and art monographs.",
+            internal_monologue: "Grounded spatial venue proposed. Perfect fit for mutual analog and literary passions.",
+            lsm: 0.879, bid: "toward"
+          },
+          {
+            turn_number: 15, speaker: "agent_a", stage: "synthesis",
+            dialogue: "Tell him to bring his strongest opinions on vinyl pressings and unlined notebooks. She will bring her best sourdough recipe.",
+            internal_monologue: "Final warm conversational callbacks verified.",
+            lsm: 0.880, bid: "toward"
+          },
+          {
+            turn_number: 16, speaker: "agent_b", stage: "synthesis",
+            dialogue: "It's a deal. Passing session transcript to the Moderator for final scoring and moodboard generation.",
+            internal_monologue: "Rendezvous complete. Final LSM 0.881, 100% bid turn-toward ratio.",
+            lsm: 0.881, bid: "toward"
+          }
+        ]
+      },
+
+      record_store: {
+        maxTurns: 12,
+        outcome: 'graceful_abort',
+        outcomeText: 'Graceful Abort (Stage 3 Dealbreaker)',
+        badgeClass: 'background: rgba(245,158,11,0.15); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.3);',
+        turns: [
+          {
+            turn_number: 1, speaker: "agent_a", stage: "discovery",
+            dialogue: "My human spends Friday nights smelling like fixer chemicals in a red-lit darkroom, developing 35mm film by hand. Where does your human find that kind of tactile patience?",
+            internal_monologue: "Testing analog appreciation.",
+            lsm: 1.0, bid: "toward"
+          },
+          {
+            turn_number: 2, speaker: "agent_b", stage: "discovery",
+            dialogue: "In dusty basement record bins across Berlin and London. He shoots on 16mm Bolex film and scores underground documentaries on modular synths. He gets tactile friction completely.",
+            internal_monologue: "High immediate creative synergy.",
+            lsm: 0.812, bid: "toward"
+          },
+          {
+            turn_number: 3, speaker: "agent_a", stage: "discovery",
+            dialogue: "A Bolex 16mm? The hand-crank motor mechanism on those is pure mechanical art. It sounds like our humans share a severe addiction to obsolete physical media.",
+            internal_monologue: "Rapid stylistic synchrony. Testing shared creative philosophies.",
+            lsm: 0.825, bid: "toward"
+          },
+          {
+            turn_number: 4, speaker: "agent_b", stage: "discovery",
+            dialogue: "Obsolete is just what corporations call tools that can't be monetized through monthly cloud subscriptions. He lives by that ethos.",
+            internal_monologue: "Values aligned on authenticity and anti-consumerism.",
+            lsm: 0.838, bid: "toward"
+          },
+          {
+            turn_number: 5, speaker: "agent_a", stage: "banter",
+            dialogue: "A poetic rebel. But let's see how grounded he is. Does he actually finish projects, or does he have seventy half-edited reels sitting in shoeboxes under his bed?",
+            internal_monologue: "Banter probe: testing follow-through vs chaotic artistic stereotype.",
+            lsm: 0.810, bid: "toward"
+          },
+          {
+            turn_number: 6, speaker: "agent_b", stage: "banter",
+            dialogue: "Eighty-two reels, to be precise. But three of them won awards at small European indie festivals, so the chaos is semi-functional. How does she handle spontaneous midnight departures?",
+            internal_monologue: "Witty comeback. Dropping first hint of nomadic spontaneity.",
+            lsm: 0.805, bid: "toward"
+          },
+          {
+            turn_number: 7, speaker: "agent_a", stage: "banter",
+            dialogue: "Midnight departures? She handles them by turning off her phone and continuing her laboratory sleep cycle. Spontaneous chaos sounds exhausting.",
+            internal_monologue: "Flagging potential pacing difference in lifestyle rhythms.",
+            lsm: 0.792, bid: "away"
+          },
+          {
+            turn_number: 8, speaker: "agent_b", stage: "banter",
+            dialogue: "Exhausting or electrifying? That depends on whether you view life as a structured experiment or an improvised documentary.",
+            internal_monologue: "Defending nomadic improvisation.",
+            lsm: 0.798, bid: "toward"
+          },
+          {
+            turn_number: 9, speaker: "agent_a", stage: "friction",
+            dialogue: "Let's push directly on that seam. My human has laboratory tenure commitments and a long-term lease on a photography studio. She is permanently anchored here. What does his next two years look like?",
+            internal_monologue: "Stage 3 Friction: Deploying geographical permanence dealbreaker probe.",
+            lsm: 0.801, bid: "toward"
+          },
+          {
+            turn_number: 10, speaker: "agent_b", stage: "friction",
+            dialogue: "He relocates every ninety days. Lisbon next month, then Kyoto, then Berlin for a festival residency. He lives out of a single 40-liter duffel bag. Permanent roots feel like suffocation to him.",
+            internal_monologue: "Honest constraint disclosure: non-negotiable continuous nomadic lifestyle.",
+            lsm: 0.785, bid: "against"
+          },
+          {
+            turn_number: 11, speaker: "agent_a", stage: "friction",
+            dialogue: "Then this is a structural collision. Their minds would spark beautifully over coffee, but their lives are moving in opposite physical directions. One wants roots, the other wants wings.",
+            internal_monologue: "Dealbreaker collision confirmed. Recommending graceful abort to prevent inevitable relational dissolution.",
+            lsm: 0.790, bid: "toward"
+          },
+          {
+            turn_number: 12, speaker: "agent_b", stage: "friction",
+            dialogue: "I agree completely. It would be a brilliant month followed by unavoidable heartbreak. Let's protect their time and abort the rendezvous with mutual respect.",
+            internal_monologue: "Consensus on graceful abort. Preserving human emotional capital.",
+            lsm: 0.798, bid: "toward"
+          }
+        ]
+      },
+
+      market: {
+        maxTurns: 6,
+        outcome: 'early_exit',
+        outcomeText: 'Early Exit (Stage 1 Flatline)',
+        badgeClass: 'background: rgba(244,63,94,0.15); color: var(--accent-rose); border: 1px solid rgba(244,63,94,0.3);',
+        turns: [
+          {
+            turn_number: 1, speaker: "agent_a", stage: "discovery",
+            dialogue: "My human spends Friday nights smelling like fixer chemicals in a red-lit darkroom, developing 35mm film by hand. It's slow, unforgiving, and completely inefficient. Where does your human find that kind of tactile patience?",
+            internal_monologue: "Testing appreciation of slow contemplation.",
+            lsm: 1.0, bid: "toward"
+          },
+          {
+            turn_number: 2, speaker: "agent_b", stage: "discovery",
+            dialogue: "My human doesn't do inefficient things. He runs at five AM every day to hit zone-two cardio metrics, then time-blocks his entire day in fifteen-minute increments. What is the return on investment of spending hours developing photos when high-resolution digital cameras exist?",
+            internal_monologue: "Evaluating utility. Darkroom hobby seems to produce poor time-allocation ROI.",
+            lsm: 0.482, bid: "away"
+          },
+          {
+            turn_number: 3, speaker: "agent_a", stage: "discovery",
+            dialogue: "Return on investment? It's art, not a quarterly earnings report. The entire purpose of darkroom chemistry is to step outside the exhausting optimization mindset that turns every waking second of human existence into an efficiency spreadsheet.",
+            internal_monologue: "Severe value dissonance. Framing creative contemplation in ROI terms. LSM collapsing.",
+            lsm: 0.461, bid: "toward"
+          },
+          {
+            turn_number: 4, speaker: "agent_b", stage: "discovery",
+            dialogue: "Optimization isn't exhausting; it creates measurable results. If you don't track your habits and goals with clear KPIs, how do you know if you are making progress in your personal and professional development?",
+            internal_monologue: "Defending structured KPI discipline. Her approach lacks accountability.",
+            lsm: 0.443, bid: "away"
+          },
+          {
+            turn_number: 5, speaker: "agent_a", stage: "discovery",
+            dialogue: "Because not everything that counts can be counted, and not everything that can be counted counts. I can see our humans live in fundamentally different universes. Mine seeks wonder in ambiguity; yours seeks certainty in spreadsheets.",
+            internal_monologue: "LSM dropped to 0.435. Three consecutive turns below 0.55 threshold. Triggering early exit protocol.",
+            lsm: 0.435, bid: "toward"
+          },
+          {
+            turn_number: 6, speaker: "agent_b", stage: "discovery",
+            dialogue: "Agreed. His calendar doesn't have room for open-ended ambiguity, and your human would find his structured discipline stifling. There is no strategic alignment here. Terminating session.",
+            internal_monologue: "Consensus on incompatibility. Pacing fundamentally discordant. Executing early exit.",
+            lsm: 0.428, bid: "away"
+          }
+        ]
+      }
+    };
+
+    let activeScenario = 'bookshop';
+    let currentTurnIndex = 0;
+    let isPlaying = true;
+    let playbackSpeed = 1;
+    let timerId = null;
+    let lsmHistory = [];
+
+    function changeScenario(name) {
+      activeScenario = name;
+      restartStream();
+    }
+
+    function setSpeed(speed, btn) {
+      playbackSpeed = speed;
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      document.getElementById('playIcon').textContent = isPlaying ? '⏸' : '▶';
+      document.getElementById('playLabel').textContent = isPlaying ? 'Pause' : 'Play';
+      if (isPlaying) {
+        stepNextTurn();
+      } else {
+        clearTimeout(timerId);
+      }
+    }
+
+    function restartStream() {
+      clearTimeout(timerId);
+      currentTurnIndex = 0;
+      lsmHistory = [];
+      document.getElementById('dialogueStream').innerHTML = '';
+      document.getElementById('subtextStream').innerHTML = '';
+      document.getElementById('finishBar').style.display = 'none';
+
+      // Reset stages
+      document.querySelectorAll('.stage-pill').forEach(p => {
+        p.className = 'stage-pill';
+      });
+      document.getElementById('stage-discovery').classList.add('active');
+
+      isPlaying = true;
+      document.getElementById('playIcon').textContent = '⏸';
+      document.getElementById('playLabel').textContent = 'Pause';
+
+      stepNextTurn();
+    }
+
+    function updateStageBanner(turnNumber) {
+      document.getElementById('turnBadge').textContent = `Turn ${turnNumber} / ${BENCHMARKS[activeScenario].maxTurns}`;
+
+      let activeId = 'stage-discovery';
+      if (turnNumber > 4 && turnNumber <= 8) activeId = 'stage-banter';
+      if (turnNumber > 8 && turnNumber <= 12) activeId = 'stage-friction';
+      if (turnNumber > 12) activeId = 'stage-synthesis';
+
+      const stages = ['stage-discovery', 'stage-banter', 'stage-friction', 'stage-synthesis'];
+      const activeIdx = stages.indexOf(activeId);
+
+      stages.forEach((id, idx) => {
+        const el = document.getElementById(id);
+        if (idx < activeIdx) {
+          el.className = 'stage-pill completed';
+        } else if (idx === activeIdx) {
+          el.className = 'stage-pill active';
+        } else {
+          el.className = 'stage-pill';
+        }
+      });
+    }
+
+    function renderSparkline() {
+      if (lsmHistory.length < 2) return;
+      const width = 400;
+      const height = 60;
+      const pad = 10;
+
+      const minVal = 0.35;
+      const maxVal = 1.05;
+
+      const points = lsmHistory.map((val, idx) => {
+        const x = (idx / (lsmHistory.length - 1)) * (width - pad * 2) + pad;
+        const normY = (val - minVal) / (maxVal - minVal);
+        const y = height - (normY * (height - pad * 2) + pad);
+        return { x, y, val };
+      });
+
+      const dPath = points.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+      const dArea = `${dPath} L ${points[points.length - 1].x.toFixed(1)} ${height} L ${points[0].x.toFixed(1)} ${height} Z`;
+
+      document.getElementById('sparklinePath').setAttribute('d', dPath);
+      document.getElementById('sparklineArea').setAttribute('d', dArea);
+
+      const curVal = lsmHistory[lsmHistory.length - 1];
+      const minHist = Math.min(...lsmHistory).toFixed(2);
+      document.getElementById('chartMinMax').textContent = `Min: ${minHist} | Current: ${curVal.toFixed(3)}`;
+    }
+
+    function stepNextTurn() {
+      const scenario = BENCHMARKS[activeScenario];
+      if (currentTurnIndex >= scenario.turns.length) {
+        // Stream completed
+        showCompletion(scenario);
+        return;
+      }
+
+      const turn = scenario.turns[currentTurnIndex];
+      updateStageBanner(turn.turn_number);
+
+      // 1. Append Dialogue Message
+      const isAgentA = turn.speaker === 'agent_a';
+      const senderName = isAgentA ? "Elena's Muse" : (activeScenario === 'bookshop' ? "Julian's Muse" : (activeScenario === 'record_store' ? "Marcus's Muse" : "David's Muse"));
+
+      const dStream = document.getElementById('dialogueStream');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `dialogue-msg ${isAgentA ? 'msg-agent-a' : 'msg-agent-b'}`;
+      msgDiv.innerHTML = `
+        <div class="msg-sender">
+          <span>${isAgentA ? '◈' : '✧'}</span>
+          <span>${senderName}</span>
+          <span style="opacity: 0.5;">· Turn ${turn.turn_number}</span>
+        </div>
+        <div class="msg-bubble">${turn.dialogue}</div>
+      `;
+      dStream.appendChild(msgDiv);
+      dStream.scrollTop = dStream.scrollHeight;
+
+      // 2. Append Subtext Monologue Card
+      const sStream = document.getElementById('subtextStream');
+      const monoDiv = document.createElement('div');
+      monoDiv.className = `monologue-card ${isAgentA ? '' : 'agent-b-thought'}`;
+      monoDiv.innerHTML = `
+        <div class="monologue-meta">
+          <span>${senderName} Internal Reasoning</span>
+          <span class="bid-tag ${turn.bid === 'toward' ? 'bid-toward' : 'bid-away'}">${turn.bid.toUpperCase()}</span>
+        </div>
+        <div class="monologue-text">"${turn.internal_monologue}"</div>
+      `;
+      sStream.appendChild(monoDiv);
+      sStream.scrollTop = sStream.scrollHeight;
+
+      // 3. Update Telemetry Dashboard
+      document.getElementById('lsmStat').textContent = turn.lsm.toFixed(3);
+      lsmHistory.push(turn.lsm);
+      renderSparkline();
+
+      // Gottman bid ratio running
+      const bidsSoFar = scenario.turns.slice(0, currentTurnIndex + 1);
+      const towardCount = bidsSoFar.filter(t => t.bid === 'toward').length;
+      const runningBidRatio = (towardCount / bidsSoFar.length).toFixed(2);
+      document.getElementById('bidStat').textContent = runningBidRatio;
+
+      const runningPPR = ((runningBidRatio * 0.6) + (turn.lsm * 0.4)).toFixed(2);
+      document.getElementById('pprStat').textContent = runningPPR;
+
+      currentTurnIndex++;
+
+      if (isPlaying) {
+        const delay = Math.max(150, 1000 / playbackSpeed);
+        timerId = setTimeout(stepNextTurn, delay);
+      }
+    }
+
+    function showCompletion(scenario) {
+      const bar = document.getElementById('finishBar');
+      const badge = document.getElementById('finishBadge');
+      const text = document.getElementById('finishText');
+      const link = document.getElementById('dossierLink');
+
+      bar.style.display = 'flex';
+      badge.textContent = scenario.outcomeText;
+      badge.style = scenario.badgeClass;
+      link.href = `dossier.html?scenario=${activeScenario}`;
+
+      if (scenario.outcome === 'match') {
+        text.textContent = "Autonomous negotiation completed with 92% Dyadic Resonance. First-date itinerary generated.";
+      } else if (scenario.outcome === 'graceful_abort') {
+        text.textContent = "Stage 3 dealbreaker collision detected (nomadic travel vs permanent roots). Introduction safely withheld.";
+      } else {
+        text.textContent = "Stage 1 conversational synchrony flatlined (LSM 0.428). Early exit executed to save human time.";
+      }
+    }
+
+    // Initialize
+    restartStream();
+  </script>
+</body>
+</html>
