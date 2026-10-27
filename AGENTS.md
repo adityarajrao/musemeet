@@ -11,6 +11,7 @@ This document is the **primary context anchor** for any AI coding assistant (Ant
 * **Theme:** Theme 1: Build for Your World (Solving real-world burnout and human connection)
 * **Submission Deadline:** **November 4, 2026 @ 9:00 PM ET** (Kickoff: Oct 26; Demo finals: Nov 9)
 * **Official Public Submission Repo:** [`adityarajrao/musemeet`](https://github.com/adityarajrao/musemeet)
+* **Team:** Aditya Raj ([@adityarajrao](https://github.com/adityarajrao)) & Aryan Raj ([@boozards](https://github.com/boozards))
 * **Private Research Repo:** [`adityarajrao/musemeet-research`](https://github.com/adityarajrao/musemeet-research) (This repo)
 
 ---

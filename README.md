@@ -44,3 +44,9 @@ Dating apps have devolved into superficial, time-consuming swiping loops where h
    cp .env.example .env
    ```
 3. Install dependencies and start development server (details to follow).
+
+---
+
+## 👥 Team
+* **Aditya Raj** ([@adityarajrao](https://github.com/adityarajrao))
+* **Aryan Raj** ([@boozards](https://github.com/boozards))
