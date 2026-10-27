@@ -1,0 +1,79 @@
+[
+  {
+    "venue_id": "tokyo_daikanyama_tsite",
+    "name": "Daikanyama T-Site Book Lounge",
+    "city": "Tokyo",
+    "neighborhood": "Daikanyama",
+    "venue_type": "independent bookshop cafe",
+    "vibe_tags": ["analog", "quiet", "books", "architecture", "mid-century"],
+    "lighting": "warm amber tungsten, rain-streaked full-length windows",
+    "conversation_friendly_score": 0.95,
+    "recommended_activity": "Browse mid-century Japanese art and design monographs over pour-over cortados in the second-floor lounge."
+  },
+  {
+    "venue_id": "tokyo_bar_martha",
+    "name": "Bar Martha (Vinyl Jazz Kissa)",
+    "city": "Tokyo",
+    "neighborhood": "Ebisu",
+    "venue_type": "vinyl jazz kissa",
+    "vibe_tags": ["vinyl", "analog", "high-fidelity", "whiskey", "intimate"],
+    "lighting": "dim amber filament bulbs, glowing McIntosh tube amplifiers",
+    "conversation_friendly_score": 0.88,
+    "recommended_activity": "Listen to original 1950s Blue Note pressings while sipping single-origin spirits on low walnut counters."
+  },
+  {
+    "venue_id": "tokyo_totem_pole_gallery",
+    "name": "Totem Pole Photo Gallery & Darkroom",
+    "city": "Tokyo",
+    "neighborhood": "Shinjuku",
+    "venue_type": "analog photography lab & gallery",
+    "vibe_tags": ["35mm", "darkroom", "silver gelatin", "monochrome", "tactile"],
+    "lighting": "diffused exhibition white with amber-red darkroom portal",
+    "conversation_friendly_score": 0.92,
+    "recommended_activity": "Examine silver-gelatin street photography prints and discuss analog developing chemistry."
+  },
+  {
+    "venue_id": "sf_city_lights_books",
+    "name": "City Lights Booksellers & Cafe Trieste",
+    "city": "San Francisco",
+    "neighborhood": "North Beach",
+    "venue_type": "independent bookshop cafe",
+    "vibe_tags": ["literary", "poetry", "historic", "coffee", "intellectual"],
+    "lighting": "soft crepuscular bay light and wooden table lamps",
+    "conversation_friendly_score": 0.94,
+    "recommended_activity": "Browse poetry and political philosophy in the basement stacks, then walk around the corner for classic espresso."
+  },
+  {
+    "venue_id": "sf_royal_cuckoo",
+    "name": "The Royal Cuckoo Lounge",
+    "city": "San Francisco",
+    "neighborhood": "Mission District",
+    "venue_type": "vinyl lounge & vintage organ bar",
+    "vibe_tags": ["vinyl", "vintage", "organ", "bohemian", "warm"],
+    "lighting": "red velvet lampshades, antique parlor glow",
+    "conversation_friendly_score": 0.89,
+    "recommended_activity": "Select 45rpm soul and jazz records from the wooden shelves behind the bar while chatting in leather booths."
+  },
+  {
+    "venue_id": "nyc_housing_works_bookstore",
+    "name": "Housing Works Bookstore Cafe",
+    "city": "New York",
+    "neighborhood": "SoHo",
+    "venue_type": "independent bookshop cafe",
+    "vibe_tags": ["books", "brick", "mahogany", "community", "coffee"],
+    "lighting": "warm high-ceiling chandelier glow, spiral mahogany staircases",
+    "conversation_friendly_score": 0.96,
+    "recommended_activity": "Share a pot of Earl Grey tea under the mahogany mezzanine while scouring secondhand first-edition literature."
+  },
+  {
+    "venue_id": "nyc_bushwick_darkroom",
+    "name": "Bushwick Community Darkroom & Gallery",
+    "city": "New York",
+    "neighborhood": "Bushwick",
+    "venue_type": "analog photography lab & gallery",
+    "vibe_tags": ["analog", "film", "darkroom", "experimental", "creative"],
+    "lighting": "dim red safelight accents, industrial brick studio",
+    "conversation_friendly_score": 0.91,
+    "recommended_activity": "Inspect hand-developed contact sheets and expired medium format negatives in the print room."
+  }
+]
