@@ -1,0 +1,25 @@
+{
+  "name": "musemeet",
+  "version": "0.1.0",
+  "description": "Autonomous Agent-to-Agent Matchmaking & Serendipity Engine",
+  "type": "module",
+  "main": "agent_engine/protocol/rendezvous.js",
+  "scripts": {
+    "test": "node tests/test_lsm.js && node tests/test_m2.js && node tests/test_m2b.js",
+    "test:lsm": "node tests/test_lsm.js",
+    "test:m2": "node tests/test_m2.js",
+    "test:m2b": "node tests/test_m2b.js"
+  },
+  "keywords": [
+    "matchmaking",
+    "autonomous-agents",
+    "meta-model-api",
+    "linguistic-style-matching",
+    "gottman-bids"
+  ],
+  "author": "Aditya Raj & Aryan Raj",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
