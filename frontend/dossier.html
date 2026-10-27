@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MuseMeet — Explainable Compatibility Dossier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: rgba(18, 20, 29, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gold: #f59e0b;
+      --accent-amber: #fbbf24;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-violet: #8b5cf6;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-subtle: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, var(--bg) 70%);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1120px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Header Nav & Vignette Selector */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1.25rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-violet));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: 'Cinzel', serif;
+      color: #000;
+      font-size: 1.1rem;
+    }
+
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .vignette-selector {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 0.25rem;
+      gap: 0.25rem;
+    }
+
+    .vignette-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1.1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .vignette-btn:hover {
+      color: var(--text-main);
+    }
+
+    .vignette-btn.active {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Hero Header */
+    .hero-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      width: fit-content;
+    }
+
+    .badge-match {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-abort {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-exit {
+      background: rgba(244, 63, 94, 0.12);
+      color: var(--accent-rose);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.1rem;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .hero-summary {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 650px;
+    }
+
+    /* Score Ring */
+    .score-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .score-svg {
+      transform: rotate(-90deg);
+      width: 140px;
+      height: 140px;
+    }
+
+    .score-bg-circle {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.06);
+      stroke-width: 10;
+    }
+
+    .score-progress-circle {
+      fill: none;
+      stroke: var(--accent-gold);
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 377;
+      stroke-dashoffset: 30;
+      transition: stroke-dashoffset 1s ease, stroke 0.5s ease;
+    }
+
+    .score-label-box {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1;
+    }
+
+    .score-percent {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    .score-caption {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-subtle);
+      margin-top: 0.25rem;
+    }
+
+    /* Telemetry Pill Matrix */
+    .telemetry-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .telemetry-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .telemetry-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .telemetry-value {
+      font-size: 1.3rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-main);
+    }
+
+    .telemetry-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Comparison Grid: Resonances vs Friction */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .column-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .column-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .column-header.emerald {
+      color: var(--accent-emerald);
+    }
+
+    .column-header.amber {
+      color: var(--accent-amber);
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .bullet-item {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    .bullet-icon {
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+      font-size: 0.8rem;
+    }
+
+    /* Icebreakers */
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .icebreaker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .icebreaker-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .icebreaker-card:hover {
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .icebreaker-text {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--text-main);
+      font-style: italic;
+    }
+
+    .copy-btn {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    /* First-Date Itinerary */
+    .itinerary-card {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.5) 0%, rgba(18, 20, 29, 0.8) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .itinerary-activity {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .callbacks-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .callback-pill {
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #c4b5fd;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .why-works {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      border-left: 2px solid var(--accent-gold);
+      padding-left: 0.85rem;
+    }
+
+    /* 3-Panel Moodboard */
+    .moodboard-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .moodboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .moodboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .panel-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .panel-img-wrapper {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .panel-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .panel-card:hover .panel-img {
+      transform: scale(1.04);
+    }
+
+    .panel-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-main);
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .panel-info {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .panel-prompt {
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .panel-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 0.5rem;
+    }
+
+    /* Footer */
+    .dossier-footer {
+      text-align: center;
+      color: var(--text-subtle);
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 1rem 0;
+      border-top: 1px solid var(--card-border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Top Bar Navigation -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">M</div>
+        <div>
+          <div class="brand-title">MuseMeet</div>
+          <div class="brand-subtitle">Autonomous Dyadic Verification</div>
+        </div>
+      </div>
+
+      <nav class="vignette-selector" aria-label="Demo Vignettes">
+        <button class="vignette-btn active" onclick="loadScenario('bookshop')">Pair 1: Bookshop (Match)</button>
+        <button class="vignette-btn" onclick="loadScenario('record_store')">Pair 2: Vinyl (Graceful Abort)</button>
+        <button class="vignette-btn" onclick="loadScenario('market')">Pair 3: Market (Early Exit)</button>
+      </nav>
+    </header>
+
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <div class="hero-content">
+        <div id="statusBadge" class="status-badge badge-match">
+          <span class="pulse-dot"></span>
+          <span id="badgeText">Verified Autonomous Match</span>
+        </div>
+        <h1 id="heroTitle" class="hero-title">Elena Vance × Julian Thorne</h1>
+        <p id="heroSummary" class="hero-summary">
+          High conversational synchrony across all 4 stages. Shared intellectual resonance in analog aesthetics, physical books, and reflective slow-living rhythms.
+        </p>
+      </div>
+
+      <div class="score-container">
+        <svg class="score-svg" viewBox="0 0 140 140">
+          <circle class="score-bg-circle" cx="70" cy="70" r="60" />
+          <circle id="scoreProgressCircle" class="score-progress-circle" cx="70" cy="70" r="60" />
+        </svg>
+        <div class="score-label-box">
+          <div><span id="scoreNumber" class="score-number">92</span><span class="score-percent">%</span></div>
+          <span class="score-caption">Resonance</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Telemetry Row -->
+    <section class="telemetry-row">
+      <div class="telemetry-card">
+        <span class="telemetry-label">LSM Synchrony</span>
+        <span id="lsmVal" class="telemetry-value">0.881</span>
+        <span class="telemetry-desc">Function word overlap across 9 LIWC classes (Ireland & Pennebaker)</span>
+      </div>
+      <div class="telemetry-card">
+        <span class="telemetry-label">Gottman Bid Ratio</span>
+        <span id="bidVal" class="telemetry-value">1.00</span>
+        <span class="telemetry-desc">Reciprocal responsiveness to vulnerability & curiosity bids</span>
+      </div>
+      <div class="telemetry-card">
+        <span class="telemetry-label">PPR Composite</span>
+        <span id="pprVal" class="telemetry-value">0.93</span>
+        <span class="telemetry-desc">Perceived Partner Responsiveness (Reis, Maniaci, Eastwick)</span>
+      </div>
+      <div class="telemetry-card">
+        <span class="telemetry-label">Privacy Enforcement</span>
+        <span class="telemetry-value" style="color: var(--accent-emerald);">0% Leak</span>
+        <span class="telemetry-desc">Two-tier isolation vault: raw history completely zero-knowledge</span>
+      </div>
+    </section>
+
+    <!-- Comparison Grid: Resonances vs Friction -->
+    <section class="comparison-grid">
+      <div class="column-card">
+        <div class="column-header emerald">
+          <span>✦</span> Shared Cognitive Resonances
+        </div>
+        <ul id="resonancesList" class="bullet-list">
+          <!-- Dynamically Populated -->
+        </ul>
+      </div>
+
+      <div class="column-card">
+        <div class="column-header amber">
+          <span>▲</span> Honest Friction & Growth Edges
+        </div>
+        <ul id="frictionList" class="bullet-list">
+          <!-- Dynamically Populated -->
+        </ul>
+      </div>
+    </section>
+
+    <!-- Icebreakers Section -->
+    <section id="icebreakersSection">
+      <h2 class="section-title">✦ Mutual Icebreaker Sparks</h2>
+      <div id="icebreakersGrid" class="icebreaker-grid">
+        <!-- Dynamically Populated -->
+      </div>
+    </section>
+
+    <!-- First Date Itinerary -->
+    <section class="itinerary-card">
+      <h2 class="section-title">◈ Bespoke First-Date Itinerary</h2>
+      <p id="itineraryActivity" class="itinerary-activity">
+        Quiet corner table at Daikanyama T-Site Book Lounge, followed by specialty tea and handwritten notebook browsing.
+      </p>
+      <div class="callbacks-box">
+        <span style="font-size: 0.75rem; color: var(--text-subtle);">Transcript Callbacks:</span>
+        <div id="callbacksContainer" style="display: flex; gap: 0.5rem; flex-wrap: wrap;"></div>
+      </div>
+      <p id="itineraryWhy" class="why-works">
+        Anchored in mutual appreciation for tactile analog friction and unhurried intellectual conversation.
+      </p>
+    </section>
+
+    <!-- 3-Panel Moodboard Section -->
+    <section id="moodboardSection" class="moodboard-section">
+      <h2 class="section-title">✧ Muse Image Date Moodboard</h2>
+      <div id="moodboardGrid" class="moodboard-grid">
+        <!-- Dynamically Populated -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dossier-footer">
+      Generated autonomously by MuseMeet | Built for Meta Global AI Developer Hackathon 2026 | Team: Aditya Raj & Aryan Raj
+    </footer>
+  </div>
+
+  <script>
+    const DATASETS = {
+      bookshop: {
+        title: "Elena Vance × Julian Thorne",
+        status: "match",
+        statusText: "Verified Autonomous Match",
+        summary: "Exceptional dyadic synchrony across all 4 stages. Shared intellectual resonance in analog aesthetics, physical books, and reflective slow-living rhythms.",
+        score: 92,
+        lsm: 0.881,
+        bidRatio: 1.00,
+        ppr: 0.93,
+        resonances: [
+          "Reverence for physical tactile artifacts (expired 35mm film negatives, margin annotations in vintage books).",
+          "Identical slow-paced conversational cadence and unhurried intellectual curiosity.",
+          "Shared restorative routines: quiet rainy afternoons, artisanal pour-over coffee, independent neighborhood bookshops."
+        ],
+        friction: [
+          "Elena's intensive darkroom sprint weeks may temporarily constrain spontaneous weekday evening meetups.",
+          "Julian's deep historical rabbit holes can monopolize dialogue if not gently balanced with shared real-world activity."
+        ],
+        icebreakers: [
+          "Why you both prefer the organic unpredictability of expired film stock over flawless digital sensors.",
+          "The most surprising marginalia or forgotten inscription you've ever discovered in a secondhand book.",
+          "The one neighborhood coffee shop in the city that feels completely frozen in time."
+        ],
+        itinerary: {
+          activity: "A rainy twilight visit to Daikanyama T-Site or a quiet Tokyo-style book lounge, ordering artisanal pour-over cortados, and browsing rare mid-century art and architecture monographs together.",
+          callbacks: ["35mm expired film", "marginalia annotations", "Tokyo vinyl kissa"],
+          why: "Eliminates high-pressure interview dynamics by pairing tactile physical props with warm, low-stimulation atmospheric lighting."
+        },
+        moodboard: [
+          {
+            label: "atmosphere",
+            image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Warm amber tungsten interior of a quiet Tokyo-style vinyl listening bar, mahogany wood shelving packed with vintage jazz records, glowing McIntosh vacuum tubes."
+          },
+          {
+            label: "activity",
+            image_url: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Two steaming ceramic cups of artisanal pour-over coffee resting on a dark walnut table next to an open tactile leather journal and a vintage analog Leica camera."
+          },
+          {
+            label: "moment",
+            image_url: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Close-up of hands carefully pulling a vintage vinyl record from its aged paper sleeve, turntable needle hovering over the first groove, warm golden hour."
+          }
+        ]
+      },
+
+      record_store: {
+        title: "Elena Vance × Marcus Chen",
+        status: "abort",
+        statusText: "Graceful Abort (Stage 3)",
+        summary: "Intellectual banter and high conversational wit across early stages, but Stage 3 friction probing revealed an irreconcilable structural collision: Marcus's non-negotiable 90-day nomadic international lifestyle directly contradicts Elena's permanent laboratory anchors.",
+        score: 64,
+        lsm: 0.798,
+        bidRatio: 1.00,
+        ppr: 0.50,
+        resonances: [
+          "Identical reverence for tactile analog cinema and 16mm/35mm chemical film grain.",
+          "Rapid, razor-sharp witty banter with high linguistic synchrony (LSM 0.80).",
+          "Mutual disdain for sterile corporate digital consumerism."
+        ],
+        friction: [
+          "Mutually exclusive geographical trajectories: Marcus's non-negotiable nomadic lifestyle (moves every 90 days) directly conflicts with Elena's permanent local commitments (laboratory tenure, darkroom studio lease).",
+          "Marcus's high-stimulation nightlife culture clashes with Elena's need for quiet, low-stimulation restorative weekends."
+        ],
+        icebreakers: [
+          "Why you both fell in love with mechanical cameras that require physical hand-winding.",
+          "The strangest thing you have each witnessed while developing expired film.",
+          "Your favorite underground independent cinema memories in Berlin and Tokyo."
+        ],
+        itinerary: {
+          activity: "Introduction withheld by mutual agent agreement due to structural geographic incompatibility. Preserving human time and preventing foreseeable heartbreak.",
+          callbacks: ["Bolex 16mm camera mechanics", "Nomadic 40-liter duffel bag travel vs. permanent laboratory roots"],
+          why: "Prevents foreseeable emotional heartbreak while preserving mutual respect and authentic affinity."
+        },
+        moodboard: [
+          {
+            label: "atmosphere",
+            image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Moody rainy city street at twilight, neon reflections on wet asphalt, two distant umbrellas walking in opposite directions, bittersweet and poetic."
+          },
+          {
+            label: "activity",
+            image_url: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Vintage 16mm film projector whirring in a dark projection booth, illuminated dust motes in the light beam, analog warmth."
+          },
+          {
+            label: "moment",
+            image_url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Single luggage duffel bag packed by a doorway, soft departure light, quiet bittersweet aesthetic."
+          }
+        ]
+      },
+
+      market: {
+        title: "Elena Vance × David Park",
+        status: "exit",
+        statusText: "Early Exit (Stage 1)",
+        summary: "Conversational synchrony flatlined immediately in Stage 1 Discovery. David's agent rejected artistic contemplation bids, re-framing analog photography through productivity KPIs and ROI spreadsheets. Meeting safely avoided.",
+        score: 24,
+        lsm: 0.428,
+        bidRatio: 0.16,
+        ppr: 0.15,
+        resonances: [
+          "Both exhibit intense personal discipline, though applied to incompatible domains (endurance athletics/KPIs vs. laboratory chemistry/darkroom art)."
+        ],
+        friction: [
+          "Diametrically opposed philosophies of time: David views every waking hour through the lens of productivity KPIs and ROI, whereas Elena values slow, unquantifiable artistic exploration.",
+          "Conversational flatline: Zero linguistic synchrony (LSM 0.428) with continuous bids turned away in Stage 1.",
+          "Lifestyle pacing mismatch: David's 15-minute scheduled blocks and rigid routine directly clash with Elena's spontaneous darkroom evenings."
+        ],
+        icebreakers: [],
+        itinerary: {
+          activity: "Session terminated early during Discovery stage. No introduction recommended. Estimated 3.5 hours of awkward dinner small talk successfully averted.",
+          callbacks: ["Darkroom photography vs. 15-minute time-blocking", "Efficiency metrics vs. artistic contemplation"],
+          why: "Saves both individuals hours of unaligned dating and awkward dinner small talk."
+        },
+        moodboard: [
+          {
+            label: "atmosphere",
+            image_url: "https://images.unsplash.com/photo-1495364141860-b0d03eccd065?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Cold minimalist modern desk with digital stopwatch and calendar spreadsheet grid, stark cool blue lighting."
+          },
+          {
+            label: "activity",
+            image_url: "https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Empty stopwatch on glass table, precise 15-minute intervals, sharp monochrome contrast."
+          },
+          {
+            label: "moment",
+            image_url: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
+            prompt: "Divided frame: cold gray digital display contrasting with warm darkroom red safelight, disconnected and distant."
+          }
+        ]
+      }
+    };
+
+    function loadScenario(name) {
+      const data = DATASETS[name] || DATASETS.bookshop;
+
+      // Update Active Selector Button
+      document.querySelectorAll('.vignette-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(name));
+      });
+
+      // Update Hero Header
+      document.getElementById('heroTitle').textContent = data.title;
+      document.getElementById('heroSummary').textContent = data.summary;
+
+      const badge = document.getElementById('statusBadge');
+      const badgeText = document.getElementById('badgeText');
+      badge.className = 'status-badge';
+      if (data.status === 'match') {
+        badge.classList.add('badge-match');
+      } else if (data.status === 'abort') {
+        badge.classList.add('badge-abort');
+      } else {
+        badge.classList.add('badge-exit');
+      }
+      badgeText.textContent = data.statusText;
+
+      // Update Score Ring
+      const scoreCircle = document.getElementById('scoreProgressCircle');
+      const scoreNum = document.getElementById('scoreNumber');
+      const circumference = 2 * Math.PI * 60; // 377
+      const offset = circumference - (circumference * (data.score / 100));
+      scoreCircle.style.strokeDasharray = `${circumference}`;
+      scoreCircle.style.strokeDashoffset = `${offset}`;
+
+      if (data.status === 'match') {
+        scoreCircle.style.stroke = 'var(--accent-emerald)';
+      } else if (data.status === 'abort') {
+        scoreCircle.style.stroke = 'var(--accent-amber)';
+      } else {
+        scoreCircle.style.stroke = 'var(--accent-rose)';
+      }
+      scoreNum.textContent = data.score;
+
+      // Update Telemetry
+      document.getElementById('lsmVal').textContent = data.lsm.toFixed(3);
+      document.getElementById('bidVal').textContent = data.bidRatio.toFixed(2);
+      document.getElementById('pprVal').textContent = data.ppr.toFixed(2);
+
+      // Update Resonances
+      const resList = document.getElementById('resonancesList');
+      resList.innerHTML = data.resonances.map(r => `
+        <li class="bullet-item">
+          <span class="bullet-icon" style="color: var(--accent-emerald);">✦</span>
+          <span>${r}</span>
+        </li>
+      `).join('');
+
+      // Update Friction
+      const fList = document.getElementById('frictionList');
+      fList.innerHTML = data.friction.map(f => `
+        <li class="bullet-item">
+          <span class="bullet-icon" style="color: var(--accent-amber);">▲</span>
+          <span>${f}</span>
+        </li>
+      `).join('');
+
+      // Update Icebreakers
+      const iceSec = document.getElementById('icebreakersSection');
+      const iceGrid = document.getElementById('icebreakersGrid');
+      if (data.icebreakers && data.icebreakers.length > 0) {
+        iceSec.style.display = 'block';
+        iceGrid.innerHTML = data.icebreakers.map(ib => `
+          <div class="icebreaker-card">
+            <p class="icebreaker-text">"${ib}"</p>
+            <button class="copy-btn" onclick="copyText('${ib.replace(/'/g, "\\'")}', this)">
+              <span>⎘</span> Copy Icebreaker
+            </button>
+          </div>
+        `).join('');
+      } else {
+        iceSec.style.display = 'none';
+      }
+
+      // Update Itinerary
+      document.getElementById('itineraryActivity').textContent = data.itinerary.activity;
+      document.getElementById('itineraryWhy').textContent = data.itinerary.why;
+      const cbBox = document.getElementById('callbacksContainer');
+      cbBox.innerHTML = data.itinerary.callbacks.map(c => `
+        <span class="callback-pill">${c}</span>
+      `).join('');
+
+      // Update Moodboard
+      const mbGrid = document.getElementById('moodboardGrid');
+      mbGrid.innerHTML = data.moodboard.map(p => `
+        <div class="panel-card">
+          <div class="panel-img-wrapper">
+            <span class="panel-badge">${p.label}</span>
+            <img class="panel-img" src="${p.image_url}" alt="${p.label}" loading="lazy" />
+          </div>
+          <div class="panel-info">
+            <p class="panel-prompt">${p.prompt}</p>
+            <div class="panel-meta">
+              <span>Meta Muse Image 1.0</span>
+              <span>$0.01 USD</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span>✓</span> Copied!';
+        setTimeout(() => { btn.innerHTML = orig; }, 1800);
+      });
+    }
+
+    // Initialize with query param or default to bookshop
+    const urlParams = new URLSearchParams(window.location.search);
+    const scenario = urlParams.get('scenario') || 'bookshop';
+    loadScenario(scenario);
+  </script>
+</body>
+</html>
