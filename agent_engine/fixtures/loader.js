@@ -10,6 +10,15 @@ const FIXTURES_ROOT = path.resolve(__dirname, '../../tests/fixtures');
  * Maps persona ID pairings to standard vignette directory names.
  */
 export const VIGNETTE_MAP = {
+  // Production benchmark persona IDs
+  'usr_elena_01:usr_julian_02': 'vignette_1_bookshop',
+  'usr_julian_02:usr_elena_01': 'vignette_1_bookshop',
+  'usr_elena_01:usr_marcus_03': 'vignette_2_record_store',
+  'usr_marcus_03:usr_elena_01': 'vignette_2_record_store',
+  'usr_elena_01:usr_david_04': 'vignette_3_market',
+  'usr_david_04:usr_elena_01': 'vignette_3_market',
+
+  // Alias formats
   'usr_elena_v1:usr_julian_v1': 'vignette_1_bookshop',
   'usr_julian_v1:usr_elena_v1': 'vignette_1_bookshop',
   'usr_elena_v1:usr_marcus_v1': 'vignette_2_record_store',
