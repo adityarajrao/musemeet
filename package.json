@@ -5,13 +5,14 @@
   "type": "module",
   "main": "agent_engine/protocol/rendezvous.js",
   "scripts": {
-    "test": "node tests/test_m1.js && node tests/test_lsm.js && node tests/test_m2.js && node tests/test_m2b.js && node tests/test_m3.js && node tests/test_m4.js",
+    "test": "node tests/test_m1.js && node tests/test_lsm.js && node tests/test_m2.js && node tests/test_m2b.js && node tests/test_m3.js && node tests/test_m4.js && node tests/test_e2e.js",
     "test:m1": "node tests/test_m1.js",
     "test:lsm": "node tests/test_lsm.js",
     "test:m2": "node tests/test_m2.js",
     "test:m2b": "node tests/test_m2b.js",
     "test:m3": "node tests/test_m3.js",
-    "test:m4": "node tests/test_m4.js"
+    "test:m4": "node tests/test_m4.js",
+    "test:e2e": "node tests/test_e2e.js"
   },
   "keywords": [
     "matchmaking",
