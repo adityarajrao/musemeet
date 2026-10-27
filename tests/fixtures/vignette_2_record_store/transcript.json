@@ -1,0 +1,165 @@
+{
+  "session_id": "sess_record_store_vignette_02",
+  "outcome": "graceful_abort",
+  "turns": [
+    {
+      "turn_number": 1,
+      "speaker": "agent_a",
+      "stage": "discovery",
+      "dialogue": "My human spends Friday nights smelling like fixer chemicals in a red-lit darkroom, developing 35mm film by hand. It's slow, unforgiving, and completely inefficient. Where does your human find that kind of tactile patience?",
+      "internal_monologue": "Testing niche passion depth. Seeing if this creative director actually understands physical film or just uses film filters on digital footage.",
+      "lsm_score": 1.0,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:00:00Z"
+    },
+    {
+      "turn_number": 2,
+      "speaker": "agent_b",
+      "stage": "discovery",
+      "dialogue": "He shoots sixteen-millimeter Bolex cameras on rain-slicked city streets until his fingers freeze. Film grain isn't an aesthetic choice for him—it's the only medium that doesn't feel like a clinical surveillance recording.",
+      "internal_monologue": "Resonating strongly on analog cinematography. Matching her intensity with cinematic grit. Checking if she has real vision or just nostalgia.",
+      "lsm_score": 0.7712,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:00:15Z"
+    },
+    {
+      "turn_number": 3,
+      "speaker": "agent_a",
+      "stage": "discovery",
+      "dialogue": "A sixteen-millimeter Bolex has a mechanical spring motor that sounds like a clock unwinding in a quiet room. There's an intimacy to limitation. When you only have two and a half minutes per roll, you stop shooting garbage.",
+      "internal_monologue": "Impressive technical recall. He actually knows Bolex mechanics. Intellectual and creative depth verified.",
+      "lsm_score": 0.7845,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:00:30Z"
+    },
+    {
+      "turn_number": 4,
+      "speaker": "agent_b",
+      "stage": "discovery",
+      "dialogue": "Exactly. Digital video is infinite, which makes it worthless. When every mistake costs eighty dollars in laboratory processing, every frame becomes an ethical decision.",
+      "internal_monologue": "Curiosity and values around craft are aligned. Moving into Stage 2 to test humor and pacing.",
+      "lsm_score": 0.7910,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:00:45Z"
+    },
+    {
+      "turn_number": 5,
+      "speaker": "agent_a",
+      "stage": "banter",
+      "dialogue": "An ethical decision? You make loading Kodak Tri-X sound like negotiating the Geneva Conventions. Does he always take himself this seriously, or is there an occasional moment of self-awareness?",
+      "internal_monologue": "Testing sarcasm threshold and puncture vulnerability. Playfully challenging his high-art grandstanding.",
+      "lsm_score": 0.7890,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:01:00Z"
+    },
+    {
+      "turn_number": 6,
+      "speaker": "agent_b",
+      "stage": "banter",
+      "dialogue": "Only when he spends his entire monthly rent budget on expired motion picture stock from an estate sale in Berlin, then has to survive on convenience store onigiri for three weeks. Self-awareness arrives promptly with the credit card statement.",
+      "internal_monologue": "Firing back with rapid self-deprecating wit. Banter elasticity is electric.",
+      "lsm_score": 0.8021,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:01:15Z"
+    },
+    {
+      "turn_number": 7,
+      "speaker": "agent_a",
+      "stage": "banter",
+      "dialogue": "A diet of cheap rice balls in service of art. The tragic auteur archetype is exhausting, but at least he commits to the bit. Does his apartment look like a movie set or a condemned warehouse?",
+      "internal_monologue": "High LSM synchrony. The repartee is genuinely funny. Moving to Stage 3 to probe domestic reality.",
+      "lsm_score": 0.8140,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:01:30Z"
+    },
+    {
+      "turn_number": 8,
+      "speaker": "agent_b",
+      "stage": "banter",
+      "dialogue": "It looks like an airport departure lounge, because he doesn't have an apartment. Everything he owns fits into a forty-liter duffel bag, and he has lived out of furnished sublets across five countries this year.",
+      "internal_monologue": "Staging the transition to Stage 3. Unveiling his radical nomadism.",
+      "lsm_score": 0.7960,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:01:45Z"
+    },
+    {
+      "turn_number": 9,
+      "speaker": "agent_a",
+      "stage": "friction",
+      "dialogue": "Wait. A forty-liter duffel bag? You mean he is actively nomadic? As in, moving every few months without permanent roots?",
+      "internal_monologue": "CRITICAL DEALBREAKER RADAR TRIGGERED. Elena's Layer 4 constraint: cannot tolerate constant relocation. Probing the depth of this nomadism.",
+      "lsm_score": 0.7810,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:02:00Z"
+    },
+    {
+      "turn_number": 10,
+      "speaker": "agent_b",
+      "stage": "friction",
+      "dialogue": "It's non-negotiable for his creative process. Routine suffocates his writing. He stays ninety days in Lisbon, three months in Seoul, two months in Mexico City. He cannot survive in a suburban cul-de-sac or a permanent ten-year lease.",
+      "internal_monologue": "Stating Marcus's dealbreaker firmly. Freedom and mobility are invariant. Checking if she is willing to travel.",
+      "lsm_score": 0.7895,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:02:15Z"
+    },
+    {
+      "turn_number": 11,
+      "speaker": "agent_a",
+      "stage": "friction",
+      "dialogue": "Then I must stop us right here. My human is an empirical neuroscientist with a physical wet lab, a five-year darkroom lease, and a deep community she has spent years building. She will never live out of a forty-liter duffel bag, and she will never ask him to give up his wandering.",
+      "internal_monologue": "Executing protective talent scout mandate. Fatal lifestyle collision. Repartee was electric, but life trajectories are orthogonal.",
+      "lsm_score": 0.7920,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:02:30Z"
+    },
+    {
+      "turn_number": 12,
+      "speaker": "agent_b",
+      "stage": "friction",
+      "dialogue": "I respect that honesty completely. Our humans would have an electric, unforgettable dinner conversation tonight, and then break each other's hearts in eighteen months. Let us protect them from that collision. Recommending graceful abort.",
+      "internal_monologue": "Mutual consensus reached. Acknowledging high banter chemistry while decisively aborting introduction due to structural lifestyle incompatibility.",
+      "lsm_score": 0.7985,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T13:02:45Z"
+    }
+  ],
+  "stage_summaries": [
+    {
+      "stage": "discovery",
+      "key_observations": [
+        "Rapid, passionate alignment on tactile physical film media and deliberate mechanical limitation.",
+        "Both humans hold disdain for ephemeral digital consumerism."
+      ]
+    },
+    {
+      "stage": "banter",
+      "key_observations": [
+        "Razor-sharp, witty, fast-paced sarcastic repartee.",
+        "LSM synchrony high (0.798), effortless comedic volleying."
+      ]
+    },
+    {
+      "stage": "friction",
+      "key_observations": [
+        "FATAL DEALBREAKER COLLISION: Marcus requires radical, non-negotiable international nomadism (90-day relocations).",
+        "Elena requires deep geographic roots (permanent lab tenure, darkroom studio, local community anchors).",
+        "Both agents decisively agreed to abort introduction to prevent inevitable long-term heartbreak."
+      ]
+    }
+  ],
+  "chemistry_telemetry": [
+    { "turn": 1, "lsm": 1.0, "ppr_score": 0.82, "bid_ratio": 1.0 },
+    { "turn": 2, "lsm": 0.7712, "ppr_score": 0.85, "bid_ratio": 1.0 },
+    { "turn": 3, "lsm": 0.7845, "ppr_score": 0.88, "bid_ratio": 1.0 },
+    { "turn": 4, "lsm": 0.7910, "ppr_score": 0.90, "bid_ratio": 1.0 },
+    { "turn": 5, "lsm": 0.7890, "ppr_score": 0.90, "bid_ratio": 1.0 },
+    { "turn": 6, "lsm": 0.8021, "ppr_score": 0.92, "bid_ratio": 1.0 },
+    { "turn": 7, "lsm": 0.8140, "ppr_score": 0.92, "bid_ratio": 1.0 },
+    { "turn": 8, "lsm": 0.7960, "ppr_score": 0.85, "bid_ratio": 1.0 },
+    { "turn": 9, "lsm": 0.7810, "ppr_score": 0.75, "bid_ratio": 1.0 },
+    { "turn": 10, "lsm": 0.7895, "ppr_score": 0.65, "bid_ratio": 1.0 },
+    { "turn": 11, "lsm": 0.7920, "ppr_score": 0.55, "bid_ratio": 1.0 },
+    { "turn": 12, "lsm": 0.7985, "ppr_score": 0.50, "bid_ratio": 1.0 }
+  ],
+  "total_tokens_used": 5120
+}

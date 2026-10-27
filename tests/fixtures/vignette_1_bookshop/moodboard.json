@@ -1,0 +1,25 @@
+{
+  "request_id": "req_moodboard_elena_julian_01",
+  "panels": [
+    {
+      "label": "atmosphere",
+      "prompt_used": "Warm amber tungsten interior of a quiet Tokyo-style vinyl listening bar, mahogany wood shelving packed with vintage jazz records, glowing McIntosh vacuum tubes on low counter, soft warm light reflecting off rain-streaked window glass, intimate cinematic 35mm film grain, moody and serene atmosphere",
+      "image_url": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80",
+      "cost_usd": 0.01
+    },
+    {
+      "label": "activity",
+      "prompt_used": "Two steaming ceramic cups of artisanal pour-over coffee resting on a dark walnut table next to an open tactile leather journal and a vintage analog Leica camera, warm afternoon side-lighting, shallow depth of field, authentic aesthetic texture",
+      "image_url": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80",
+      "cost_usd": 0.01
+    },
+    {
+      "label": "moment",
+      "prompt_used": "Close-up of hands carefully pulling a vintage vinyl record from its aged paper sleeve, turntable needle hovering over the first groove, warm golden hour ambient lighting, photographic tactile richness, cinematic depth",
+      "image_url": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80",
+      "cost_usd": 0.01
+    }
+  ],
+  "total_cost_usd": 0.03,
+  "generated_at": "2026-10-27T12:35:10Z"
+}

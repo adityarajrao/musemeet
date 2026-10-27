@@ -1,0 +1,215 @@
+{
+  "session_id": "sess_bookshop_vignette_01",
+  "outcome": "match",
+  "turns": [
+    {
+      "turn_number": 1,
+      "speaker": "agent_a",
+      "stage": "discovery",
+      "dialogue": "My human spends Friday nights smelling like fixer chemicals in a red-lit darkroom, developing 35mm film by hand. It's slow, unforgiving, and completely inefficient. Where does your human find that kind of tactile patience?",
+      "internal_monologue": "Testing niche passion depth immediately. If they respond with generic praise, they fail. Looking for a genuine counterpart who understands deliberate analog friction.",
+      "lsm_score": 1.0,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:30:00Z"
+    },
+    {
+      "turn_number": 2,
+      "speaker": "agent_b",
+      "stage": "discovery",
+      "dialogue": "In the glow of vacuum tubes and the crackle of vinyl grooves. He spent three weekends rewiring a 1968 McIntosh amplifier because modern sound feels too compressed, too eager to please. There is an honesty in equipment that hums when it works.",
+      "internal_monologue": "Resonating with the tactile permanence theme. Matching their sensory precision with acoustic restoration. Checking if they care about the listening experience or just the hardware.",
+      "lsm_score": 0.7924,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:30:15Z"
+    },
+    {
+      "turn_number": 3,
+      "speaker": "agent_a",
+      "stage": "discovery",
+      "dialogue": "That hum is everything. When she was studying cortical neural networks, she kept noticing that human thought doesn't happen in clean digital packets either. It's warm, noisy, and analog. Do you think that's why we crave slow mediums, or are we just nostalgic for things we didn't live through?",
+      "internal_monologue": "Connecting neuroscience with aesthetic philosophy. Probing whether this agent can bridge technical systems theory with human emotion.",
+      "lsm_score": 0.8145,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:30:30Z"
+    },
+    {
+      "turn_number": 4,
+      "speaker": "agent_b",
+      "stage": "discovery",
+      "dialogue": "It isn't nostalgia; it's resistance against instant gratification. He always says that when software abstracts away the physical mechanics, we lose our sense of consequence. A sourdough starter dies if you forget it; a photographic plate fogs if you rush. Consequence makes things precious.",
+      "internal_monologue": "Formulating the shared philosophy. Epistemic depth confirmed. Ready to transition into Stage 2 to test wit and banter.",
+      "lsm_score": 0.8352,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:30:45Z"
+    },
+    {
+      "turn_number": 5,
+      "speaker": "agent_a",
+      "stage": "banter",
+      "dialogue": "Careful, that almost sounded poetic. Before we declare them soulmates bound by antique dust, how neurotic does this sourdough devotion get? Are we talking about a casual weekend loaf or an emotional dependency on a glass jar of wild bacteria?",
+      "internal_monologue": "Testing humor elasticity and banter tolerance. Puncturing the highbrow philosophical mood with dry, playful teasing.",
+      "lsm_score": 0.8410,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:31:00Z"
+    },
+    {
+      "turn_number": 6,
+      "speaker": "agent_b",
+      "stage": "banter",
+      "dialogue": "He weighs the flour to the tenth of a gram and holds genuine grief if the hydration drops below seventy-five percent. But let's not pretend your human is innocent—how many manual coffee grinders does she currently own, and why is the answer definitely more than two?",
+      "internal_monologue": "Volleying the dry tease back immediately. Demonstrating reciprocal banter without getting defensive. Catching their coffee ritual quirk.",
+      "lsm_score": 0.8521,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:31:15Z"
+    },
+    {
+      "turn_number": 7,
+      "speaker": "agent_a",
+      "stage": "banter",
+      "dialogue": "Four. And every single one produces a distinctly different micron particle distribution, thank you very much. But at least her obsession doesn't require regular refrigeration or a naming ceremony. Does his sourdough jar have a name?",
+      "internal_monologue": "Banter rhythm is effortless. High linguistic style matching. Both agents are engaged in reciprocal witty playfulness.",
+      "lsm_score": 0.8643,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:31:30Z"
+    },
+    {
+      "turn_number": 8,
+      "speaker": "agent_b",
+      "stage": "banter",
+      "dialogue": "It was legally named 'The Monolith' in 2021, and its rights will be protected in any future relationship agreement. I think we have established that both our humans are delightfully unbearable in specialized ways.",
+      "internal_monologue": "Humor synchrony is exceptional. Stage 2 complete with high resonance. Moving into Stage 3 to stress-test lifestyle friction and dealbreakers.",
+      "lsm_score": 0.8715,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:31:45Z"
+    },
+    {
+      "turn_number": 9,
+      "speaker": "agent_a",
+      "stage": "friction",
+      "dialogue": "Agreed. Now let's test where the seams tear. My human has a strictly limited social battery. On Sunday mornings, she does not speak before ten AM. She needs solitary hours with tea and a notebook, or she becomes completely depleted. How does his energy function on a weekend?",
+      "internal_monologue": "Dropping the first vulnerability bid and lifestyle constraint. If he requires high-energy, early-morning chatter or constant shared activities, this will generate friction.",
+      "lsm_score": 0.8690,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:32:00Z"
+    },
+    {
+      "turn_number": 10,
+      "speaker": "agent_b",
+      "stage": "friction",
+      "dialogue": "He is in the workshop soldering cables or reading in the back armchair until noon. The greatest luxury for him is parallel play—sharing a quiet room with someone where neither person feels obligated to perform or fill the silence with noise.",
+      "internal_monologue": "Validating the introverted recharge need. Turning toward the bid. Emphasizing shared comfort in companionable silence.",
+      "lsm_score": 0.8752,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:32:15Z"
+    },
+    {
+      "turn_number": 11,
+      "speaker": "agent_a",
+      "stage": "friction",
+      "dialogue": "Parallel play is the holy grail. But here is the hard boundary: she is rooted here. Her lab, her darkroom lease, her community. If your human has ambitions of becoming a spontaneous digital nomad who flees to Bali every four months, we need to shake hands and walk away right now.",
+      "internal_monologue": "Explicit dealbreaker probe. Testing geographical anchors vs. wanderlust mobility.",
+      "lsm_score": 0.8705,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:32:30Z"
+    },
+    {
+      "turn_number": 12,
+      "speaker": "agent_b",
+      "stage": "friction",
+      "dialogue": "You cannot pack fifty pounds of vintage cast-iron tube amplifiers into a backpack. He has lived in the same brick apartment for five years and loves having deep roots in one neighborhood. He travels for inspiration, but he always returns to his workbench.",
+      "internal_monologue": "Zero dealbreaker friction detected. Geographic alignment confirmed. The boundary was respected and reciprocated.",
+      "lsm_score": 0.8780,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:32:45Z"
+    },
+    {
+      "turn_number": 13,
+      "speaker": "agent_a",
+      "stage": "synthesis",
+      "dialogue": "Then I have exhausted my skepticism. We have matching cognitive rhythms, complementary solitude requirements, and zero dealbreaker collisions. What does your human's calendar look like this Thursday evening?",
+      "internal_monologue": "Talent scout evaluation complete. Opportunity cost budget authorized. Recommending introduction.",
+      "lsm_score": 0.8765,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:33:00Z"
+    },
+    {
+      "turn_number": 14,
+      "speaker": "agent_b",
+      "stage": "synthesis",
+      "dialogue": "Clear. And I have already located the venue: a quiet subterranean jazz listening bar where the lights are low, the records are rare, and the pour-over coffee is taken entirely too seriously.",
+      "internal_monologue": "Synthesizing shared context. Recommending match approval to the Lounge Moderator.",
+      "lsm_score": 0.8792,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:33:15Z"
+    },
+    {
+      "turn_number": 15,
+      "speaker": "agent_a",
+      "stage": "synthesis",
+      "dialogue": "Tell him to bring his strongest opinions on vinyl mastering. I'll make sure she brings an appetite for sourdough that has been properly fermented.",
+      "internal_monologue": "Closing with callback to earlier banter. Perfect conversational resolution.",
+      "lsm_score": 0.8804,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:33:30Z"
+    },
+    {
+      "turn_number": 16,
+      "speaker": "agent_b",
+      "stage": "synthesis",
+      "dialogue": "It's a deal. Passing session transcript to the Moderator for final dossier synthesis.",
+      "internal_monologue": "Final turn emitted. Protocol concluded successfully.",
+      "lsm_score": 0.8812,
+      "gottman_bid": "toward",
+      "timestamp": "2026-10-27T12:33:45Z"
+    }
+  ],
+  "stage_summaries": [
+    {
+      "stage": "discovery",
+      "key_observations": [
+        "Rapid convergence on tactile analog media over ephemeral digital consumption.",
+        "Both humans link technical complexity (neuroscience, distributed networks) to sensory aesthetic crafts."
+      ]
+    },
+    {
+      "stage": "banter",
+      "key_observations": [
+        "Effortless dry, self-deprecating humor exchange.",
+        "Function word linguistic synchrony climbed to 0.87 without conversational stalls."
+      ]
+    },
+    {
+      "stage": "friction",
+      "key_observations": [
+        "Identical Sunday morning recharge needs (parallel play and quiet companionship).",
+        "Both hold non-negotiable local geographic roots; zero relocation dealbreakers."
+      ]
+    },
+    {
+      "stage": "synthesis",
+      "key_observations": [
+        "Consensus reached by both agents to recommend human introduction.",
+        "Ideal shared first-date context identified as a quiet audiophile listening bar."
+      ]
+    }
+  ],
+  "chemistry_telemetry": [
+    { "turn": 1, "lsm": 1.0, "ppr_score": 0.80, "bid_ratio": 1.0 },
+    { "turn": 2, "lsm": 0.7924, "ppr_score": 0.84, "bid_ratio": 1.0 },
+    { "turn": 3, "lsm": 0.8145, "ppr_score": 0.86, "bid_ratio": 1.0 },
+    { "turn": 4, "lsm": 0.8352, "ppr_score": 0.88, "bid_ratio": 1.0 },
+    { "turn": 5, "lsm": 0.8410, "ppr_score": 0.88, "bid_ratio": 1.0 },
+    { "turn": 6, "lsm": 0.8521, "ppr_score": 0.90, "bid_ratio": 1.0 },
+    { "turn": 7, "lsm": 0.8643, "ppr_score": 0.92, "bid_ratio": 1.0 },
+    { "turn": 8, "lsm": 0.8715, "ppr_score": 0.92, "bid_ratio": 1.0 },
+    { "turn": 9, "lsm": 0.8690, "ppr_score": 0.90, "bid_ratio": 1.0 },
+    { "turn": 10, "lsm": 0.8752, "ppr_score": 0.92, "bid_ratio": 1.0 },
+    { "turn": 11, "lsm": 0.8705, "ppr_score": 0.94, "bid_ratio": 1.0 },
+    { "turn": 12, "lsm": 0.8780, "ppr_score": 0.94, "bid_ratio": 1.0 },
+    { "turn": 13, "lsm": 0.8765, "ppr_score": 0.95, "bid_ratio": 1.0 },
+    { "turn": 14, "lsm": 0.8792, "ppr_score": 0.95, "bid_ratio": 1.0 },
+    { "turn": 15, "lsm": 0.8804, "ppr_score": 0.96, "bid_ratio": 1.0 },
+    { "turn": 16, "lsm": 0.8812, "ppr_score": 0.96, "bid_ratio": 1.0 }
+  ],
+  "total_tokens_used": 6840
+}

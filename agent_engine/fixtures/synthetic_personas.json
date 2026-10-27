@@ -1,0 +1,181 @@
+{
+  "personas": [
+    {
+      "persona_id": "usr_elena_01",
+      "name": "Elena Rostova",
+      "archetype": "Contemplative Polymath & Analog Aesthete",
+      "communication_style": {
+        "cadence": "measured, dry wit, low punctuation velocity, avoids empty pleasantries",
+        "humor_type": ["deadpan irony", "absurdist understatements", "intellectual wordplay"],
+        "intellectual_depth": 0.92,
+        "emotional_openness": 0.65,
+        "lsm_baseline": 0.78
+      },
+      "authentic_passions": [
+        "darkroom analog film photography and silver gelatin prints",
+        "computational neuroscience and brain-computer interface topology",
+        "Japanese listening bars and vintage vinyl curation (ambient, post-rock)",
+        "single-origin pour-over coffee rituals and slow morning routines"
+      ],
+      "conversation_seeds": [
+        "Why Calvino's Invisible Cities feels more realistic than modern city planning",
+        "The tactile permanence of silver gelatin photographic prints versus digital files",
+        "Whether ambient electronic music is meditative contemplation or auditory wallpaper",
+        "The psychological vulnerability of keeping an analog journal that has no search bar"
+      ],
+      "aesthetic_signature": {
+        "visual_palette": ["warm tungsten", "rainy slate gray", "rich photographic sepia", "muted amber"],
+        "texture": "matte heavy-stock paper, crackling vinyl grooves, aged darkroom wood, rainy window glass",
+        "tempo": "slow late-night listening bar, quiet corner booth, introspective rain"
+      },
+      "dealbreakers": [
+        "hyperactive hustle culture and constant social media posturing",
+        "clubbing-centric, loud sensory-overload weekend lifestyle",
+        "intellectual incuriosity and dismissal of nuance or ambiguity",
+        "lifestyle requiring constant nomadic relocation (needs deep geographic roots)"
+      ],
+      "lifestyle_constraints": [
+        "non-negotiable solitary Sunday mornings for mental recharging",
+        "low social battery for large crowds (>4 people causes rapid exhaustion)",
+        "night-owl circadian rhythm (peaks in creative/intellectual focus after 10 PM)",
+        "rooted permanently in city with local laboratory and community commitments"
+      ],
+      "meta": {
+        "distilled_at": "2026-10-27T12:00:00Z",
+        "model_used": "meta/muse-spark-1.3",
+        "token_count": 1420
+      }
+    },
+    {
+      "persona_id": "usr_julian_02",
+      "name": "Julian Vance",
+      "archetype": "Systems Thinker & Quiet Philosophical Wit",
+      "communication_style": {
+        "cadence": "thoughtful, dry conversational irony, attentive listener, expansive follow-ups",
+        "humor_type": ["wry self-deprecation", "dry irony", "philosophical satire"],
+        "intellectual_depth": 0.89,
+        "emotional_openness": 0.70,
+        "lsm_baseline": 0.81
+      },
+      "authentic_passions": [
+        "decentralized consensus networks and distributed systems theory",
+        "vintage tube amplifiers, jazz vinyl records, and acoustic soundproofing",
+        "architectural brutalism and urban walking explorations",
+        "fermentation science (sourdough baking, long-ferment ciders)"
+      ],
+      "conversation_seeds": [
+        "The tragedy of modern software abstracting away physical hardware mechanics",
+        "How Miles Davis used silence as a structural instrument in Kind of Blue",
+        "Why sourdough baking is the ultimate defense against instant-gratification burnout",
+        "The quiet beauty of walking through empty industrial parks on Sunday afternoons"
+      ],
+      "aesthetic_signature": {
+        "visual_palette": ["raw concrete gray", "vintage warm teak", "dark moss green", "warm filament gold"],
+        "texture": "cast concrete, heavy linen, vacuum tube glow, worn leather notebooks",
+        "tempo": "warm dim-lit booth, analog audio playback, gentle evening murmur"
+      },
+      "dealbreakers": [
+        "performative outrage and black-and-white moral grandstanding",
+        "unwillingness to engage in quiet or reflective silence together",
+        "obsession with status symbols and luxury consumerism",
+        "chronic emotional unavailability or stonewalling under stress"
+      ],
+      "lifestyle_constraints": [
+        "dedicated weekend hobby hours (needs 3-4 hours of uninterrupted tinkering)",
+        "prefers home-cooked slow meals and listening sessions over commercial venues",
+        "deep local roots: owns restored vintage audio equipment that cannot be moved easily"
+      ],
+      "meta": {
+        "distilled_at": "2026-10-27T12:05:00Z",
+        "model_used": "meta/muse-spark-1.3",
+        "token_count": 1380
+      }
+    },
+    {
+      "persona_id": "usr_marcus_03",
+      "name": "Marcus Sterling",
+      "archetype": "Restless Creative Director & Global Nomad",
+      "communication_style": {
+        "cadence": "rapid-fire, razor-sharp sarcastic banter, charismatic, provocative",
+        "humor_type": ["snarky satire", "playful provocation", "rapid-fire wit"],
+        "intellectual_depth": 0.85,
+        "emotional_openness": 0.58,
+        "lsm_baseline": 0.74
+      },
+      "authentic_passions": [
+        "independent cinema directing and experimental video editing",
+        "curating niche travel zines and international street photography",
+        "minimalist one-bag travel across Southeast Asia and southern Europe",
+        "electronic club culture, Berlin techno, and immersive art installations"
+      ],
+      "conversation_seeds": [
+        "Why 35mm motion picture film feels more emotionally honest than digital 8K",
+        "The psychological freedom of owning fewer than 50 total personal possessions",
+        "Why Tokyo convenience stores have better aesthetic design than most Western museums"
+      ],
+      "aesthetic_signature": {
+        "visual_palette": ["electric cobalt blue", "stark fluorescent white", "wet asphalt black", "vivid red neon"],
+        "texture": "anodized aluminum, glossy film strips, urban pavement, damp rain slickers",
+        "tempo": "kinetic, fast-paced nightlife, late-night ramen counters, bustling departures"
+      },
+      "dealbreakers": [
+        "predictable routine, suburbia, and settling down into permanent homeownership",
+        "lack of ambition or fear of taking professional and creative creative risks",
+        "neediness or demanding constant daily communication check-ins"
+      ],
+      "lifestyle_constraints": [
+        "cannot remain in any single city for longer than 3-4 consecutive months",
+        "travels spontaneously with less than 48 hours notice",
+        "requires complete independence and absolute personal freedom"
+      ],
+      "meta": {
+        "distilled_at": "2026-10-27T12:10:00Z",
+        "model_used": "meta/muse-spark-1.3",
+        "token_count": 1450
+      }
+    },
+    {
+      "persona_id": "usr_david_04",
+      "name": "David Chen",
+      "archetype": "Linear Optimizer & Corporate Strategy Manager",
+      "communication_style": {
+        "cadence": "literal, structured, business-like brevity, avoids ambiguity or metaphor",
+        "humor_type": ["conventional observational", "mild puns"],
+        "intellectual_depth": 0.45,
+        "emotional_openness": 0.35,
+        "lsm_baseline": 0.42
+      },
+      "authentic_passions": [
+        "spreadsheet modeling and corporate productivity systems",
+        "marathon training and strict heart-rate zone cardiovascular tracking",
+        "bestseller business non-fiction and venture capital news summaries",
+        "golf outings and structured professional networking dinners"
+      ],
+      "conversation_seeds": [
+        "The efficiency of time-blocking every hour of the weekend on Google Calendar",
+        "Optimizing electrolyte intake for sub-3-hour marathon training splits",
+        "Key takeaways from the latest quarterly tech earnings reports"
+      ],
+      "aesthetic_signature": {
+        "visual_palette": ["crisp navy blue", "bright corporate white", "clean stainless steel"],
+        "texture": "pressed button-down cotton, glass boardroom tables, polished concrete gym floor",
+        "tempo": "strictly scheduled, punctual, high-efficiency, brisk morning energy"
+      },
+      "dealbreakers": [
+        "flakiness, tardiness, or unstructured last-minute schedule changes",
+        "disorganized living spaces or unconventional career trajectories",
+        "esoteric philosophical discussions that lead to no actionable ROI"
+      ],
+      "lifestyle_constraints": [
+        "asleep by 10:00 PM every night; awake at 5:00 AM for mandatory track workout",
+        "weekends structured with fixed blocks for meal-prep and weekly planning",
+        "unwilling to engage in spontaneous or late-night outings"
+      ],
+      "meta": {
+        "distilled_at": "2026-10-27T12:15:00Z",
+        "model_used": "meta/muse-spark-1.3",
+        "token_count": 1290
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "user_id": "usr_david_04",
+  "consent_given": true,
+  "reading_history": [
+    "Book: Atomic Habits: An Easy & Proven Way to Build Good Habits by James Clear",
+    "Article: Q3 Enterprise SaaS Valuations and Capital Efficiency Metrics",
+    "Blog: Sub-3 Hour Marathon Training: Pacing and Heart Rate Zone Optimization",
+    "Book: Principles: Life and Work by Ray Dalio",
+    "Newsletter: Morning Brew and Bloomberg Technology Daily"
+  ],
+  "media_preferences": [
+    "Spotify: High-tempo EDM workout playlists, Top 40 Pop running tracks",
+    "Netflix: Drive to Survive, Succession, Suits",
+    "Podcasts: The Tim Ferriss Show, All-In Podcast, How I Built This"
+  ],
+  "topics_of_interest": [
+    "enterprise spreadsheet financial modeling",
+    "marathon training periodization",
+    "venture capital investments",
+    "time-blocking and weekly planning systems"
+  ],
+  "behavioral_notes": [
+    "Texts in short, functional bullet points; replies within 60 seconds during business hours.",
+    "Goes to sleep at 9:45 PM sharp; starts morning run at 5:15 AM every day.",
+    "Dislikes abstract discussions that don't produce measurable takeaways or action items.",
+    "Plans social calendar three weeks in advance using calendar invites."
+  ]
+}

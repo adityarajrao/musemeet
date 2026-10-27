@@ -1,0 +1,28 @@
+{
+  "user_id": "usr_julian_02",
+  "consent_given": true,
+  "reading_history": [
+    "Whitepaper: Byzantine Fault Tolerance in Asynchronous Networks",
+    "Book: The Rest is Noise: Listening to the Twentieth Century by Alex Ross",
+    "Blog: Restoring 1960s McIntosh Tube Amplifiers with Point-to-Point Wiring",
+    "Essay: Architecture and Disjunction by Bernard Tschumi",
+    "Paper: The Mathematical Physics of Sourdough Fermentation Dynamics"
+  ],
+  "media_preferences": [
+    "Spotify: Miles Davis (Kind of Blue), Bill Evans Trio, The Necks, Steve Reich",
+    "Letterboxd: Playtime by Jacques Tati, Columbus by Kogonada",
+    "Podcasts: 99% Invisible, Core Intuition, Philosophical Disquisitions"
+  ],
+  "topics_of_interest": [
+    "distributed consensus protocols",
+    "acoustic room treatment and vacuum tube harmonics",
+    "brutalist concrete architecture",
+    "wild yeast fermentation kinetics"
+  ],
+  "behavioral_notes": [
+    "Slow, deliberate texter who writes complete grammatical sentences.",
+    "Spends Sunday afternoons browsing dusty used bookstores or tinkering with soldering irons.",
+    "Highly sensitive to noisy, high-stimulation commercial bars.",
+    "Enjoys long quiet walks through former industrial waterfronts."
+  ]
+}

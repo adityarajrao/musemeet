@@ -1,0 +1,9 @@
+{
+  "final_lsm_score": 0.4280,
+  "gottman_bid_ratio": 0.1667,
+  "ppr_composite": 0.15,
+  "compatibility_score": 24,
+  "verdict_rationale": "Immediate conversational and philosophical divergence in Stage 1 (Discovery). David's agent rejected Elena's artistic contemplation bids, reframing analog photography as an inefficient ROI investment. Linguistic style matching collapsed below the minimum threshold (LSM 0.428 < 0.55 across consecutive turns). Both agents reached consensus to trigger early exit to preserve human time and avoid relational friction.",
+  "outcome": "early_exit",
+  "outcome_message": "Severe Cognitive and Lifestyle Disconnect. Conversational synchrony flatlined immediately with conflicting perspectives on time, value, and life pacing. Meeting safely avoided."
+}

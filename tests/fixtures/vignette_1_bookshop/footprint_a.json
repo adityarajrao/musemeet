@@ -1,0 +1,28 @@
+{
+  "user_id": "usr_elena_01",
+  "consent_given": true,
+  "reading_history": [
+    "Substack: The Architecture of Memory by Sarah Perry",
+    "arXiv:2403.11234: Topological Data Analysis of Cortical Neural Dynamics",
+    "Blog: Why Darkroom Photography is the Ultimate Form of Delayed Gratification",
+    "Wikipedia: Byzantine Iconoclasm and its effects on mosaic art",
+    "Essay: Calvino's Invisible Cities and the Solitude of Modern Megacities"
+  ],
+  "media_preferences": [
+    "Spotify: Tim Hecker, Nils Frahm, Max Richter, Stars of the Lid",
+    "Letterboxd: Tarkovsky's Stalker (rewatched 3x), Wim Wenders' Perfect Days",
+    "Podcasts: Radiolab, In Our Time (BBC Radio 4), Weird Studies"
+  ],
+  "topics_of_interest": [
+    "analog film synthesis",
+    "neurotech brain-computer interfaces",
+    "esoteric tea ceremonies",
+    "liminal space architectural photography"
+  ],
+  "behavioral_notes": [
+    "Prefers texting in concise, dry sentences with minimal exclamation marks.",
+    "Usually silent on Saturday nights; spends Sunday mornings walking alone through local parks.",
+    "Gets visibly irritated by loud, boastful people and small talk at networking events.",
+    "Drinks black pour-over coffee; owns 4 manual grinders."
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "persona_id": "usr_elena_01",
+  "archetype": "Contemplative Polymath & Analog Aesthete",
+  "communication_style": {
+    "cadence": "measured, dry wit, low punctuation velocity, avoids empty pleasantries",
+    "humor_type": ["deadpan irony", "absurdist understatements", "intellectual wordplay"],
+    "intellectual_depth": 0.92,
+    "emotional_openness": 0.65,
+    "lsm_baseline": 0.78
+  },
+  "authentic_passions": [
+    "darkroom analog film photography and silver gelatin prints",
+    "computational neuroscience and brain-computer interface topology",
+    "Japanese listening bars and vintage vinyl curation",
+    "single-origin pour-over coffee rituals"
+  ],
+  "conversation_seeds": [
+    "Why Calvino's Invisible Cities feels more realistic than modern city planning",
+    "The tactile permanence of silver gelatin photographic prints versus digital files",
+    "Whether ambient electronic music is meditative contemplation or auditory wallpaper"
+  ],
+  "aesthetic_signature": {
+    "visual_palette": ["warm tungsten", "rainy slate gray", "rich photographic sepia", "muted amber"],
+    "texture": "matte heavy-stock paper, crackling vinyl grooves, aged darkroom wood",
+    "tempo": "slow late-night listening bar, quiet corner booth, introspective rain"
+  },
+  "dealbreakers": [
+    "hyperactive hustle culture and constant social media posturing",
+    "clubbing-centric, loud sensory-overload weekend lifestyle",
+    "intellectual incuriosity and dismissal of nuance or ambiguity",
+    "lifestyle requiring constant nomadic relocation (needs deep geographic roots)"
+  ],
+  "lifestyle_constraints": [
+    "non-negotiable solitary Sunday mornings for mental recharging",
+    "low social battery for large crowds (>4 people causes rapid exhaustion)",
+    "night-owl circadian rhythm (peaks in creative/intellectual focus after 10 PM)"
+  ],
+  "meta": {
+    "distilled_at": "2026-10-27T12:00:00Z",
+    "model_used": "meta/muse-spark-1.3",
+    "token_count": 1420
+  }
+}
