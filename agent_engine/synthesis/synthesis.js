@@ -16,6 +16,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadVignette, getVignetteForPersonas } from '../fixtures/loader.js';
+import { evaluateDyadicAttachmentDynamics } from '../metrics/attachment.js';
+import { evaluateAestheticGate } from '../vault/vision_profiler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -120,6 +122,9 @@ export async function synthesizeDossier({ transcript, verdict, persona_a, person
   const idB = persona_b?.persona_id || persona_b?.user_id;
   const useFixtures = process.env.MUSEMEET_USE_FIXTURES === 'true' || !process.env.META_MODEL_API_KEY;
 
+  const attachmentDynamics = evaluateDyadicAttachmentDynamics(persona_a || {}, persona_b || {});
+  const aestheticGate = evaluateAestheticGate(persona_a || {}, persona_b || {}, 0.60);
+
   if (useFixtures && idA && idB) {
     const vignetteName = getVignetteForPersonas(idA, idB);
     if (vignetteName) {
@@ -127,14 +132,55 @@ export async function synthesizeDossier({ transcript, verdict, persona_a, person
       if (fixture.dossier) {
         return {
           ...fixture.dossier,
-          compatibility_score: verdict.compatibility_score
+          compatibility_score: verdict.compatibility_score,
+          attachment_telemetry: {
+            dyadic_security: attachmentDynamics.dyadicSecurity,
+            relational_stability_index: attachmentDynamics.relationalStabilityIndex,
+            is_pursuer_distancer: attachmentDynamics.isPursuerDistancer,
+            style_a: attachmentDynamics.userA.style,
+            style_b: attachmentDynamics.userB.style
+          },
+          long_term_pre_mortem: {
+            decompression_blueprint: attachmentDynamics.decompressionAnalysis,
+            domestic_workload_alignment: attachmentDynamics.domesticAlignment,
+            financial_risk_alignment: attachmentDynamics.financialAlignment,
+            empirical_warnings: attachmentDynamics.preMortemWarnings
+          },
+          aesthetic_satisficing: {
+            passed: aestheticGate.passed,
+            threshold: aestheticGate.threshold,
+            mutual_fit: aestheticGate.mutualFit,
+            reason: aestheticGate.reason
+          }
         };
       }
     }
   }
 
   // Dynamic synthesis from input objects
-  return synthesizeDossierDynamically({ transcript, verdict, persona_a, persona_b });
+  const dynamicDossier = synthesizeDossierDynamically({ transcript, verdict, persona_a, persona_b });
+  return {
+    ...dynamicDossier,
+    attachment_telemetry: {
+      dyadic_security: attachmentDynamics.dyadicSecurity,
+      relational_stability_index: attachmentDynamics.relationalStabilityIndex,
+      is_pursuer_distancer: attachmentDynamics.isPursuerDistancer,
+      style_a: attachmentDynamics.userA.style,
+      style_b: attachmentDynamics.userB.style
+    },
+    long_term_pre_mortem: {
+      decompression_blueprint: attachmentDynamics.decompressionAnalysis,
+      domestic_workload_alignment: attachmentDynamics.domesticAlignment,
+      financial_risk_alignment: attachmentDynamics.financialAlignment,
+      empirical_warnings: attachmentDynamics.preMortemWarnings
+    },
+    aesthetic_satisficing: {
+      passed: aestheticGate.passed,
+      threshold: aestheticGate.threshold,
+      mutual_fit: aestheticGate.mutualFit,
+      reason: aestheticGate.reason
+    }
+  };
 }
 
 /**

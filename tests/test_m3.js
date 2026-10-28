@@ -50,6 +50,14 @@ const pair3 = loadVignette('vignette_3_market');
   assert.ok(dossier.honest_friction_points.length >= 2, 'Must contain at least 2 honest friction points');
   assert.ok(dossier.shared_resonances.length >= 3, 'Must contain at least 3 shared resonances');
 
+  // Verify Tri-Layer Harmony telemetry
+  assert.ok(dossier.attachment_telemetry, 'Must provide attachment telemetry');
+  assert.ok(dossier.attachment_telemetry.dyadic_security >= 0.8, 'Must calculate high dyadic security');
+  assert.ok(dossier.long_term_pre_mortem, 'Must provide long-term pre-mortem');
+  assert.ok(dossier.long_term_pre_mortem.decompression_blueprint, 'Must include decompression blueprint');
+  assert.ok(dossier.aesthetic_satisficing, 'Must provide aesthetic satisficing evaluation');
+  assert.equal(dossier.aesthetic_satisficing.passed, true, 'Aesthetic gate must pass for Pair 1');
+
   const itinerary = dossier.first_date_itinerary;
   assert.ok(itinerary.activity.length > 20, 'Itinerary activity must be concrete and descriptive');
   assert.ok(itinerary.why_this_works.length > 20, 'why_this_works must explain relational psychology');
