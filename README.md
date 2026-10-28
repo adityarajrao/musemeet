@@ -197,10 +197,11 @@ MuseMeet includes zero external npm dependencies for core engine modules:
 npm test
 ```
 
-This runs all 11 test suites synchronously:
+This runs all 12 test suites synchronously (62 assertions):
 ```
   ✅ Connectors: Meta Model API Client & Dry-Run Fallbacks
   ✅ M1: Persona Vault & Zero-Leakage Privacy Gate
+  ✅ AirGap: Contextual Integrity Egress Guardrail & PII Filter
   ✅ Funnel: 250-User Local Cohort & Spatial Retrieval Router
   ✅ Vision: Sovereign On-Device Vision Profiler & Satisficing Gate
   ✅ Attachment: Continuous Attachment Psychometrics & Relational Dynamics
@@ -232,7 +233,7 @@ This runs all 11 test suites synchronously:
 ```
 musemeet/
 ├── agent_engine/
-│   ├── vault/               # M1: Persona Distillation & On-Device Vision Profiler
+│   ├── vault/               # M1: Distillation, On-Device Vision & AirGap Egress Guard
 │   ├── router/              # Layer 1: Candidate Funnel & FAISS Coarse Retrieval
 │   ├── metrics/             # LSM LIWC Synchrony & Attachment Dynamics
 │   ├── protocol/            # M2: 4-Stage Rendezvous Engine & SSE Emitter
@@ -251,6 +252,7 @@ musemeet/
 │   ├── fixtures/            # Vignette 1, 2, and 3 ground truth datasets
 │   ├── test_connectors.js   # API client connector tests
 │   ├── test_m1.js           # Vault distillation tests
+│   ├── test_egress_guard.js # AirGap egress PII interceptor tests
 │   ├── test_candidate_funnel.js # Scalable spatial cohort retrieval tests
 │   ├── test_vision_profiler.js  # Sovereign vision & satisficing gate tests
 │   ├── test_attachment.js   # Attachment style & relational dynamics tests
