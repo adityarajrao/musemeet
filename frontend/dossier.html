@@ -565,6 +565,123 @@
       padding-top: 0.5rem;
     }
 
+    
+    /* Tri-Layer Harmony Extensions */
+    .trilayer-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .trilayer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .aesthetic-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .aesthetic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gate-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .gate-pill.pass {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .gate-pill.fail {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-rose);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+
+    .premortem-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .premortem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .premortem-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sub-telemetry-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .sub-telemetry-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sub-telemetry-highlight {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .sub-telemetry-body {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .blueprint-callout {
+      background: rgba(139, 92, 246, 0.08);
+      border-left: 3px solid var(--accent-violet);
+      padding: 0.85rem 1rem;
+      border-radius: 0 10px 10px 0;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #ddd6fe;
+    }
+
     /* Footer */
     .dossier-footer {
       text-align: center;
@@ -644,6 +761,52 @@
       </div>
     </section>
 
+    
+    <!-- Tri-Layer Harmony: Layer 2 Satisficing Gate & Layer 3 Attachment Pre-Mortem -->
+    <section class="trilayer-grid">
+      <!-- Layer 2: On-Device Aesthetic Satisficing Gate -->
+      <div class="aesthetic-card">
+        <div class="aesthetic-header">
+          <div class="column-header" style="color: var(--accent-gold); font-size: 0.82rem;">
+            <span>📷</span> Layer 2: Visual Satisficing
+          </div>
+          <span id="aestheticGatePill" class="gate-pill pass">Satisficing Pass</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font-size: 0.75rem; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">Mutual Visual Fit</span>
+          <span id="visualFitVal" style="font-size: 1.35rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent-gold);">78.3%</span>
+        </div>
+        <p id="aestheticExplanation" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+          On-device 32D Visual Presentation Token (VPT) matched against mutual Aesthetic Preference Vector (APV). Cleared satisficing threshold (θ ≥ 60%).
+        </p>
+        <div style="font-size: 0.7rem; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace; border-top: 1px solid var(--card-border); padding-top: 0.6rem;">
+          🔒 Sovereign Vault: Zero raw photos exported (Hunt & Eastwick 2015)
+        </div>
+      </div>
+
+      <!-- Layer 3: Relational Dynamics & Empirical Pre-Mortem -->
+      <div class="premortem-card">
+        <div class="column-header" style="color: var(--accent-violet); font-size: 0.85rem;">
+          <span>⚖</span> Layer 3: Relational Dynamics & Longitudinal Pre-Mortem
+        </div>
+        <div class="premortem-grid">
+          <div class="sub-telemetry-box">
+            <span class="sub-telemetry-title"><span>◈</span> Dyadic Attachment Stability</span>
+            <div id="attachmentPolarity" class="sub-telemetry-highlight">Secure × Secure (95.7% Security)</div>
+            <p id="attachmentDesc" class="sub-telemetry-body">Zero pursuer-distancer anxiety trap detected. Hazan & Shaver (1987) boundary protection verified.</p>
+          </div>
+          <div class="sub-telemetry-box">
+            <span class="sub-telemetry-title"><span>◈</span> Domestic & Cognitive Labor</span>
+            <div id="domesticAlignment" class="sub-telemetry-highlight">85% Workload Alignment</div>
+            <p id="domesticDesc" class="sub-telemetry-body">Symmetric low chore entropy; minimal risk of second-shift resentment (Hochschild 2012 / r/Marriage synthesis).</p>
+          </div>
+        </div>
+        <div id="decompressionBlueprint" class="blueprint-callout">
+          <strong>Emotional Decompression Blueprint:</strong> Harmonious Autonomy. Both partners need independent solitary time to decompress before re-engaging without rejection anxiety.
+        </div>
+      </div>
+    </section>
+
     <!-- Comparison Grid: Resonances vs Friction -->
     <section class="comparison-grid">
       <div class="column-card">
@@ -713,6 +876,21 @@
         lsm: 0.881,
         bidRatio: 1.00,
         ppr: 0.93,
+        aesthetic: {
+          passed: true,
+          fit: 0.783,
+          thresholdText: 'θ ≥ 60%',
+          explanation: 'On-device 32D Visual Presentation Token (VPT) matched against mutual Aesthetic Preference Vector (APV). Cleared satisficing threshold (θ ≥ 60%).'
+        },
+        attachment: {
+          styleA: 'Secure',
+          styleB: 'Secure',
+          security: 0.957,
+          description: 'Zero pursuer-distancer anxiety trap detected. Hazan & Shaver (1987) boundary protection verified.',
+          domesticAlignment: '85% Workload Alignment',
+          domesticDesc: 'Symmetric low chore entropy; minimal risk of second-shift resentment (Hochschild 2012 / r/Marriage synthesis).',
+          decompression: 'Harmonious Autonomy. Both partners need independent solitary time to decompress before re-engaging without rejection anxiety.'
+        },
         resonances: [
           "Reverence for physical tactile artifacts (expired 35mm film negatives, margin annotations in vintage books).",
           "Identical slow-paced conversational cadence and unhurried intellectual curiosity.",
@@ -760,6 +938,21 @@
         lsm: 0.798,
         bidRatio: 1.00,
         ppr: 0.50,
+        aesthetic: {
+          passed: true,
+          fit: 0.712,
+          thresholdText: 'θ ≥ 60%',
+          explanation: 'Mutual visual presentation tokens cleared baseline physical attraction, but downstream Stage 3 structural probes revealed lifestyle incompatibility.'
+        },
+        attachment: {
+          styleA: 'Secure',
+          styleB: 'Dismissive-Avoidant',
+          security: 0.640,
+          description: 'Marcus exhibits high avoidance (0.68) vs Elena tenure. Stage 3 dealbreaker collision confirmed.',
+          domesticAlignment: '15% Workload Alignment (Severe Friction)',
+          domesticDesc: 'Extreme domestic disruption: nomadic 90-day global departures directly clash with localized home & lab stewardship.',
+          decompression: 'Pursuer-Distancer Asymmetry: Marcus retreats into international transit; Elena seeks grounded local repair. High probability of long-term burnout.'
+        },
         resonances: [
           "Identical reverence for tactile analog cinema and 16mm/35mm chemical film grain.",
           "Rapid, razor-sharp witty banter with high linguistic synchrony (LSM 0.80).",
@@ -807,6 +1000,21 @@
         lsm: 0.428,
         bidRatio: 0.16,
         ppr: 0.15,
+        aesthetic: {
+          passed: true,
+          fit: 0.620,
+          thresholdText: 'θ ≥ 60%',
+          explanation: 'Marginally cleared baseline visual presentation gate (62.0%), but conversational synchrony and value alignment completely flatlined in Stage 1.'
+        },
+        attachment: {
+          styleA: 'Secure',
+          styleB: 'Anxious-Preoccupied',
+          security: 0.380,
+          description: 'David exhibits hyper-vigilance toward productivity metrics and scheduling anxiety, triggering instant conversational friction.',
+          domesticAlignment: '40% Workload Alignment',
+          domesticDesc: 'Hyper-rigid 15-minute time-blocking clashes with fluid darkroom hours and artistic spontaneity.',
+          decompression: 'Severe Asymmetry: David KPI-driven dispute processing rejects emotional vulnerability bids. Safe early exit executed.'
+        },
         resonances: [
           "Both exhibit intense personal discipline, though applied to incompatible domains (endurance athletics/KPIs vs. laboratory chemistry/darkroom art)."
         ],
@@ -886,6 +1094,28 @@
       document.getElementById('lsmVal').textContent = data.lsm.toFixed(3);
       document.getElementById('bidVal').textContent = data.bidRatio.toFixed(2);
       document.getElementById('pprVal').textContent = data.ppr.toFixed(2);
+
+      // Update Aesthetic Satisficing
+      const aes = data.aesthetic;
+      if (aes) {
+        const aesPill = document.getElementById('aestheticGatePill');
+        aesPill.textContent = aes.passed ? `Gate Passed (${aes.thresholdText})` : `Exit (${aes.thresholdText})`;
+        aesPill.className = `gate-pill ${aes.passed ? 'pass' : 'fail'}`;
+        document.getElementById('visualFitVal').textContent = (aes.fit * 100).toFixed(1) + '%';
+        document.getElementById('visualFitVal').style.color = aes.passed ? 'var(--accent-gold)' : 'var(--accent-rose)';
+        document.getElementById('aestheticExplanation').textContent = aes.explanation;
+      }
+
+      // Update Attachment & Longitudinal Pre-Mortem
+      const att = data.attachment;
+      if (att) {
+        document.getElementById('attachmentPolarity').textContent = `${att.styleA} × ${att.styleB} (${(att.security * 100).toFixed(1)}% Security)`;
+        document.getElementById('attachmentDesc').textContent = att.description;
+        document.getElementById('domesticAlignment').textContent = att.domesticAlignment;
+        document.getElementById('domesticDesc').textContent = att.domesticDesc;
+        document.getElementById('decompressionBlueprint').innerHTML = `<strong>Emotional Decompression Blueprint:</strong> ${att.decompression}`;
+      }
+
 
       // Update Resonances
       const resList = document.getElementById('resonancesList');
