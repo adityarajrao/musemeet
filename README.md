@@ -114,7 +114,7 @@ MuseMeet formalizes human compatibility across three mathematically distinct, no
 | - Shared Cognitive Resonances        |  | - Transparent explanation of divergence |
 | - Honest Lifestyle Friction Points   |  | - Hours of unaligned dating avoided     |
 | - 3 Curated Mutual Icebreakers       |  +-----------------------------------------+
-| - Longitudinal Marital Pre-Mortem    |
+| - Dyadic Attachment Harmony    |
 | - Real Spatial Venue Grounding       |
 | - 3-Panel Moodboard (Meta Muse Image)|
 +--------------------------------------+
@@ -133,7 +133,7 @@ Physical attraction is an on-device binary threshold gate ($\theta_{\text{attrac
 * Visual Presentation Tokens (VPT) and Aesthetic Preference Vectors (APV) are computed on-device via Meta Llama 3.2 Vision / SAM 3.1 with **zero raw photo egress**.
 * If the mutual satisficing threshold clears ($\theta \ge 0.60$), interpersonal compatibility determines 95% of relationship longevity.
 
-### 3. Attachment Dynamics & Longitudinal Pre-Mortem (Layer 3)
+### 3. Attachment Dynamics & Relational Stability (Layer 3)
 Relationship failure stems from conflict dysregulation, mental load / chore imbalance, and contempt ([Gottman & Levenson 2002](https://psycnet.apa.org/record/2002-01431-002); longitudinal Reddit field synthesis across `r/Marriage` and `r/datingoverthirty`).
 * Continuous Hazan & Shaver 4-quadrant attachment tracking flags pursuer-distancer traps:
   $$\text{AttachmentSecurity} = 1.0 - \big(\text{AnxietyScore} \times \text{AvoidanceScore}\big)$$
@@ -161,7 +161,7 @@ Every algorithmic mechanism in MuseMeet is anchored in peer-reviewed relationshi
 | **Linguistic Synchrony (LSM)** | Ireland & Pennebaker (*Psych Science*, 2011) | Computes turn-by-turn function word overlap across 9 LIWC grammatical classes. |
 | **Bids for Connection** | Gottman & Levenson (2002) | Tracks `toward`, `away`, and `against` bid responses during Stage 3 friction probing. |
 | **Adult Attachment Styles** | Hazan & Shaver (1987) / Mikulincer (2007) | Continuous anxiety $\times$ avoidance modeling; prevents anxious-avoidant traps. |
-| **Domestic Cognitive Labor** | Hochschild (2012) / Amato (2007) | Evaluates chore entropy and domestic workload alignment in the dossier pre-mortem. |
+| **Domestic Cognitive Labor** | Hochschild (2012) / Amato (2007) | Evaluates chore entropy and domestic workload alignment in relational dynamics. |
 | **Perceived Responsiveness (PPR)** | Reis, Maniaci, Eastwick (2021) | Combines bid responsiveness (60%) and stylistic synchrony (40%) into a live chemistry gauge. |
 | **Generative Social Simulation** | Park et al. (Stanford/Google, *UIST* 2023) | Multi-stage reflection state machine for autonomous character negotiation. |
 | **Asymmetric Social Games** | Zhou et al. (*SOTOPIA*, ICLR 2024) | Dual-tier privacy boundaries with distinct private subtext vs. public dialogue. |
@@ -223,7 +223,7 @@ This runs all 11 test suites synchronously:
   ```bash
   open frontend/dossier.html
   ```
-  *Explore the animated resonance score gauge, Layer 2 aesthetic satisficing results, Layer 3 attachment stability, longitudinal pre-mortem, honest friction points, copyable icebreakers, and 3-panel date moodboard.*
+  *Explore the animated resonance score gauge, Layer 2 aesthetic satisficing results, Layer 3 attachment stability, attachment harmony, honest friction points, copyable icebreakers, and 3-panel date moodboard.*
 
 ---
 
@@ -253,7 +253,7 @@ musemeet/
 │   ├── test_m1.js           # Vault distillation tests
 │   ├── test_candidate_funnel.js # Scalable spatial cohort retrieval tests
 │   ├── test_vision_profiler.js  # Sovereign vision & satisficing gate tests
-│   ├── test_attachment.js   # Attachment style & pre-mortem tests
+│   ├── test_attachment.js   # Attachment style & relational dynamics tests
 │   ├── test_lsm.js          # Linguistic style matching tests
 │   ├── test_m2.js           # Rendezvous state machine tests
 │   ├── test_m2b.js          # Neutral moderator tests
