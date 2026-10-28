@@ -779,6 +779,97 @@
       100% { transform: scale(1); background: rgba(16, 185, 129, 0.08); }
     }
 
+    
+    /* 7-Domain Dynamic Heptagon Radar & Telemetry Tabs */
+    .telemetry-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.35rem 1rem 0;
+      gap: 0.5rem;
+    }
+
+    .telemetry-tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-subtle);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .telemetry-tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .telemetry-tab-btn.active {
+      color: var(--accent-gold);
+      border-bottom-color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .radar-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem 1rem 0.75rem;
+    }
+
+    .radar-box.active {
+      display: flex;
+    }
+
+    .radar-svg {
+      width: 100%;
+      max-width: 420px;
+      height: 200px;
+      overflow: visible;
+    }
+
+    .radar-grid-line {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 1;
+    }
+
+    .radar-spoke {
+      stroke: rgba(255, 255, 255, 0.06);
+      stroke-width: 1;
+      stroke-dasharray: 2 2;
+    }
+
+    .radar-polygon {
+      fill: rgba(245, 158, 11, 0.18);
+      stroke: var(--accent-gold);
+      stroke-width: 2;
+      transition: all 0.4s ease;
+    }
+
+    .radar-polygon.pair2 {
+      fill: rgba(244, 63, 94, 0.18);
+      stroke: var(--accent-rose);
+    }
+
+    .radar-axis-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      fill: var(--text-subtle);
+      text-anchor: middle;
+      dominant-baseline: central;
+      transition: fill 0.3s;
+    }
+
+    .radar-axis-label.unlocked {
+      fill: #e2e8f0;
+      font-weight: 600;
+    }
+
     /* Subtext Monologue Feed */
     .subtext-feed {
       flex: 1;
@@ -1011,8 +1102,19 @@
         </div>
       </div>
 
+      
+      <!-- Telemetry Navigation Tabs: LSM vs 7-Domain Radar -->
+      <div class="telemetry-tabs">
+        <button id="tabLsm" class="telemetry-tab-btn active" onclick="switchTelemetryTab('lsm')">
+          <span>📈</span> <span>LSM Telemetry</span>
+        </button>
+        <button id="tabRadar" class="telemetry-tab-btn" onclick="switchTelemetryTab('radar')">
+          <span>🕸️</span> <span>7-Domain Heptagon Radar</span>
+        </button>
+      </div>
+
       <!-- Real-Time LSM Sparkline Chart -->
-      <div class="chart-container">
+      <div id="lsmChartBox" class="chart-container">
         <div class="chart-header">
           <span>Linguistic Style Matching (Turn Progression)</span>
           <span id="chartMinMax">Min: 0.50 | Current: 1.00</span>
@@ -1022,6 +1124,21 @@
           <path id="sparklinePath" class="sparkline-path" d="" />
         </svg>
       </div>
+
+      <!-- Progressive 7-Domain Heptagon SVG Radar -->
+      <div id="radarChartBox" class="chart-container radar-box">
+        <div class="chart-header" style="width: 100%;">
+          <span>Progressive Dyadic Behavioral Topology</span>
+          <span id="radarStageLabel" style="color: var(--accent-gold);">Stage 1: Discovery</span>
+        </div>
+        <svg id="radarSvg" class="radar-svg" viewBox="0 0 400 200">
+          <!-- Background Grid & Spokes populated dynamically -->
+          <g id="radarGridGroup"></g>
+          <polygon id="radarPolygon" class="radar-polygon" points="" />
+          <g id="radarLabelsGroup"></g>
+        </svg>
+      </div>
+
 
       <div class="track-header" style="background: transparent; border-top: 1px solid var(--card-border);">
         <span class="track-title" style="color: var(--accent-violet);">
@@ -1389,6 +1506,169 @@
           if (wasPlaying && !isPlaying) togglePlay();
         }, 6000);
       }, 750);
+    }
+
+    
+    // --- PROGRESSIVE 7-DOMAIN HEPTAGON RADAR ENGINE ---
+    let activeTelemetryTab = 'lsm';
+    const RADAR_AXES = [
+      { name: "Emotional Reg", unlockStage: 3 },
+      { name: "Social Energy", unlockStage: 2 },
+      { name: "Cognitive Phys", unlockStage: 1 },
+      { name: "Agency Dynam", unlockStage: 2 },
+      { name: "Resource Phil", unlockStage: 3 },
+      { name: "Sensory Calib", unlockStage: 1 },
+      { name: "Relational Horiz", unlockStage: 4 }
+    ];
+
+    function switchTelemetryTab(tab) {
+      activeTelemetryTab = tab;
+      document.getElementById('tabLsm').classList.toggle('active', tab === 'lsm');
+      document.getElementById('tabRadar').classList.toggle('active', tab === 'radar');
+
+      const lsmBox = document.getElementById('lsmChartBox');
+      const radarBox = document.getElementById('radarChartBox');
+
+      if (tab === 'lsm') {
+        lsmBox.style.display = 'block';
+        radarBox.classList.remove('active');
+      } else {
+        lsmBox.style.display = 'none';
+        radarBox.classList.add('active');
+        drawRadarBase();
+        updateRadarValues();
+      }
+    }
+
+    function drawRadarBase() {
+      const gridGroup = document.getElementById('radarGridGroup');
+      const labelsGroup = document.getElementById('radarLabelsGroup');
+      if (!gridGroup || gridGroup.children.length > 0) return;
+
+      const cx = 200;
+      const cy = 100;
+      const R = 70;
+      const numAxes = 7;
+
+      // Concentric heptagon rings
+      for (let level of [0.25, 0.5, 0.75, 1.0]) {
+        let pts = [];
+        for (let i = 0; i < numAxes; i++) {
+          const angle = -Math.PI / 2 + (i * 2 * Math.PI) / numAxes;
+          const x = cx + R * level * Math.cos(angle);
+          const y = cy + R * level * Math.sin(angle);
+          pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+        }
+        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        poly.setAttribute('class', 'radar-grid-line');
+        poly.setAttribute('points', pts.join(' '));
+        gridGroup.appendChild(poly);
+      }
+
+      // Spokes and Labels
+      for (let i = 0; i < numAxes; i++) {
+        const angle = -Math.PI / 2 + (i * 2 * Math.PI) / numAxes;
+        const outerX = cx + R * Math.cos(angle);
+        const outerY = cy + R * Math.sin(angle);
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class', 'radar-spoke');
+        line.setAttribute('x1', cx);
+        line.setAttribute('y1', cy);
+        line.setAttribute('x2', outerX.toFixed(1));
+        line.setAttribute('y2', outerY.toFixed(1));
+        gridGroup.appendChild(line);
+
+        // Label position slightly beyond outer radius
+        const labelR = R + 18;
+        const labelX = cx + labelR * Math.cos(angle);
+        const labelY = cy + labelR * Math.sin(angle);
+
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('id', 'radarLabel' + i);
+        text.setAttribute('class', 'radar-axis-label');
+        text.setAttribute('x', labelX.toFixed(1));
+        text.setAttribute('y', labelY.toFixed(1));
+        text.textContent = RADAR_AXES[i].name;
+        labelsGroup.appendChild(text);
+      }
+    }
+
+    function updateRadarValues() {
+      drawRadarBase();
+      const polygon = document.getElementById('radarPolygon');
+      if (!polygon) return;
+
+      const cx = 200;
+      const cy = 100;
+      const R = 70;
+      const numAxes = 7;
+
+      // Determine current stage (1-4)
+      const currentTurn = currentTurnIndex;
+      let stageNum = 1;
+      if (currentTurn > 12) stageNum = 4;
+      else if (currentTurn > 8) stageNum = 3;
+      else if (currentTurn > 4) stageNum = 2;
+
+      const stageNames = ["Discovery", "Banter", "Friction", "Synthesis"];
+      const stageLabel = document.getElementById('radarStageLabel');
+      if (stageLabel) stageLabel.textContent = `Stage ${stageNum}: ${stageNames[stageNum - 1]}`;
+
+      // Trajectory values by scenario
+      let values = [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15];
+
+      if (activeScenario === 'bookshop') {
+        // Pair 1: High Harmony progression
+        if (stageNum >= 1) { values[2] = 0.88; values[5] = 0.92; }
+        if (stageNum >= 2) { values[1] = 0.84; values[3] = 0.86; }
+        if (stageNum >= 3) { values[0] = 0.90; values[4] = 0.85; }
+        if (stageNum >= 4) { values[6] = 0.95; }
+        polygon.className.baseVal = 'radar-polygon';
+      } else if (activeScenario === 'record_store') {
+        // Pair 2: Nomadic Rootedness collapse in Stage 3
+        if (stageNum >= 1) { values[2] = 0.85; values[5] = 0.90; }
+        if (stageNum >= 2) { values[1] = 0.80; values[3] = 0.82; }
+        if (stageNum >= 3) {
+          values[0] = 0.65;
+          values[4] = 0.70;
+          values[6] = 0.05; // FATAL AXIS COLLAPSE (Nomadic clash)
+        }
+        if (stageNum >= 4) { values[6] = 0.05; }
+        polygon.className.baseVal = stageNum >= 3 ? 'radar-polygon pair2' : 'radar-polygon';
+      } else {
+        // Pair 3: Flatline in Stage 1
+        values[2] = 0.35;
+        values[5] = 0.28;
+        if (stageNum >= 2) { values[1] = 0.30; values[3] = 0.32; }
+        if (stageNum >= 3) { values[0] = 0.25; values[4] = 0.22; }
+        polygon.className.baseVal = 'radar-polygon pair2';
+      }
+
+      let pts = [];
+      for (let i = 0; i < numAxes; i++) {
+        const val = values[i];
+        const angle = -Math.PI / 2 + (i * 2 * Math.PI) / numAxes;
+        const x = cx + R * val * Math.cos(angle);
+        const y = cy + R * val * Math.sin(angle);
+        pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+
+        // Update label highlight
+        const lbl = document.getElementById('radarLabel' + i);
+        if (lbl) {
+          const isUnlocked = stageNum >= RADAR_AXES[i].unlockStage;
+          lbl.classList.toggle('unlocked', isUnlocked);
+          if (activeScenario === 'record_store' && i === 6 && stageNum >= 3) {
+            lbl.style.fill = 'var(--accent-rose)';
+            lbl.textContent = 'Rootedness (0.05!)';
+          } else {
+            lbl.style.fill = '';
+            lbl.textContent = RADAR_AXES[i].name;
+          }
+        }
+      }
+
+      polygon.setAttribute('points', pts.join(' '));
     }
 
     function openFunnelModal() {
@@ -1793,6 +2073,7 @@
       document.getElementById('lsmStat').textContent = turn.lsm.toFixed(3);
       lsmHistory.push(turn.lsm);
       renderSparkline();
+      updateRadarValues();
 
       // Gottman bid ratio running
       const bidsSoFar = scenario.turns.slice(0, currentTurnIndex + 1);
