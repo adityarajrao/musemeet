@@ -393,6 +393,314 @@
       fill: rgba(245, 158, 11, 0.08);
     }
 
+    
+    /* Metropolitan Funnel Modal */
+    .funnel-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(6, 8, 14, 0.88);
+      backdrop-filter: blur(16px);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      box-sizing: border-box;
+      animation: fadeIn 0.25s ease forwards;
+    }
+
+    .funnel-modal.active {
+      display: flex;
+    }
+
+    .funnel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    .funnel-title-group h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .funnel-title-group p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .funnel-stepper {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      margin: 1.25rem 0;
+      flex-wrap: wrap;
+    }
+
+    .funnel-step-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.5rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+    }
+
+    .funnel-step-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+    }
+
+    .funnel-step-btn.active {
+      background: rgba(139, 92, 246, 0.18);
+      border-color: rgba(139, 92, 246, 0.45);
+      color: #ddd6fe;
+      font-weight: 600;
+    }
+
+    .funnel-autorun-btn {
+      background: linear-gradient(135deg, var(--accent-gold), #d97706);
+      color: #000;
+      border: none;
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: opacity 0.2s;
+      margin-left: auto;
+    }
+
+    .funnel-autorun-btn:hover {
+      opacity: 0.9;
+    }
+
+    .funnel-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 1.5rem;
+      flex: 1;
+      min-height: 480px;
+    }
+
+    @media (max-width: 960px) {
+      .funnel-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .canvas-card {
+      background: rgba(12, 14, 23, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .canvas-overlay-legend {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      background: rgba(8, 10, 17, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      pointer-events: none;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    #funnelCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      cursor: crosshair;
+    }
+
+    .finalists-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .funnel-telemetry-box {
+      background: rgba(15, 18, 28, 0.75);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .telemetry-mini-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .telemetry-mini-label {
+      font-size: 0.68rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+    }
+
+    .telemetry-mini-val {
+      font-size: 1.15rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .finalist-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .finalist-card:hover {
+      border-color: rgba(245, 158, 11, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .finalist-card.rank-1 {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.06), var(--card-bg));
+    }
+
+    .finalist-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .finalist-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .finalist-score-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+    }
+
+    .score-gold {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .score-amber {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .score-gray {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+    }
+
+    .finalist-details {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .finalist-action-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.45rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .finalist-action-btn:hover {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: var(--accent-amber);
+    }
+
+    .tooltip-box {
+      position: absolute;
+      background: rgba(10, 12, 18, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--accent-gold);
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-main);
+      pointer-events: none;
+      display: none;
+      z-index: 101;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
     /* Subtext Monologue Feed */
     .subtext-feed {
       flex: 1;
@@ -524,6 +832,10 @@
         <option value="market">Pair 3: Elena × David (Early Exit, 24%)</option>
       </select>
 
+      
+      <button id="funnelBtn" class="action-btn" onclick="openFunnelModal()" style="background: rgba(139, 92, 246, 0.18); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.4);">
+        <span>🗺</span> <span>Cohort Funnel (250 NYC)</span>
+      </button>
       <button id="playBtn" class="action-btn" onclick="togglePlay()">
         <span id="playIcon">⏸</span> <span id="playLabel">Pause</span>
       </button>
@@ -893,6 +1205,277 @@
     function changeScenario(name) {
       activeScenario = name;
       restartStream();
+
+    // --- METROPOLITAN COHORT FUNNEL & SPATIAL CANVAS ---
+    const COHORT_CANDIDATES = [{"id":"usr_elena_01","name":"Elena Rostova","age":29,"hood":"Bushwick","lat":40.7028,"lng":-73.9218,"dist":0,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_julian_02","name":"Julian Vance","age":31,"hood":"Greenpoint","lat":40.7282,"lng":-73.9538,"dist":2.4,"p1a":true,"p1b":true,"sim":0.9986,"fin":1,"score":92.8},{"id":"usr_marcus_03","name":"Marcus Sterling","age":32,"hood":"Lower East Side","lat":40.718,"lng":-73.987,"dist":3.6,"p1a":true,"p1b":true,"sim":0.7322,"fin":2,"score":70.7},{"id":"usr_david_04","name":"David Chen","age":33,"hood":"Financial District","lat":40.7075,"lng":-74.009,"dist":4.6,"p1a":true,"p1b":false,"sim":0.961,"fin":3,"score":24.1},{"id":"usr_nyc_005","name":"Silas Kovacs","age":23,"hood":"DUMBO","lat":40.7005,"lng":-73.9823,"dist":3.2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_006","name":"Chloe Watanabe","age":28,"hood":"Park Slope","lat":40.6664,"lng":-73.9869,"dist":4.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_007","name":"Arlo Moreau","age":37,"hood":"Williamsburg","lat":40.7188,"lng":-73.9573,"dist":2.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_008","name":"Iris Sinclair","age":38,"hood":"Park Slope","lat":40.6691,"lng":-73.9765,"dist":3.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_009","name":"Margot Watanabe","age":34,"hood":"Upper East Side","lat":40.7689,"lng":-73.9527,"dist":4.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_010","name":"Sophia Reeves","age":30,"hood":"Bed-Stuy","lat":40.6869,"lng":-73.9428,"dist":1.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_011","name":"Margot Bergman","age":29,"hood":"Lower East Side","lat":40.718,"lng":-73.9933,"dist":3.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_012","name":"Asher Adler","age":36,"hood":"Greenpoint","lat":40.7281,"lng":-73.947,"dist":2.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_013","name":"Iris Alvarez","age":23,"hood":"Greenpoint","lat":40.7316,"lng":-73.9567,"dist":2.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_014","name":"Theo Lindqvist","age":26,"hood":"Upper West Side","lat":40.786,"lng":-73.977,"dist":6.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_015","name":"Stella Castillo","age":32,"hood":"West Village","lat":40.7391,"lng":-74.0033,"dist":5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_016","name":"Freya Dubois","age":30,"hood":"Lower East Side","lat":40.7147,"lng":-73.9832,"dist":3.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_017","name":"Maya Zhao","age":23,"hood":"Philly Commuter","lat":39.959,"lng":-75.1649,"dist":83.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_018","name":"Silas Abadi","age":32,"hood":"Williamsburg","lat":40.7077,"lng":-73.9625,"dist":2.2,"p1a":true,"p1b":true,"sim":0.1862,"fin":0,"score":0},{"id":"usr_nyc_019","name":"Charlotte Sterling","age":29,"hood":"Park Slope","lat":40.6771,"lng":-73.9814,"dist":3.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_020","name":"Maya Fontana","age":34,"hood":"Chelsea","lat":40.7501,"lng":-74.0057,"dist":5.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_021","name":"Arlo O'Connor","age":34,"hood":"Lower East Side","lat":40.7225,"lng":-73.9885,"dist":3.8,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_022","name":"Ezra Holt","age":34,"hood":"Greenpoint","lat":40.7258,"lng":-73.9565,"dist":2.4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_023","name":"Evelyn Thornton","age":37,"hood":"Chelsea","lat":40.7481,"lng":-74.0057,"dist":5.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_024","name":"Olivia Bergman","age":32,"hood":"East Village","lat":40.7317,"lng":-73.9842,"dist":3.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_025","name":"Arlo Holt","age":23,"hood":"Long Island City","lat":40.7422,"lng":-73.9418,"dist":2.9,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_026","name":"Rowan Mercer","age":30,"hood":"Long Island City","lat":40.7416,"lng":-73.9518,"dist":3.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_027","name":"Sophia Dubois","age":24,"hood":"Astoria","lat":40.7716,"lng":-73.9221,"dist":4.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_028","name":"Leo Kapadia","age":26,"hood":"Hoboken","lat":40.7462,"lng":-74.0378,"dist":6.8,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_029","name":"Asher Castillo","age":23,"hood":"SoHo","lat":40.7239,"lng":-74.0081,"dist":4.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_030","name":"Arlo Thornton","age":36,"hood":"Bushwick","lat":40.709,"lng":-73.9156,"dist":0.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_031","name":"Clara Sinclair","age":37,"hood":"Fort Greene","lat":40.6844,"lng":-73.9723,"dist":2.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_032","name":"Mateo Hansen","age":30,"hood":"Bushwick","lat":40.6968,"lng":-73.9203,"dist":0.4,"p1a":true,"p1b":true,"sim":0.2032,"fin":0,"score":0},{"id":"usr_nyc_033","name":"Stella Hansen","age":34,"hood":"Crown Heights","lat":40.668,"lng":-73.9491,"dist":2.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_034","name":"Milo Bergman","age":38,"hood":"Philly Commuter","lat":39.9481,"lng":-75.1696,"dist":83.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_035","name":"Stella Abadi","age":29,"hood":"Financial District","lat":40.7108,"lng":-74.0112,"dist":4.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_036","name":"Rowan Solis","age":28,"hood":"Upper West Side","lat":40.7828,"lng":-73.9719,"dist":6.1,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_037","name":"Nora Mercer","age":23,"hood":"Cobble Hill","lat":40.6942,"lng":-73.9917,"dist":3.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_038","name":"Margot Adler","age":34,"hood":"SoHo","lat":40.7181,"lng":-74.0079,"dist":4.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_039","name":"Isla Fontana","age":32,"hood":"Upper West Side","lat":40.7808,"lng":-73.9719,"dist":6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_040","name":"Daphne Kovacs","age":38,"hood":"DUMBO","lat":40.6959,"lng":-73.9877,"dist":3.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_041","name":"Evelyn Adler","age":23,"hood":"Park Slope","lat":40.6657,"lng":-73.9769,"dist":3.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_042","name":"Otto Lindqvist","age":24,"hood":"Hoboken","lat":40.7481,"lng":-74.0279,"dist":6.4,"p1a":true,"p1b":true,"sim":0.1705,"fin":0,"score":0},{"id":"usr_nyc_043","name":"Olivia O'Connor","age":29,"hood":"West Village","lat":40.728,"lng":-73.9985,"dist":4.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_044","name":"Iris O'Connor","age":26,"hood":"East Village","lat":40.7258,"lng":-73.9745,"dist":3.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_045","name":"Arthur Holt","age":34,"hood":"Financial District","lat":40.7003,"lng":-74.0063,"dist":4.4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_046","name":"Arthur Nakamura","age":26,"hood":"Upper East Side","lat":40.767,"lng":-73.9627,"dist":4.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_047","name":"Sophia Reeves","age":37,"hood":"Hoboken","lat":40.7489,"lng":-74.0325,"dist":6.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_048","name":"Asher Sterling","age":24,"hood":"Bed-Stuy","lat":40.6884,"lng":-73.9475,"dist":1.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_049","name":"Clara Solis","age":23,"hood":"Philly Commuter","lat":39.9534,"lng":-75.1693,"dist":83.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_050","name":"Olivia Novak","age":38,"hood":"Lower East Side","lat":40.7107,"lng":-73.9936,"dist":3.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_051","name":"Emma Watanabe","age":24,"hood":"Philly Commuter","lat":39.9481,"lng":-75.1596,"dist":83.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_052","name":"Freya Abadi","age":34,"hood":"Astoria","lat":40.7624,"lng":-73.9173,"dist":4.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_053","name":"Lucas Fontana","age":23,"hood":"Upper East Side","lat":40.7775,"lng":-73.9575,"dist":5.5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_054","name":"Amelia Mercer","age":28,"hood":"Financial District","lat":40.7095,"lng":-74.0062,"dist":4.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_055","name":"Chloe Castillo","age":37,"hood":"Astoria","lat":40.7604,"lng":-73.9172,"dist":4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_056","name":"Maya Reeves","age":38,"hood":"Upper West Side","lat":40.7918,"lng":-73.9772,"dist":6.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_057","name":"Isla Mercer","age":34,"hood":"Fort Greene","lat":40.6936,"lng":-73.9771,"dist":3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_058","name":"Iris Sterling","age":30,"hood":"Long Island City","lat":40.751,"lng":-73.9412,"dist":3.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_059","name":"Silas Zhao","age":29,"hood":"Greenpoint","lat":40.7348,"lng":-73.9518,"dist":2.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_060","name":"Olivia Thornton","age":36,"hood":"SoHo","lat":40.7299,"lng":-74.0029,"dist":4.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_061","name":"Theo Bergman","age":23,"hood":"Chelsea","lat":40.7415,"lng":-73.996,"dist":4.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_062","name":"Mateo Watanabe","age":26,"hood":"Fort Greene","lat":40.6973,"lng":-73.9677,"dist":2.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_063","name":"Asher Kapadia","age":32,"hood":"Williamsburg","lat":40.7116,"lng":-73.9626,"dist":2.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_064","name":"Leo Alvarez","age":30,"hood":"Greenpoint","lat":40.7316,"lng":-73.9567,"dist":2.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_065","name":"Sophia Sinclair","age":23,"hood":"Lower East Side","lat":40.7161,"lng":-73.9934,"dist":3.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_066","name":"Harper Adler","age":32,"hood":"Astoria","lat":40.7643,"lng":-73.9223,"dist":4.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_067","name":"Iris Holt","age":29,"hood":"Upper West Side","lat":40.7847,"lng":-73.982,"dist":6.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_068","name":"Mateo Adler","age":34,"hood":"Bed-Stuy","lat":40.6824,"lng":-73.9378,"dist":1.6,"p1a":true,"p1b":true,"sim":0.2904,"fin":0,"score":0},{"id":"usr_nyc_069","name":"Milo Solis","age":34,"hood":"Greenpoint","lat":40.7243,"lng":-73.947,"dist":2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_070","name":"Emma Moreau","age":34,"hood":"Chelsea","lat":40.7507,"lng":-73.9958,"dist":5.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_071","name":"Noah Alvarez","age":37,"hood":"Bed-Stuy","lat":40.6805,"lng":-73.9377,"dist":1.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_072","name":"Stella Kapadia","age":32,"hood":"Bushwick","lat":40.6998,"lng":-73.9159,"dist":0.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_073","name":"Chloe Moreau","age":23,"hood":"Park Slope","lat":40.6752,"lng":-73.9814,"dist":3.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_074","name":"Asher Fontana","age":30,"hood":"Park Slope","lat":40.6745,"lng":-73.9764,"dist":3.5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_075","name":"Arlo Hansen","age":24,"hood":"Park Slope","lat":40.6698,"lng":-73.9867,"dist":4.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_076","name":"Otto Lindqvist","age":26,"hood":"East Village","lat":40.7202,"lng":-73.9789,"dist":3.2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_077","name":"Oliver Kapadia","age":23,"hood":"Crown Heights","lat":40.6766,"lng":-73.939,"dist":2,"p1a":true,"p1b":true,"sim":0.0863,"fin":0,"score":0},{"id":"usr_nyc_078","name":"Chloe Novak","age":36,"hood":"SoHo","lat":40.7211,"lng":-74.0035,"dist":4.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_079","name":"Harper Mercado","age":37,"hood":"Philly Commuter","lat":39.952,"lng":-75.1698,"dist":83.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_080","name":"Iris Castillo","age":30,"hood":"SoHo","lat":40.7239,"lng":-74.0082,"dist":4.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_081","name":"Aria Bergman","age":34,"hood":"Astoria","lat":40.7697,"lng":-73.9221,"dist":4.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_082","name":"Elijah Kapadia","age":38,"hood":"West Village","lat":40.7357,"lng":-73.9988,"dist":4.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_083","name":"Asher Adler","age":29,"hood":"Cobble Hill","lat":40.6824,"lng":-73.9869,"dist":3.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_084","name":"Asher Kovacs","age":28,"hood":"Fort Greene","lat":40.6941,"lng":-73.9776,"dist":3,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_085","name":"Ezra Abadi","age":23,"hood":"Hoboken","lat":40.7423,"lng":-74.0378,"dist":6.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_086","name":"Theo Thornton","age":34,"hood":"Crown Heights","lat":40.6708,"lng":-73.9388,"dist":2.4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_087","name":"Lucas Brenner","age":32,"hood":"Fort Greene","lat":40.6922,"lng":-73.9776,"dist":3,"p1a":true,"p1b":true,"sim":0.286,"fin":3,"score":64.1},{"id":"usr_nyc_088","name":"Freya Mercado","age":38,"hood":"Upper West Side","lat":40.7862,"lng":-73.9817,"dist":6.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_089","name":"Noah Thornton","age":23,"hood":"Financial District","lat":40.7089,"lng":-74.0112,"dist":4.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_090","name":"Silas Solis","age":24,"hood":"East Village","lat":40.7221,"lng":-73.984,"dist":3.5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_091","name":"Nora Solis","age":29,"hood":"Williamsburg","lat":40.7154,"lng":-73.9578,"dist":2.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_092","name":"Maya Solis","age":26,"hood":"Philly Commuter","lat":39.9586,"lng":-75.1646,"dist":83.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_093","name":"Harper Moreau","age":34,"hood":"Cobble Hill","lat":40.6869,"lng":-73.997,"dist":4.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_094","name":"Ezra Reeves","age":26,"hood":"Fort Greene","lat":40.6917,"lng":-73.9721,"dist":2.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_095","name":"August Mercer","age":37,"hood":"Lower East Side","lat":40.7146,"lng":-73.9938,"dist":3.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_096","name":"Olivia Abadi","age":24,"hood":"Financial District","lat":40.7003,"lng":-74.0064,"dist":4.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_097","name":"Harper Kovacs","age":23,"hood":"West Village","lat":40.7411,"lng":-73.9985,"dist":4.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_098","name":"Nora Lindqvist","age":38,"hood":"Greenpoint","lat":40.7275,"lng":-73.9521,"dist":2.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_099","name":"Arthur Kovacs","age":24,"hood":"West Village","lat":40.7357,"lng":-74.0038,"dist":4.9,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_100","name":"Leo Moreau","age":34,"hood":"Park Slope","lat":40.6756,"lng":-73.9819,"dist":3.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_101","name":"Margot Brenner","age":23,"hood":"East Village","lat":40.7219,"lng":-73.9744,"dist":3.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_102","name":"Arlo Fontana","age":28,"hood":"Cobble Hill","lat":40.6811,"lng":-73.9969,"dist":4.2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_103","name":"Amelia Novak","age":37,"hood":"Park Slope","lat":40.6737,"lng":-73.9818,"dist":3.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_104","name":"Mateo Sterling","age":38,"hood":"Cobble Hill","lat":40.6839,"lng":-73.9865,"dist":3.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_105","name":"Lucas Fontana","age":34,"hood":"Philly Commuter","lat":39.9462,"lng":-75.1596,"dist":83.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_106","name":"Milo Abadi","age":30,"hood":"DUMBO","lat":40.7012,"lng":-73.9875,"dist":3.4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_107","name":"Lucas Nakamura","age":29,"hood":"Chelsea","lat":40.7447,"lng":-74.0061,"dist":5.3,"p1a":true,"p1b":true,"sim":0.2763,"fin":0,"score":0},{"id":"usr_nyc_108","name":"Stella Alvarez","age":36,"hood":"Crown Heights","lat":40.6676,"lng":-73.9488,"dist":2.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_109","name":"Mateo Zhao","age":23,"hood":"Crown Heights","lat":40.671,"lng":-73.9434,"dist":2.5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_110","name":"Margot Kovacs","age":25,"hood":"Hoboken","lat":40.7412,"lng":-74.0324,"dist":6.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_111","name":"Liam Lindqvist","age":32,"hood":"Astoria","lat":40.7682,"lng":-73.9225,"dist":4.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_112","name":"Otto Bergman","age":29,"hood":"Chelsea","lat":40.7415,"lng":-73.996,"dist":4.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_113","name":"August Reeves","age":23,"hood":"Greenpoint","lat":40.7329,"lng":-73.9519,"dist":2.6,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_114","name":"Daphne Thornton","age":32,"hood":"Bed-Stuy","lat":40.6938,"lng":-73.9473,"dist":1.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_115","name":"Isla Moreau","age":29,"hood":"Fort Greene","lat":40.696,"lng":-73.9727,"dist":2.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_116","name":"August Dubois","age":33,"hood":"Long Island City","lat":40.7465,"lng":-73.9512,"dist":3.4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_117","name":"Sophia Sinclair","age":34,"hood":"SoHo","lat":40.726,"lng":-74.0029,"dist":4.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_118","name":"Freya Castillo","age":33,"hood":"Bed-Stuy","lat":40.6831,"lng":-73.9429,"dist":1.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_119","name":"Arthur O'Connor","age":37,"hood":"Financial District","lat":40.7074,"lng":-74.0117,"dist":4.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_120","name":"Asher Nakamura","age":32,"hood":"West Village","lat":40.7372,"lng":-74.0035,"dist":4.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_121","name":"Amelia Castillo","age":23,"hood":"Upper West Side","lat":40.7828,"lng":-73.9821,"dist":6.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_122","name":"Liam Adler","age":29,"hood":"Upper West Side","lat":40.7822,"lng":-73.9771,"dist":6.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_123","name":"Milo Bergman","age":24,"hood":"Upper West Side","lat":40.7925,"lng":-73.9724,"dist":6.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_124","name":"Clara Watanabe","age":25,"hood":"Bushwick","lat":40.7032,"lng":-73.9256,"dist":0.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_125","name":"Stella Lindqvist","age":23,"hood":"Astoria","lat":40.7632,"lng":-73.927,"dist":4.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_126","name":"Amelia O'Connor","age":36,"hood":"Williamsburg","lat":40.7189,"lng":-73.9625,"dist":2.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_127","name":"Daphne Sterling","age":37,"hood":"Lower East Side","lat":40.724,"lng":-73.9833,"dist":3.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_128","name":"Maya Kapadia","age":29,"hood":"Crown Heights","lat":40.6766,"lng":-73.9391,"dist":2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_129","name":"Liam Kapadia","age":34,"hood":"Park Slope","lat":40.6679,"lng":-73.9867,"dist":4.2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_130","name":"Iris Nakamura","age":37,"hood":"Greenpoint","lat":40.722,"lng":-73.9566,"dist":2.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_131","name":"Oliver Thornton","age":29,"hood":"Upper East Side","lat":40.7751,"lng":-73.9572,"dist":5.3,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_132","name":"Olivia Mercado","age":28,"hood":"Hoboken","lat":40.738,"lng":-74.0273,"dist":6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_133","name":"Liam Adler","age":23,"hood":"East Village","lat":40.7314,"lng":-73.9789,"dist":3.6,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_134","name":"Mateo Alvarez","age":33,"hood":"Long Island City","lat":40.7378,"lng":-73.9518,"dist":2.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_135","name":"Callum Dubois","age":32,"hood":"Hoboken","lat":40.7511,"lng":-74.0273,"dist":6.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_136","name":"Harper Brenner","age":37,"hood":"Fort Greene","lat":40.6975,"lng":-73.9724,"dist":2.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_137","name":"Arthur Alvarez","age":23,"hood":"Cobble Hill","lat":40.6805,"lng":-73.9869,"dist":3.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_138","name":"Harper Kovacs","age":24,"hood":"Bushwick","lat":40.7052,"lng":-73.9157,"dist":0.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_139","name":"Ezra Sinclair","age":29,"hood":"Chelsea","lat":40.7392,"lng":-73.9956,"dist":4.6,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_140","name":"Mateo Sinclair","age":25,"hood":"West Village","lat":40.7312,"lng":-74.0087,"dist":5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_141","name":"Daphne Castillo","age":34,"hood":"Upper East Side","lat":40.7797,"lng":-73.9523,"dist":5.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_142","name":"Noah Mercer","age":25,"hood":"Philly Commuter","lat":39.9593,"lng":-75.1697,"dist":83.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_143","name":"Milo Abadi","age":37,"hood":"Bushwick","lat":40.706,"lng":-73.9203,"dist":0.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_144","name":"Stella Moreau","age":24,"hood":"Cobble Hill","lat":40.687,"lng":-73.9971,"dist":4.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_145","name":"Daphne Mercado","age":23,"hood":"Williamsburg","lat":40.7135,"lng":-73.9578,"dist":2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_146","name":"Asher Solis","age":37,"hood":"SoHo","lat":40.7293,"lng":-74.008,"dist":4.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_147","name":"Leo Fontana","age":24,"hood":"Greenpoint","lat":40.722,"lng":-73.9466,"dist":1.9,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_148","name":"Otto Thornton","age":33,"hood":"Financial District","lat":40.7037,"lng":-74.0162,"dist":4.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_149","name":"Clara Dubois","age":23,"hood":"Philly Commuter","lat":39.9548,"lng":-75.1645,"dist":83.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_150","name":"Felix Adler","age":28,"hood":"Upper East Side","lat":40.7739,"lng":-73.9522,"dist":5.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_151","name":"Arlo Lindqvist","age":37,"hood":"Financial District","lat":40.7018,"lng":-74.0161,"dist":4.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_152","name":"August Abadi","age":37,"hood":"Hoboken","lat":40.7471,"lng":-74.0326,"dist":6.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_153","name":"Callum Adler","age":34,"hood":"West Village","lat":40.7338,"lng":-74.0038,"dist":4.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_154","name":"Elijah Moreau","age":29,"hood":"Upper East Side","lat":40.7782,"lng":-73.9627,"dist":5.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_155","name":"Callum Reeves","age":29,"hood":"Crown Heights","lat":40.6743,"lng":-73.9386,"dist":2.2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_156","name":"Asher O'Connor","age":36,"hood":"Long Island City","lat":40.7496,"lng":-73.9468,"dist":3.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_157","name":"Iris Nakamura","age":23,"hood":"Long Island City","lat":40.738,"lng":-73.9415,"dist":2.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_158","name":"Isla Fontana","age":25,"hood":"Lower East Side","lat":40.7219,"lng":-73.9937,"dist":4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_159","name":"Jonah Watanabe","age":32,"hood":"Bed-Stuy","lat":40.6826,"lng":-73.9475,"dist":1.9,"p1a":true,"p1b":true,"sim":0.1538,"fin":0,"score":0},{"id":"usr_nyc_160","name":"Clara Zhao","age":29,"hood":"Crown Heights","lat":40.6711,"lng":-73.9435,"dist":2.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_161","name":"Milo Sterling","age":23,"hood":"Chelsea","lat":40.7428,"lng":-74.0062,"dist":5.2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_162","name":"Silas Alvarez","age":32,"hood":"Financial District","lat":40.7057,"lng":-74.0062,"dist":4.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_163","name":"Mateo Castillo","age":29,"hood":"Hoboken","lat":40.74,"lng":-74.0374,"dist":6.6,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_164","name":"Maya Alvarez","age":33,"hood":"DUMBO","lat":40.6968,"lng":-73.9825,"dist":3.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_165","name":"Hazel Mercado","age":34,"hood":"Crown Heights","lat":40.6638,"lng":-73.9488,"dist":3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_166","name":"Ezra Novak","age":33,"hood":"Long Island City","lat":40.7472,"lng":-73.9413,"dist":3.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_167","name":"Evelyn Zhao","age":37,"hood":"DUMBO","lat":40.7098,"lng":-73.9824,"dist":3.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_168","name":"Liam Watanabe","age":32,"hood":"Williamsburg","lat":40.7097,"lng":-73.9627,"dist":2.2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_169","name":"Arlo Novak","age":23,"hood":"Fort Greene","lat":40.6941,"lng":-73.9728,"dist":2.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_170","name":"Nora Dubois","age":29,"hood":"Fort Greene","lat":40.6935,"lng":-73.9677,"dist":2.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_171","name":"Sophia Kapadia","age":24,"hood":"Cobble Hill","lat":40.6846,"lng":-73.9967,"dist":4.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_172","name":"Harper Kovacs","age":25,"hood":"SoHo","lat":40.7304,"lng":-73.9985,"dist":4.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_173","name":"Aria Watanabe","age":23,"hood":"Park Slope","lat":40.6765,"lng":-73.9766,"dist":3.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_174","name":"Hazel Solis","age":36,"hood":"Astoria","lat":40.7605,"lng":-73.9224,"dist":4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_175","name":"Silas Holt","age":37,"hood":"Greenpoint","lat":40.7258,"lng":-73.9568,"dist":2.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_176","name":"Charlotte Lindqvist","age":29,"hood":"Astoria","lat":40.7633,"lng":-73.9271,"dist":4.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_177","name":"Jonah Nakamura","age":34,"hood":"Financial District","lat":40.711,"lng":-74.006,"dist":4.5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_178","name":"Maya Watanabe","age":37,"hood":"Chelsea","lat":40.7469,"lng":-73.9959,"dist":4.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_179","name":"Stella Alvarez","age":29,"hood":"East Village","lat":40.7196,"lng":-73.9891,"dist":3.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_180","name":"Stella Brenner","age":28,"hood":"Lower East Side","lat":40.7187,"lng":-73.9886,"dist":3.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_181","name":"Nora Thornton","age":23,"hood":"Bushwick","lat":40.6994,"lng":-73.9256,"dist":0.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_182","name":"Callum O'Connor","age":33,"hood":"Park Slope","lat":40.6707,"lng":-73.9764,"dist":3.6,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_183","name":"Isla Hansen","age":32,"hood":"Lower East Side","lat":40.7167,"lng":-73.9886,"dist":3.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_184","name":"Otto Holt","age":37,"hood":"Philly Commuter","lat":39.9501,"lng":-75.1699,"dist":83.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_185","name":"Ezra O'Connor","age":23,"hood":"Upper East Side","lat":40.7732,"lng":-73.9572,"dist":5.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_186","name":"Daphne Mercado","age":24,"hood":"West Village","lat":40.7276,"lng":-74.0033,"dist":4.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_187","name":"Liam Mercado","age":29,"hood":"Bed-Stuy","lat":40.6865,"lng":-73.9427,"dist":1.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_188","name":"August Mercado","age":25,"hood":"Greenpoint","lat":40.7325,"lng":-73.9515,"dist":2.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_189","name":"Freya Novak","age":34,"hood":"East Village","lat":40.7241,"lng":-73.9842,"dist":3.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_190","name":"Freya Abadi","age":25,"hood":"West Village","lat":40.7319,"lng":-73.9988,"dist":4.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_191","name":"Sophia Adler","age":37,"hood":"SoHo","lat":40.7182,"lng":-74.0082,"dist":4.7,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_192","name":"Asher Thornton","age":24,"hood":"Upper East Side","lat":40.7797,"lng":-73.9524,"dist":5.5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_193","name":"Silas Brenner","age":23,"hood":"Chelsea","lat":40.7522,"lng":-73.9956,"dist":5.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_194","name":"Liam Sinclair","age":37,"hood":"Crown Heights","lat":40.667,"lng":-73.9389,"dist":2.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_195","name":"Daphne Brenner","age":24,"hood":"Chelsea","lat":40.7469,"lng":-74.0009,"dist":5.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_196","name":"Silas Novak","age":33,"hood":"Cobble Hill","lat":40.6904,"lng":-73.9918,"dist":3.8,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_197","name":"Lucas Hansen","age":23,"hood":"West Village","lat":40.7274,"lng":-74.0087,"dist":4.9,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_198","name":"Amelia Dubois","age":28,"hood":"East Village","lat":40.7333,"lng":-73.9841,"dist":3.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_199","name":"Felix Solis","age":37,"hood":"Cobble Hill","lat":40.6885,"lng":-73.9918,"dist":3.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_200","name":"Maya Moreau","age":37,"hood":"Lower East Side","lat":40.7127,"lng":-73.9939,"dist":3.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_201","name":"Isla Dubois","age":34,"hood":"Greenpoint","lat":40.7351,"lng":-73.9466,"dist":2.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_202","name":"August Thornton","age":29,"hood":"Fort Greene","lat":40.6879,"lng":-73.9722,"dist":2.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_203","name":"Clara Mercer","age":29,"hood":"Long Island City","lat":40.7412,"lng":-73.9516,"dist":3.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_204","name":"Liam Zhao","age":36,"hood":"Park Slope","lat":40.6675,"lng":-73.9864,"dist":4.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_205","name":"Isla Reeves","age":23,"hood":"DUMBO","lat":40.7032,"lng":-73.9877,"dist":3.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_206","name":"Mateo Brenner","age":25,"hood":"Greenpoint","lat":40.7237,"lng":-73.9522,"dist":2.1,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_207","name":"Aria Kovacs","age":32,"hood":"Financial District","lat":40.7096,"lng":-74.0064,"dist":4.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_208","name":"Harper Nakamura","age":29,"hood":"Long Island City","lat":40.738,"lng":-73.9415,"dist":2.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_209","name":"Sophia Abadi","age":23,"hood":"Crown Heights","lat":40.6724,"lng":-73.9386,"dist":2.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_210","name":"Lucas O'Connor","age":32,"hood":"Cobble Hill","lat":40.6923,"lng":-73.9969,"dist":4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_211","name":"August Novak","age":29,"hood":"Lower East Side","lat":40.7206,"lng":-73.9837,"dist":3.5,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_212","name":"Charlotte Bergman","age":33,"hood":"Upper East Side","lat":40.7737,"lng":-73.9577,"dist":5.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_213","name":"Felix Sterling","age":34,"hood":"Long Island City","lat":40.7457,"lng":-73.9468,"dist":3.2,"p1a":true,"p1b":true,"sim":0.0804,"fin":0,"score":0},{"id":"usr_nyc_214","name":"Noah Lindqvist","age":33,"hood":"DUMBO","lat":40.6974,"lng":-73.9876,"dist":3.5,"p1a":true,"p1b":true,"sim":0.1258,"fin":0,"score":0},{"id":"usr_nyc_215","name":"Emma Sinclair","age":37,"hood":"Upper East Side","lat":40.7718,"lng":-73.9576,"dist":5.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_216","name":"Stella Mercer","age":32,"hood":"Chelsea","lat":40.7484,"lng":-74.0005,"dist":5.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_217","name":"Felix Lindqvist","age":23,"hood":"Hoboken","lat":40.7381,"lng":-74.0375,"dist":6.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_218","name":"Aria Alvarez","age":29,"hood":"Hoboken","lat":40.7374,"lng":-74.0324,"dist":6.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_219","name":"Hazel Nakamura","age":24,"hood":"Hoboken","lat":40.7477,"lng":-74.0277,"dist":6.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_220","name":"Otto Fontana","age":25,"hood":"Williamsburg","lat":40.7131,"lng":-73.9575,"dist":2,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_221","name":"Oliver Kovacs","age":23,"hood":"Upper West Side","lat":40.7841,"lng":-73.9773,"dist":6.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_222","name":"Felix Sinclair","age":36,"hood":"Bed-Stuy","lat":40.6899,"lng":-73.9474,"dist":1.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_223","name":"Leo Moreau","age":37,"hood":"Chelsea","lat":40.7508,"lng":-73.996,"dist":5.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_224","name":"August Watanabe","age":29,"hood":"Park Slope","lat":40.6765,"lng":-73.9767,"dist":3.4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_225","name":"Aria Watanabe","age":34,"hood":"Cobble Hill","lat":40.6827,"lng":-73.9967,"dist":4.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_226","name":"Elijah Kovacs","age":37,"hood":"Bed-Stuy","lat":40.6942,"lng":-73.943,"dist":1.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_227","name":"Aria O'Connor","age":29,"hood":"Bushwick","lat":40.7026,"lng":-73.9208,"dist":0.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_228","name":"Aria Holt","age":28,"hood":"Greenpoint","lat":40.7355,"lng":-73.9471,"dist":2.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_229","name":"Evelyn Alvarez","age":23,"hood":"SoHo","lat":40.7265,"lng":-73.9985,"dist":4.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_230","name":"Isla Zhao","age":33,"hood":"Upper West Side","lat":40.7933,"lng":-73.9771,"dist":6.9,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_231","name":"Charlotte Bergman","age":32,"hood":"Greenpoint","lat":40.7336,"lng":-73.9471,"dist":2.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_232","name":"Silas Hansen","age":37,"hood":"Lower East Side","lat":40.7221,"lng":-73.9834,"dist":3.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_233","name":"Emma Zhao","age":23,"hood":"East Village","lat":40.7327,"lng":-73.9891,"dist":4.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_234","name":"Clara Brenner","age":24,"hood":"Williamsburg","lat":40.715,"lng":-73.9626,"dist":2.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_235","name":"Jonah Sterling","age":29,"hood":"Financial District","lat":40.7134,"lng":-74.0016,"dist":4.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_236","name":"Milo Sterling","age":25,"hood":"Chelsea","lat":40.7424,"lng":-74.0058,"dist":5.2,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_237","name":"Leo O'Connor","age":34,"hood":"Philly Commuter","lat":39.9569,"lng":-75.1593,"dist":83.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_238","name":"Evelyn Adler","age":25,"hood":"Greenpoint","lat":40.7332,"lng":-73.9566,"dist":2.8,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_239","name":"Iris Thornton","age":37,"hood":"Crown Heights","lat":40.6709,"lng":-73.9391,"dist":2.4,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_240","name":"Liam Novak","age":24,"hood":"East Village","lat":40.7241,"lng":-73.9843,"dist":3.6,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_241","name":"Leo Holt","age":23,"hood":"Bed-Stuy","lat":40.6846,"lng":-73.9427,"dist":1.7,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_242","name":"Nora Mercado","age":37,"hood":"Astoria","lat":40.7687,"lng":-73.9269,"dist":4.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_243","name":"Freya Dubois","age":24,"hood":"Bed-Stuy","lat":40.6942,"lng":-73.948,"dist":1.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_244","name":"Harper O'Connor","age":33,"hood":"Upper East Side","lat":40.7681,"lng":-73.9621,"dist":5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_245","name":"Callum Bergman","age":23,"hood":"Greenpoint","lat":40.7287,"lng":-73.9515,"dist":2.4,"p1a":true,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_246","name":"Stella Alvarez","age":28,"hood":"Bushwick","lat":40.7013,"lng":-73.9158,"dist":0.3,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_247","name":"Amelia Kovacs","age":37,"hood":"Hoboken","lat":40.7366,"lng":-74.0379,"dist":6.5,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_248","name":"Charlotte Thornton","age":37,"hood":"Bushwick","lat":40.7041,"lng":-73.9204,"dist":0.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_249","name":"Charlotte Alvarez","age":34,"hood":"Chelsea","lat":40.745,"lng":-74.0009,"dist":5.1,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0},{"id":"usr_nyc_250","name":"Maya Novak","age":29,"hood":"Philly Commuter","lat":39.9555,"lng":-75.1697,"dist":83.6,"p1a":false,"p1b":false,"sim":0,"fin":0,"score":0}];
+    let currentFunnelStep = 0;
+    let autoRunTimer = null;
+
+    function openFunnelModal() {
+      document.getElementById('cohortModal').classList.add('active');
+      initFunnelCanvas();
+      drawFunnelCanvas();
+    }
+
+    function closeFunnelModal() {
+      document.getElementById('cohortModal').classList.remove('active');
+      if (autoRunTimer) clearTimeout(autoRunTimer);
+    }
+
+    function setFunnelStep(step) {
+      currentFunnelStep = step;
+      for (let i = 0; i <= 3; i++) {
+        const btn = document.getElementById('stepBtn' + i);
+        if (btn) btn.classList.toggle('active', i === step);
+      }
+
+      const poolVal = document.getElementById('activePoolVal');
+      const ratioVal = document.getElementById('filterRatioVal');
+      const latencyVal = document.getElementById('funnelLatencyVal');
+
+      if (step === 0) {
+        poolVal.textContent = '250';
+        ratioVal.textContent = '100%';
+        latencyVal.textContent = '0.00ms';
+      } else if (step === 1) {
+        poolVal.textContent = '62';
+        ratioVal.textContent = '24.8%';
+        latencyVal.textContent = '0.10ms';
+      } else if (step === 2) {
+        poolVal.textContent = '12';
+        ratioVal.textContent = '4.8%';
+        latencyVal.textContent = '0.18ms';
+      } else {
+        poolVal.textContent = '3';
+        ratioVal.textContent = '1.2%';
+        latencyVal.textContent = '0.27ms';
+      }
+
+      drawFunnelCanvas();
+    }
+
+    function autoRunFunnel() {
+      setFunnelStep(0);
+      autoRunTimer = setTimeout(() => {
+        setFunnelStep(1);
+        autoRunTimer = setTimeout(() => {
+          setFunnelStep(2);
+          autoRunTimer = setTimeout(() => {
+            setFunnelStep(3);
+          }, 700);
+        }, 700);
+      }, 700);
+    }
+
+    function selectFinalistAndLaunch(scenarioKey) {
+      closeFunnelModal();
+      const select = document.getElementById('scenarioSelect');
+      select.value = scenarioKey;
+      changeScenario(scenarioKey);
+      if (!isPlaying) togglePlay();
+    }
+
+    // Canvas Spatial Renderer
+    let canvas, ctx;
+    function initFunnelCanvas() {
+      canvas = document.getElementById('funnelCanvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+
+      canvas.onmousemove = handleCanvasHover;
+      canvas.onmouseleave = () => {
+        document.getElementById('canvasTooltip').style.display = 'none';
+      };
+    }
+
+    function drawFunnelCanvas() {
+      if (!canvas || !ctx) return;
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Coordinate bounds (Brooklyn / Manhattan hub)
+      const minLat = 40.64;
+      const maxLat = 40.76;
+      const minLng = -74.03;
+      const maxLng = -73.88;
+
+      function toX(lng) { return ((lng - minLng) / (maxLng - minLng)) * (w - 80) + 40; }
+      function toY(lat) { return h - (((lat - minLat) / (maxLat - minLat)) * (h - 80) + 40); }
+
+      // 1. Draw Neighborhood Reference Grid & Concentric Isochrones
+      const elenaX = toX(-73.9218);
+      const elenaY = toY(40.7028);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1;
+      for (let r of [60, 130, 210]) {
+        ctx.beginPath();
+        ctx.arc(elenaX, elenaY, r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Isochrone labels
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.font = '10px "JetBrains Mono"';
+      ctx.fillText('5 mi', elenaX + 65, elenaY - 5);
+      ctx.fillText('10 mi', elenaX + 135, elenaY - 5);
+      ctx.fillText('15 mi transit boundary', elenaX + 215, elenaY - 5);
+
+      // Neighborhood watermarks
+      const neighborhoods = [
+        { name: 'Bushwick', lat: 40.7028, lng: -73.9218 },
+        { name: 'Greenpoint', lat: 40.7282, lng: -73.9538 },
+        { name: 'Williamsburg', lat: 40.7144, lng: -73.9553 },
+        { name: 'DUMBO', lat: 40.7033, lng: -73.9881 },
+        { name: 'Lower East Side', lat: 40.7180, lng: -73.9870 },
+        { name: 'Park Slope', lat: 40.6720, lng: -73.9770 }
+      ];
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.font = '11px "Inter", sans-serif';
+      neighborhoods.forEach(n => {
+        ctx.fillText(n.name, toX(n.lng), toY(n.lat));
+      });
+
+      // 2. Draw Elena's Studio Anchor
+      ctx.fillStyle = '#f43f5e';
+      ctx.beginPath();
+      ctx.arc(elenaX, elenaY, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(244, 63, 94, 0.4)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(elenaX, elenaY, 12, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#f43f5e';
+      ctx.font = 'bold 11px "JetBrains Mono"';
+      ctx.fillText('★ Elena (Bushwick Studio)', elenaX + 16, elenaY + 4);
+
+      // 3. Draw Candidate Points based on currentFunnelStep
+      COHORT_CANDIDATES.forEach(u => {
+        if (u.id === 'usr_elena_01') return;
+        const x = toX(u.lng);
+        const y = toY(u.lat);
+
+        let isVisible = true;
+        let color = 'rgba(255, 255, 255, 0.25)';
+        let radius = 3;
+
+        if (currentFunnelStep === 0) {
+          // All 250 visible
+          color = 'rgba(255, 255, 255, 0.35)';
+          radius = 3.5;
+        } else if (currentFunnelStep === 1) {
+          // Tier 1A: Hard Barriers
+          if (u.p1a) {
+            color = 'rgba(245, 158, 11, 0.85)';
+            radius = 4;
+          } else {
+            color = 'rgba(244, 63, 94, 0.12)';
+            radius = 2;
+          }
+        } else if (currentFunnelStep === 2) {
+          // Tier 1B: Latent FAISS Top 12
+          if (u.p1b) {
+            color = '#8b5cf6';
+            radius = 5.5;
+          } else if (u.p1a) {
+            color = 'rgba(245, 158, 11, 0.15)';
+            radius = 2.5;
+          } else {
+            color = 'rgba(255, 255, 255, 0.05)';
+            radius = 1.5;
+          }
+        } else if (currentFunnelStep === 3) {
+          // Tier 2: Pareto Finalists
+          if (u.fin === 1) {
+            color = '#10b981';
+            radius = 8;
+          } else if (u.fin === 2) {
+            color = '#f59e0b';
+            radius = 7;
+          } else if (u.fin === 3) {
+            color = '#94a3b8';
+            radius = 6;
+          } else if (u.p1b) {
+            color = 'rgba(139, 92, 246, 0.25)';
+            radius = 3;
+          } else {
+            color = 'rgba(255, 255, 255, 0.04)';
+            radius = 1.5;
+          }
+        }
+
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Rings and labels for finalists
+        if (currentFunnelStep === 3 && u.fin > 0) {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(x, y, radius + 4, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.fillStyle = color;
+          ctx.font = 'bold 11px "JetBrains Mono"';
+          const tag = u.fin === 1 ? '#1 Julian (92.8%)' : (u.fin === 2 ? '#2 Marcus (70.7%)' : '#3 David (24.1%)');
+          ctx.fillText(tag, x + radius + 6, y + 4);
+        }
+      });
+    }
+
+    function handleCanvasHover(e) {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const w = canvas.width;
+      const h = canvas.height;
+      const minLat = 40.64;
+      const maxLat = 40.76;
+      const minLng = -74.03;
+      const maxLng = -73.88;
+
+      function toX(lng) { return ((lng - minLng) / (maxLng - minLng)) * (w - 80) + 40; }
+      function toY(lat) { return h - (((lat - minLat) / (maxLat - minLat)) * (h - 80) + 40); }
+
+      let hovered = null;
+      for (let u of COHORT_CANDIDATES) {
+        const x = toX(u.lng);
+        const y = toY(u.lat);
+        const dist = Math.hypot(mouseX - x, mouseY - y);
+        if (dist < 10) {
+          hovered = u;
+          break;
+        }
+      }
+
+      const tooltip = document.getElementById('canvasTooltip');
+      if (hovered) {
+        tooltip.style.display = 'block';
+        tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+        tooltip.style.top = (e.clientY - rect.top - 15) + 'px';
+        tooltip.innerHTML = `
+          <div style="font-weight: 700; color: #fff;">${hovered.name} (${hovered.age})</div>
+          <div style="color: #9ca3af; font-size: 0.68rem;">${hovered.hood} · ${hovered.dist} mi</div>
+          <div style="margin-top: 0.2rem; color: ${hovered.p1a ? '#10b981' : '#f43f5e'};">
+            ${hovered.p1a ? '✓ Hard Barriers Passed' : '✗ Barrier Clashed'}
+          </div>
+          ${hovered.sim > 0 ? `<div style="color: #c4b5fd;">FAISS Sim: ${hovered.sim.toFixed(4)}</div>` : ''}
+          ${hovered.fin > 0 ? `<div style="color: #fbbf24; font-weight: 700;">Finalist #${hovered.fin} (${hovered.score}%)</div>` : ''}
+        `;
+      } else {
+        tooltip.style.display = 'none';
+      }
+    }
+
     }
 
     function setSpeed(speed, btn) {
@@ -1071,5 +1654,115 @@
     // Initialize
     restartStream();
   </script>
+
+  <!-- Metropolitan Cohort Funnel Modal -->
+  <div id="cohortModal" class="funnel-modal">
+    <div class="funnel-header">
+      <div class="funnel-title-group">
+        <h2><span>🗺</span> Metropolitan Cohort Funnel & Spatial Router</h2>
+        <p>Solving O(N²) Pairwise Scaling: 250 Brooklyn/NYC Singles → 62 → Top 12 → Top 3 Finalists (<0.3ms latency)</p>
+      </div>
+      <button class="action-btn" onclick="closeFunnelModal()" style="background: rgba(255,255,255,0.06); color: var(--text-main);">
+        ✕ Return to Lounge
+      </button>
+    </div>
+
+    <!-- Stepper Controls -->
+    <div class="funnel-stepper">
+      <button id="stepBtn0" class="funnel-step-btn active" onclick="setFunnelStep(0)">
+        <span>0. All Cohort (250)</span>
+      </button>
+      <button id="stepBtn1" class="funnel-step-btn" onclick="setFunnelStep(1)">
+        <span>1A. Hard Barriers (<1ms) → 62</span>
+      </button>
+      <button id="stepBtn2" class="funnel-step-btn" onclick="setFunnelStep(2)">
+        <span>1B. Latent FAISS (<5ms) → 12</span>
+      </button>
+      <button id="stepBtn3" class="funnel-step-btn" onclick="setFunnelStep(3)">
+        <span>2. Pareto Top 3 (<10ms)</span>
+      </button>
+
+      <button class="funnel-autorun-btn" onclick="autoRunFunnel()">
+        <span>▶</span> Auto-Run Funnel Pipeline
+      </button>
+    </div>
+
+    <div class="funnel-grid">
+      <!-- Interactive Spatial Canvas -->
+      <div class="canvas-card">
+        <div class="canvas-overlay-legend">
+          <div class="legend-item"><span class="legend-dot" style="background: #e2e8f0;"></span> <span>Elena's Studio (Bushwick)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> <span>Surviving Candidates</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span> <span>Top-12 Latent FAISS</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> <span>#1 Match: Julian Vance</span></div>
+        </div>
+        <canvas id="funnelCanvas" width="700" height="480"></canvas>
+        <div id="canvasTooltip" class="tooltip-box"></div>
+      </div>
+
+      <!-- Finalists Sidebar -->
+      <div class="finalists-sidebar">
+        <div class="funnel-telemetry-box">
+          <div class="telemetry-mini-item">
+            <span class="telemetry-mini-label">Active Pool</span>
+            <span id="activePoolVal" class="telemetry-mini-val">250</span>
+          </div>
+          <div class="telemetry-mini-item">
+            <span class="telemetry-mini-label">Funnel Latency</span>
+            <span id="funnelLatencyVal" class="telemetry-mini-val" style="color: var(--accent-emerald);">0.27ms</span>
+          </div>
+          <div class="telemetry-mini-item">
+            <span class="telemetry-mini-label">Filter Ratio</span>
+            <span id="filterRatioVal" class="telemetry-mini-val" style="color: var(--accent-gold);">100%</span>
+          </div>
+          <div class="telemetry-mini-item">
+            <span class="telemetry-mini-label">Pairwise Savings</span>
+            <span class="telemetry-mini-val">44,847 calls</span>
+          </div>
+        </div>
+
+        <!-- Top 3 Finalist Cards -->
+        <div class="finalist-card rank-1">
+          <div class="finalist-card-header">
+            <span class="finalist-name">🥇 Julian Vance (31)</span>
+            <span class="finalist-score-badge score-gold">92.8% Pareto</span>
+          </div>
+          <p class="finalist-details">
+            Greenpoint · 2.4 mi · Systems Thinker & Quiet Philosophical Wit. Latent Cosine: 0.9986. Ideal slow-burn synchrony.
+          </p>
+          <button class="finalist-action-btn" onclick="selectFinalistAndLaunch('bookshop')">
+            <span>⚡</span> Launch Live Lounge (Match Scenario)
+          </button>
+        </div>
+
+        <div class="finalist-card">
+          <div class="finalist-card-header">
+            <span class="finalist-name">🥈 Marcus Sterling (32)</span>
+            <span class="finalist-score-badge score-amber">70.7% Pareto</span>
+          </div>
+          <p class="finalist-details">
+            Lower East Side · 3.6 mi · Nomadic Documentarian & Film Synthesist. Latent Cosine: 0.7322. High banter; nomadic clash.
+          </p>
+          <button class="finalist-action-btn" onclick="selectFinalistAndLaunch('record_store')">
+            <span>⚡</span> Simulate Graceful Abort (Stage 3)
+          </button>
+        </div>
+
+        <div class="finalist-card">
+          <div class="finalist-card-header">
+            <span class="finalist-name">🥉 David Chen (32)</span>
+            <span class="finalist-score-badge score-gray">24.1% Pareto</span>
+          </div>
+          <p class="finalist-details">
+            Financial District · 1.8 mi · FinTech Executive. Efficiency/KPI framing rejects artistic bids.
+          </p>
+          <button class="finalist-action-btn" onclick="selectFinalistAndLaunch('market')">
+            <span>⚡</span> Simulate Discovery Flatline (Stage 1)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
