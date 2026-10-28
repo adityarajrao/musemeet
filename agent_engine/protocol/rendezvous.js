@@ -13,6 +13,7 @@
 
 import { calculateLSM, computeRunningLSM } from '../metrics/lsm.js';
 import { loadVignette, getVignetteForPersonas } from '../fixtures/loader.js';
+import { sanitizeEgressDialogue } from '../vault/egress_guard.js';
 
 export const STAGES = ['discovery', 'banter', 'friction', 'synthesis'];
 
@@ -119,7 +120,7 @@ async function runFixtureRendezvous({ persona_a, persona_b, max_turns, onTurn })
       turn_number: currentTurnNumber,
       speaker: rawTurn.speaker,
       stage: currentStage,
-      dialogue: rawTurn.dialogue,
+      dialogue: sanitizeEgressDialogue(rawTurn.dialogue),
       internal_monologue: rawTurn.internal_monologue,
       lsm_score: rawTurn.lsm_score ?? 1.0,
       gottman_bid: rawTurn.gottman_bid ?? 'toward',
