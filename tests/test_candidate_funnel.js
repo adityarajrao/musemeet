@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import {
   calculateHaversineDistance,
   computeCosineSimilarity,
+  evaluateBilateralAestheticGate,
   filterHardBarriers,
   coarseEmbeddingRetrieval,
   computeBigFiveHarmony,
@@ -97,5 +98,29 @@ console.log(`     - Tier 1A: 250 -> ${funnelResult.tier1aFilteredCount} (${funne
 console.log(`     - Tier 1B: ${funnelResult.tier1aFilteredCount} -> 12 (${funnelResult.timingMs.tier1bMs}ms)`);
 console.log(`     - Tier 2:  12 -> Top 3 Finalists (${funnelResult.timingMs.tier2Ms}ms)`);
 console.log(`     - #1 Finalist: ${funnelResult.finalistsTop3[0].candidate.name} (Pareto Score: ${(funnelResult.finalistsTop3[0].paretoScore * 100).toFixed(1)}%)`);
+
+// 8. Bilateral Aesthetic Satisficing Gate Verification
+const julian = cohortPayload.users.find((u) => u.user_id === 'usr_julian_02');
+const gateJulian = evaluateBilateralAestheticGate(elena, julian, 0.58);
+assert.equal(gateJulian.passed, true, 'Elena and Julian must clear the bilateral aesthetic satisficing gate');
+assert.ok(gateJulian.mutualFit >= 0.58, 'Mutual aesthetic fit must meet or exceed 0.58 threshold');
+
+const incompatibleCandidate = {
+  user_id: 'usr_incomp_99',
+  visual_presentation_token: new Array(32).fill(0).map((_, i) => (i < 16 ? 0.25 : 0)),
+  aesthetic_preference_vector: new Array(32).fill(0).map((_, i) => (i < 16 ? 0.25 : 0))
+};
+const gateIncompatible = evaluateBilateralAestheticGate(
+  elena,
+  {
+    ...incompatibleCandidate,
+    visual_presentation_token: new Array(32).fill(0).map((_, i) => (i >= 16 ? 0.25 : 0)),
+    aesthetic_preference_vector: new Array(32).fill(0).map((_, i) => (i >= 16 ? 0.25 : 0))
+  },
+  0.58
+);
+assert.equal(gateIncompatible.passed, false, 'Orthogonal visual vectors must fail the satisficing gate');
+assert.ok(funnelResult.finalistsTop3[0].aestheticGate.passed, 'Top-1 finalist in executeFunnel must have aestheticGate.passed = true');
+console.log(`  ✅ Test 8: Bilateral Aesthetic Satisficing Gate verified (Elena × Julian: ${(gateJulian.mutualFit * 100).toFixed(1)}% >= 58%, Incompatible pair rejected)`);
 
 console.log('\n🎉 All Candidate Funnel & Spatial Retrieval Router Unit Tests Passed Successfully!\n');
