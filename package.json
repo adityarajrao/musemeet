@@ -5,7 +5,7 @@
   "type": "module",
   "main": "agent_engine/protocol/rendezvous.js",
   "scripts": {
-    "test": "node tests/test_connectors.js && node tests/test_m1.js && node tests/test_egress_guard.js && node tests/test_candidate_funnel.js && node tests/test_vision_profiler.js && node tests/test_reel_profiler.js && node tests/test_financial_parity.js && node tests/test_attachment.js && node tests/test_lsm.js && node tests/test_m2.js && node tests/test_m2b.js && node tests/test_m3.js && node tests/test_m4.js && node tests/test_e2e.js",
+    "test": "node tests/test_connectors.js && node tests/test_m1.js && node tests/test_egress_guard.js && node tests/test_candidate_funnel.js && node tests/test_vision_profiler.js && node tests/test_reel_profiler.js && node tests/test_financial_parity.js && node tests/test_scaling_funnel.js && node tests/test_attachment.js && node tests/test_lsm.js && node tests/test_m2.js && node tests/test_m2b.js && node tests/test_m3.js && node tests/test_m4.js && node tests/test_e2e.js",
     "test:connectors": "node tests/test_connectors.js",
     "test:m1": "node tests/test_m1.js",
     "test:egress": "node tests/test_egress_guard.js",
@@ -13,6 +13,8 @@
     "test:vision": "node tests/test_vision_profiler.js",
     "test:reel": "node tests/test_reel_profiler.js",
     "test:financial": "node tests/test_financial_parity.js",
+    "test:scaling": "node tests/test_scaling_funnel.js",
+    "benchmark:funnel": "node tests/test_scaling_funnel.js",
     "test:attachment": "node tests/test_attachment.js",
     "test:lsm": "node tests/test_lsm.js",
     "test:m2": "node tests/test_m2.js",
@@ -29,7 +31,8 @@
     "gottman-bids",
     "recommender-dwell-time",
     "satisficing-gate",
-    "financial-parity"
+    "financial-parity",
+    "hierarchical-funnel"
   ],
   "author": "Aditya Raj & Aryan Raj",
   "license": "Apache-2.0",
