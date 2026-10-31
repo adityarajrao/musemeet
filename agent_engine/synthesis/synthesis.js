@@ -5,11 +5,12 @@
  * RendezvousTranscript, ModeratorVerdict, and PersonaProfiles.
  *
  * Grounding & Principles:
- * - Anti-hallucination spatial grounding: matches mutual passions to physical
- *   cultural venues from data/venues.json.
+ * - Anti-hallucination spatial grounding: matches mutual passions and shared
+ *   financial leisure expenditure tier to physical cultural venues from data/venues.json.
  * - Extracts micro-callbacks directly from the dialogue transcript turns.
  * - Honest friction: highlights non-negotiable differences rather than generic advice.
  * - Icebreakers: generates exactly 3 hyper-specific conversation starters.
+ * - Tri-Layer Telemetry: includes attachment dynamics, aesthetic satisficing, and financial parity.
  */
 
 import fs from 'node:fs';
@@ -18,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { loadVignette, getVignetteForPersonas } from '../fixtures/loader.js';
 import { evaluateDyadicAttachmentDynamics } from '../metrics/attachment.js';
 import { evaluateAestheticGate } from '../vault/vision_profiler.js';
+import { computeFinancialParity } from '../metrics/financial_parity.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,7 +40,8 @@ export function loadVenues() {
 }
 
 /**
- * Finds the most suitable grounded venue for a pair based on their shared passions and archetype.
+ * Finds the most suitable grounded venue for a pair based on their shared passions,
+ * archetype, and mutual financial leisure expenditure tier.
  *
  * @param {object} persona_a
  * @param {object} persona_b
@@ -52,6 +55,10 @@ export function findMatchingVenue(persona_a, persona_b) {
   const bInterests = (persona_b?.authentic_passions || []).join(' ').toLowerCase();
   const combined = `${aInterests} ${bInterests}`;
 
+  const tierA = persona_a?.lifestyle_finance?.leisure_expenditure_tier ?? 0.45;
+  const tierB = persona_b?.lifestyle_finance?.leisure_expenditure_tier ?? 0.45;
+  const targetTier = (tierA + tierB) / 2;
+
   let bestVenue = venues[0];
   let highestScore = -1;
 
@@ -61,6 +68,12 @@ export function findMatchingVenue(persona_a, persona_b) {
       if (combined.includes(tag.toLowerCase())) matchScore += 2;
     }
     if (v.conversation_friendly_score) matchScore += v.conversation_friendly_score;
+
+    // Grounding bonus for matching expenditure tier
+    if (typeof v.expenditure_tier === 'number') {
+      const tierProximity = 1.0 - Math.abs(v.expenditure_tier - targetTier);
+      matchScore += tierProximity * 1.5;
+    }
 
     if (matchScore > highestScore) {
       highestScore = matchScore;
@@ -82,40 +95,38 @@ export function extractMicroCallbacks(transcript) {
     return [];
   }
 
-  const callbacks = [];
-  const keyPhrases = [
-    '35mm', 'darkroom', 'film', 'books', 'vinyl', 'marginalia',
-    'chemical', 'analog', 'coffee', 'camera', 'leica', 'record',
-    'kpi', 'roi', 'nomadic', 'travel', 'duffel'
+  const callbacks = new Set();
+  const knownKeywords = [
+    '35mm', 'darkroom', 'film', 'analog', 'kodachrome',
+    'vinyl', 'organ', 'books', 'poetry', 'brutalist', 'tea',
+    'synthesizer', 'espresso', 'leica', 'medium format'
   ];
 
   for (const turn of transcript.turns) {
     const text = (turn.dialogue || '').toLowerCase();
-    for (const phrase of keyPhrases) {
-      if (text.includes(phrase) && !callbacks.some(c => c.toLowerCase().includes(phrase))) {
-        callbacks.push(phrase);
-        if (callbacks.length >= 3) break;
+    for (const kw of knownKeywords) {
+      if (text.includes(kw)) {
+        callbacks.add(kw);
       }
     }
-    if (callbacks.length >= 3) break;
   }
 
-  return callbacks.length > 0 ? callbacks : ['analog tactile media', 'conversational pacing'];
+  return Array.from(callbacks).slice(0, 5);
 }
 
 /**
- * Synthesizes the CompatibilityDossier.
+ * Synthesizes the master CompatibilityDossier from transcript, verdict, and personas.
  *
  * @param {object} params
- * @param {object} params.transcript - Complete RendezvousTranscript
- * @param {object} params.verdict - Neutral ModeratorVerdict
- * @param {object} params.persona_a - Sovereign Persona Card for User A
- * @param {object} params.persona_b - Sovereign Persona Card for User B
+ * @param {object} params.transcript RendezvousTranscript
+ * @param {object} params.verdict ModeratorVerdict
+ * @param {object} params.persona_a PersonaProfile A
+ * @param {object} params.persona_b PersonaProfile B
  * @returns {Promise<object>} CompatibilityDossier
  */
 export async function synthesizeDossier({ transcript, verdict, persona_a, persona_b }) {
   if (!transcript || !verdict) {
-    throw new Error('Both transcript and verdict are required to synthesize CompatibilityDossier.');
+    throw new Error('Synthesis rejected: transcript and verdict are required.');
   }
 
   const idA = persona_a?.persona_id || persona_a?.user_id;
@@ -124,6 +135,10 @@ export async function synthesizeDossier({ transcript, verdict, persona_a, person
 
   const attachmentDynamics = evaluateDyadicAttachmentDynamics(persona_a || {}, persona_b || {});
   const aestheticGate = evaluateAestheticGate(persona_a || {}, persona_b || {}, 0.60);
+  const financialParity = computeFinancialParity(
+    persona_a?.lifestyle_finance || { leisure_expenditure_tier: 0.42, consumption_entropy: 0.35, financial_risk_tolerance: 0.40 },
+    persona_b?.lifestyle_finance || { leisure_expenditure_tier: 0.45, consumption_entropy: 0.38, financial_risk_tolerance: 0.45 }
+  );
 
   if (useFixtures && idA && idB) {
     const vignetteName = getVignetteForPersonas(idA, idB);
@@ -151,6 +166,13 @@ export async function synthesizeDossier({ transcript, verdict, persona_a, person
             threshold: aestheticGate.threshold,
             mutual_fit: aestheticGate.mutualFit,
             reason: aestheticGate.reason
+          },
+          financial_parity: {
+            parity_score: financialParity.parityScore,
+            composite_delta: financialParity.compositeDelta,
+            classification: financialParity.classification,
+            friction_flag: financialParity.frictionFlag,
+            diagnostic_summary: financialParity.diagnosticSummary
           }
         };
       }
@@ -179,6 +201,13 @@ export async function synthesizeDossier({ transcript, verdict, persona_a, person
       threshold: aestheticGate.threshold,
       mutual_fit: aestheticGate.mutualFit,
       reason: aestheticGate.reason
+    },
+    financial_parity: {
+      parity_score: financialParity.parityScore,
+      composite_delta: financialParity.compositeDelta,
+      classification: financialParity.classification,
+      friction_flag: financialParity.frictionFlag,
+      diagnostic_summary: financialParity.diagnosticSummary
     }
   };
 }

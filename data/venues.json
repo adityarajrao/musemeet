@@ -8,6 +8,7 @@
     "vibe_tags": ["analog", "quiet", "books", "architecture", "mid-century"],
     "lighting": "warm amber tungsten, rain-streaked full-length windows",
     "conversation_friendly_score": 0.95,
+    "expenditure_tier": 0.55,
     "recommended_activity": "Browse mid-century Japanese art and design monographs over pour-over cortados in the second-floor lounge."
   },
   {
@@ -19,6 +20,7 @@
     "vibe_tags": ["vinyl", "analog", "high-fidelity", "whiskey", "intimate"],
     "lighting": "dim amber filament bulbs, glowing McIntosh tube amplifiers",
     "conversation_friendly_score": 0.88,
+    "expenditure_tier": 0.65,
     "recommended_activity": "Listen to original 1950s Blue Note pressings while sipping single-origin spirits on low walnut counters."
   },
   {
@@ -30,6 +32,7 @@
     "vibe_tags": ["35mm", "darkroom", "silver gelatin", "monochrome", "tactile"],
     "lighting": "diffused exhibition white with amber-red darkroom portal",
     "conversation_friendly_score": 0.92,
+    "expenditure_tier": 0.40,
     "recommended_activity": "Examine silver-gelatin street photography prints and discuss analog developing chemistry."
   },
   {
@@ -41,6 +44,7 @@
     "vibe_tags": ["literary", "poetry", "historic", "coffee", "intellectual"],
     "lighting": "soft crepuscular bay light and wooden table lamps",
     "conversation_friendly_score": 0.94,
+    "expenditure_tier": 0.40,
     "recommended_activity": "Browse poetry and political philosophy in the basement stacks, then walk around the corner for classic espresso."
   },
   {
@@ -52,6 +56,7 @@
     "vibe_tags": ["vinyl", "vintage", "organ", "bohemian", "warm"],
     "lighting": "red velvet lampshades, antique parlor glow",
     "conversation_friendly_score": 0.89,
+    "expenditure_tier": 0.50,
     "recommended_activity": "Select 45rpm soul and jazz records from the wooden shelves behind the bar while chatting in leather booths."
   },
   {
@@ -63,6 +68,7 @@
     "vibe_tags": ["books", "brick", "mahogany", "community", "coffee"],
     "lighting": "warm high-ceiling chandelier glow, spiral mahogany staircases",
     "conversation_friendly_score": 0.96,
+    "expenditure_tier": 0.35,
     "recommended_activity": "Share a pot of Earl Grey tea under the mahogany mezzanine while scouring secondhand first-edition literature."
   },
   {
@@ -74,6 +80,7 @@
     "vibe_tags": ["analog", "film", "darkroom", "experimental", "creative"],
     "lighting": "dim red safelight accents, industrial brick studio",
     "conversation_friendly_score": 0.91,
+    "expenditure_tier": 0.40,
     "recommended_activity": "Inspect hand-developed contact sheets and expired medium format negatives in the print room."
   }
 ]
