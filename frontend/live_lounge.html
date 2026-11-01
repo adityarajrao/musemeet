@@ -1357,6 +1357,381 @@
       color: #6ee7b7;
       text-align: right;
     }
+  
+    /* --- MUSE RENDEZVOUS PRESENCE STAGE (META MUSE ECOSYSTEM) --- */
+    .muse-rendezvous-stage {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.55rem 1.5rem;
+      background: linear-gradient(180deg, rgba(13, 16, 26, 0.95) 0%, rgba(8, 10, 16, 0.98) 100%);
+      border-bottom: 1px solid var(--card-border);
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .muse-avatar-card {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      min-width: 290px;
+    }
+
+    .muse-avatar-card.card-a.active-speaker {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(139, 92, 246, 0.08));
+      border-color: rgba(245, 158, 11, 0.45);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.18), inset 0 0 15px rgba(245, 158, 11, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .muse-avatar-card.card-b.active-speaker {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(59, 130, 246, 0.08));
+      border-color: rgba(16, 185, 129, 0.45);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.18), inset 0 0 15px rgba(16, 185, 129, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .muse-avatar-card.listening {
+      opacity: 0.72;
+      border-color: rgba(255, 255, 255, 0.04);
+      background: rgba(15, 18, 27, 0.35);
+      transform: scale(0.985);
+    }
+
+    .muse-avatar-wrapper {
+      position: relative;
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+    }
+
+    .muse-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    .muse-avatar-card.card-a.active-speaker .muse-avatar-img {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
+      transform: scale(1.05);
+    }
+
+    .muse-avatar-card.card-b.active-speaker .muse-avatar-img {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.55);
+      transform: scale(1.05);
+    }
+
+    .muse-pulse-ring {
+      display: none;
+    }
+
+    .active-speaker .muse-pulse-ring {
+      display: block;
+      position: absolute;
+      inset: -5px;
+      border-radius: 18px;
+      border: 1.5px solid var(--accent-gold);
+      animation: pulseRingA 1.6s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+      pointer-events: none;
+    }
+
+    .card-b.active-speaker .muse-pulse-ring {
+      border-color: var(--accent-emerald);
+      animation-name: pulseRingB;
+    }
+
+    @keyframes pulseRingA {
+      0% { transform: scale(0.96); opacity: 0.85; border-color: rgba(245, 158, 11, 0.9); }
+      60% { transform: scale(1.15); opacity: 0.3; border-color: rgba(245, 158, 11, 0.3); }
+      100% { transform: scale(1.28); opacity: 0; border-color: rgba(245, 158, 11, 0); }
+    }
+
+    @keyframes pulseRingB {
+      0% { transform: scale(0.96); opacity: 0.85; border-color: rgba(16, 185, 129, 0.9); }
+      60% { transform: scale(1.15); opacity: 0.3; border-color: rgba(16, 185, 129, 0.3); }
+      100% { transform: scale(1.28); opacity: 0; border-color: rgba(16, 185, 129, 0); }
+    }
+
+    .muse-charm-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    .card-b .muse-charm-badge {
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+
+    .muse-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .muse-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .muse-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: 0.03em;
+    }
+
+    .muse-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .muse-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-subtle);
+      margin-top: 2px;
+    }
+
+    .muse-state-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .muse-state-tag.speaking {
+      background: rgba(245, 158, 11, 0.18);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .card-b .muse-state-tag.speaking {
+      background: rgba(16, 185, 129, 0.18);
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .muse-state-tag.listening {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-subtle);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Equalizer wave bars */
+    .audio-wave-bars {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      height: 11px;
+    }
+
+    .audio-wave-bars span {
+      width: 2px;
+      background: currentColor;
+      border-radius: 1px;
+      animation: waveBounce 0.8s ease-in-out infinite alternate;
+    }
+
+    .audio-wave-bars span:nth-child(1) { height: 4px; animation-delay: 0.05s; }
+    .audio-wave-bars span:nth-child(2) { height: 10px; animation-delay: 0.22s; }
+    .audio-wave-bars span:nth-child(3) { height: 6px; animation-delay: 0.4s; }
+
+    @keyframes waveBounce {
+      0% { height: 3px; }
+      100% { height: 11px; }
+    }
+
+    /* Central Resonance Bridge */
+    .muse-resonance-bridge {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 0 1rem;
+    }
+
+    .resonance-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      color: var(--text-subtle);
+    }
+
+    .resonance-tag {
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .resonance-lock {
+      color: var(--accent-emerald);
+      font-size: 0.6rem;
+    }
+
+    .resonance-waveform {
+      position: relative;
+      width: 100%;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wave-beam {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        rgba(245, 158, 11, 0.6) 0%, 
+        rgba(139, 92, 246, 0.8) 50%, 
+        rgba(16, 185, 129, 0.6) 100%
+      );
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+    }
+
+    .resonance-metric-center {
+      position: relative;
+      z-index: 2;
+      background: rgba(10, 12, 19, 0.9);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      border-radius: 12px;
+      padding: 2px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 14px rgba(139, 92, 246, 0.2);
+    }
+
+    .resonance-val-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .resonance-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-violet);
+    }
+
+    .resonance-footer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-subtle);
+      text-align: center;
+    }
+
+    /* Dialogue Message Mascot Avatars */
+    .msg-content-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .msg-content-row-b {
+      justify-content: flex-end;
+    }
+
+    .msg-avatar-col {
+      flex-shrink: 0;
+    }
+
+    .msg-avatar-thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease;
+    }
+
+    .msg-avatar-thumb:hover {
+      transform: scale(1.12);
+    }
+
+    .msg-avatar-thumb.thumb-a {
+      border: 1.5px solid rgba(245, 158, 11, 0.45);
+    }
+
+    .msg-avatar-thumb.thumb-b {
+      border: 1.5px solid rgba(16, 185, 129, 0.45);
+    }
+
+    .msg-body-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      max-width: calc(100% - 48px);
+    }
+
+    .msg-agent-b .msg-body-col {
+      align-items: flex-end;
+    }
+
+    .sender-sparkle {
+      color: var(--accent-gold);
+    }
+
+    .msg-agent-b .sender-sparkle {
+      color: var(--accent-emerald);
+    }
+
+    .sender-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .turn-index-sub {
+      opacity: 0.5;
+    }
+
   </style>
 
 </head>
@@ -1431,6 +1806,71 @@
   </div>
 
   <!-- Main Dual-Track Split Layout -->
+  
+  <!-- Muse Autonomous Rendezvous Stage (Meta Muse Companion Mascot Ecosystem) -->
+  <div class="muse-rendezvous-stage">
+    <!-- Agent A: Elena's Muse Mascot Card -->
+    <div id="museCardA" class="muse-avatar-card card-a active-speaker">
+      <div class="muse-avatar-wrapper">
+        <img id="museAvatarImgA" src="assets/elena_muse.jpg" alt="Elena's Muse Mascot" class="muse-avatar-img">
+        <div id="museStatusPulseA" class="muse-pulse-ring"></div>
+      </div>
+      <div class="muse-info">
+        <div class="muse-title-row">
+          <span class="muse-name">Elena's Muse</span>
+          <span id="museStateBadgeA" class="muse-state-tag speaking">
+            <span class="audio-wave-bars"><span></span><span></span><span></span></span>
+            SPEAKING 🎙️
+          </span>
+        </div>
+        <div class="muse-subtitle">Architect & Sound Artist · Manhattan</div>
+        <div class="muse-meta-row">
+          <span class="muse-charm-badge">MUSE CHARM #7F2A</span>
+          <span>·</span>
+          <span>AirGap Sovereign</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Bridge: Autonomous Resonance Arc -->
+    <div class="muse-resonance-bridge">
+      <div class="resonance-header">
+        <span class="resonance-tag">● AUTONOMOUS RENDEZVOUS</span>
+        <span class="resonance-lock">🔒 E2EE AIRGAP CANAL</span>
+      </div>
+      <div class="resonance-waveform">
+        <div class="wave-beam"></div>
+        <div class="resonance-metric-center">
+          <span class="resonance-val-label">LSM RESONANCE</span>
+          <span id="bridgeLsmVal" class="resonance-val">0.881</span>
+        </div>
+      </div>
+      <div class="resonance-footer">
+        <span id="resonanceTurnText">Turn 1 · Discovery (Cognitive & Sensory)</span>
+      </div>
+    </div>
+
+    <!-- Agent B: Candidate's Muse Mascot Card -->
+    <div id="museCardB" class="muse-avatar-card card-b listening">
+      <div class="muse-info" style="align-items: flex-end; text-align: right;">
+        <div class="muse-title-row" style="justify-content: flex-end;">
+          <span id="museStateBadgeB" class="muse-state-tag listening">LISTENING 🎧</span>
+          <span id="museNameB" class="muse-name">Julian's Muse</span>
+        </div>
+        <div id="museSubtitleB" class="muse-subtitle">Industrial Designer & Acoustician · Greenpoint</div>
+        <div class="muse-meta-row" style="justify-content: flex-end;">
+          <span>AirGap Sovereign</span>
+          <span>·</span>
+          <span id="museCharmBadgeB" class="muse-charm-badge">MUSE CHARM #3E91</span>
+        </div>
+      </div>
+      <div class="muse-avatar-wrapper">
+        <img id="museAvatarImgB" src="assets/julian_muse.jpg" alt="Candidate's Muse Mascot" class="muse-avatar-img">
+        <div id="museStatusPulseB" class="muse-pulse-ring"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="main-workspace">
     <!-- Left Track: Fast-Paced Dialogue Stream -->
     <section class="track-left">
@@ -1794,8 +2234,95 @@
     let timerId = null;
     let lsmHistory = [];
 
+    
+    // --- META MUSE MASCOT ECOSYSTEM & CANDIDATE REGISTRY ---
+    const CANDIDATE_METADATA = {
+      bookshop: {
+        name: "Julian's Muse",
+        human: "Julian Vance",
+        subtitle: "Industrial Designer & Acoustician · Greenpoint",
+        avatar: "assets/julian_muse.jpg",
+        charm: "MUSE CHARM #3E91"
+      },
+      record_store: {
+        name: "Marcus's Muse",
+        human: "Marcus Sterling",
+        subtitle: "Documentary Filmmaker · Lower East Side",
+        avatar: "assets/marcus_muse.jpg",
+        charm: "MUSE CHARM #89C4"
+      },
+      market: {
+        name: "David's Muse",
+        human: "David Chen",
+        subtitle: "Quantitative Trading & Ultra-Athlete · FiDi",
+        avatar: "assets/david_muse.jpg",
+        charm: "MUSE CHARM #51B0"
+      },
+      crossfit: {
+        name: "David's Muse",
+        human: "David Chen",
+        subtitle: "Quantitative Trading & Ultra-Athlete · FiDi",
+        avatar: "assets/david_muse.jpg",
+        charm: "MUSE CHARM #51B0"
+      }
+    };
+
+    function updatePresenceHeader(speaker, turnNumber) {
+      const meta = CANDIDATE_METADATA[activeScenario] || CANDIDATE_METADATA.bookshop;
+      
+      const imgB = document.getElementById('museAvatarImgB');
+      if (imgB && !imgB.src.endsWith(meta.avatar)) {
+        imgB.src = meta.avatar;
+      }
+      const nameB = document.getElementById('museNameB');
+      if (nameB) nameB.textContent = meta.name;
+      const subB = document.getElementById('museSubtitleB');
+      if (subB) subB.textContent = meta.subtitle;
+      const charmB = document.getElementById('museCharmBadgeB');
+      if (charmB) charmB.textContent = meta.charm;
+
+      const cardA = document.getElementById('museCardA');
+      const cardB = document.getElementById('museCardB');
+      const badgeA = document.getElementById('museStateBadgeA');
+      const badgeB = document.getElementById('museStateBadgeB');
+      const bridgeTurn = document.getElementById('resonanceTurnText');
+
+      if (speaker === 'agent_a') {
+        if (cardA) { cardA.classList.add('active-speaker'); cardA.classList.remove('listening'); }
+        if (cardB) { cardB.classList.add('listening'); cardB.classList.remove('active-speaker'); }
+        if (badgeA) {
+          badgeA.className = 'muse-state-tag speaking';
+          badgeA.innerHTML = '<span class="audio-wave-bars"><span></span><span></span><span></span></span> SPEAKING 🎙️';
+        }
+        if (badgeB) {
+          badgeB.className = 'muse-state-tag listening';
+          badgeB.textContent = 'LISTENING 🎧';
+        }
+      } else {
+        if (cardB) { cardB.classList.add('active-speaker'); cardB.classList.remove('listening'); }
+        if (cardA) { cardA.classList.add('listening'); cardA.classList.remove('active-speaker'); }
+        if (badgeB) {
+          badgeB.className = 'muse-state-tag speaking';
+          badgeB.innerHTML = '<span class="audio-wave-bars"><span></span><span></span><span></span></span> SPEAKING 🎙️';
+        }
+        if (badgeA) {
+          badgeA.className = 'muse-state-tag listening';
+          badgeA.textContent = 'LISTENING 🎧';
+        }
+      }
+
+      if (bridgeTurn) {
+        let stageName = 'Discovery (Sensory & Cognitive)';
+        if (turnNumber > 4 && turnNumber <= 8) stageName = 'Banter (Social Agency)';
+        else if (turnNumber > 8 && turnNumber <= 12) stageName = 'Friction (Attachment & Finance)';
+        else if (turnNumber > 12) stageName = 'Synthesis (Rendezvous Venue)';
+        bridgeTurn.textContent = `Turn ${turnNumber} · ${stageName}`;
+      }
+    }
+
     function changeScenario(name) {
       activeScenario = name;
+      updatePresenceHeader('agent_a', 1);
       restartStream();
     }
 
@@ -2535,19 +3062,52 @@
 
       // 1. Append Dialogue Message
       const isAgentA = turn.speaker === 'agent_a';
-      const senderName = isAgentA ? "Elena's Muse" : (activeScenario === 'bookshop' ? "Julian's Muse" : (activeScenario === 'record_store' ? "Marcus's Muse" : "David's Muse"));
+      const metaB = CANDIDATE_METADATA[activeScenario] || CANDIDATE_METADATA.bookshop;
+      const senderName = isAgentA ? "Elena's Muse" : metaB.name;
+      const avatarSrc = isAgentA ? "assets/elena_muse.jpg" : metaB.avatar;
+
+      // Update Presence Header and Resonance Bridge
+      updatePresenceHeader(turn.speaker, turn.turn_number);
+      const bridgeLsm = document.getElementById('bridgeLsmVal');
+      if (bridgeLsm) bridgeLsm.textContent = turn.lsm.toFixed(3);
 
       const dStream = document.getElementById('dialogueStream');
       const msgDiv = document.createElement('div');
       msgDiv.className = `dialogue-msg ${isAgentA ? 'msg-agent-a' : 'msg-agent-b'}`;
-      msgDiv.innerHTML = `
-        <div class="msg-sender">
-          <span>${isAgentA ? '◈' : '✧'}</span>
-          <span>${senderName}</span>
-          <span style="opacity: 0.5;">· Turn ${turn.turn_number}</span>
-        </div>
-        <div class="msg-bubble">${turn.dialogue}</div>
-      `;
+      
+      if (isAgentA) {
+        msgDiv.innerHTML = `
+          <div class="msg-content-row">
+            <div class="msg-avatar-col">
+              <img src="${avatarSrc}" alt="Elena's Muse" class="msg-avatar-thumb thumb-a">
+            </div>
+            <div class="msg-body-col">
+              <div class="msg-sender">
+                <span class="sender-sparkle">◈</span>
+                <span class="sender-name">${senderName}</span>
+                <span class="turn-index-sub">· Turn ${turn.turn_number}</span>
+              </div>
+              <div class="msg-bubble">${turn.dialogue}</div>
+            </div>
+          </div>
+        `;
+      } else {
+        msgDiv.innerHTML = `
+          <div class="msg-content-row msg-content-row-b">
+            <div class="msg-body-col">
+              <div class="msg-sender" style="justify-content: flex-end;">
+                <span class="turn-index-sub">Turn ${turn.turn_number} ·</span>
+                <span class="sender-name">${senderName}</span>
+                <span class="sender-sparkle">✧</span>
+              </div>
+              <div class="msg-bubble">${turn.dialogue}</div>
+            </div>
+            <div class="msg-avatar-col">
+              <img src="${avatarSrc}" alt="${senderName}" class="msg-avatar-thumb thumb-b">
+            </div>
+          </div>
+        `;
+      }
       dStream.appendChild(msgDiv);
       dStream.scrollTop = dStream.scrollHeight;
 
