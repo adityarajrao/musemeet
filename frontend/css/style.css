@@ -5,52 +5,68 @@
    ========================================================================== */
 
 :root {
-  /* --- 1. Photonic Surface Elevations (Deep Velvet Obsidian with Espresso Rolloff) --- */
-  --surface-0: oklch(12.5% 0.012 45);        /* #0c0b0d: Base canvas */
-  --surface-0-hex: #0c0b0d;
-  --surface-1: oklch(16% 0.014 42);          /* #141215: Base container cards & tracks */
-  --surface-1-hex: #141215;
-  --surface-2: oklch(19.5% 0.016 40);        /* #1c191e: Elevated cards & metrics */
-  --surface-2-hex: #1c191e;
-  --surface-3: oklch(23.5% 0.018 38);        /* #262229: Interactive & active states */
-  --surface-3-hex: #262229;
-  --surface-4: oklch(28% 0.02 38);           /* #322b36: Prominent floating headers & modals */
-  --surface-4-hex: #322b36;
+  /* Surfaces: Warm Alabaster, Linen & Crisp Ivory (Zero cold blue-grays) */
+  --bg-canvas: #FAF7F2;           /* Warm editorial linen background */
+  --bg-surface: #FFFFFF;          /* Crisp white card surface */
+  --bg-subtle: #F3EFE6;           /* Soft sand/stone secondary container & pill fill */
+  --bg-elevated: #FDFBF7;         /* Slightly warm modal/drawer canvas */
 
-  /* Translucent Glass & Specular Photonic Borders (Top-lit 0deg model) */
-  --bg: var(--surface-0-hex);
-  --card-bg: rgba(22, 19, 25, 0.78);
-  --card-bg-elevated: rgba(28, 24, 32, 0.88);
-  --card-border: rgba(255, 235, 215, 0.07);
-  --border-specular: rgba(255, 240, 225, 0.14); /* Directional top edge specular rim */
-  --border-subtle: rgba(255, 235, 215, 0.07);
-  --border-active: rgba(240, 179, 67, 0.4);
+  --surface-0: #FAF7F2;
+  --surface-0-hex: #FAF7F2;
+  --surface-1: #FFFFFF;
+  --surface-1-hex: #FFFFFF;
+  --surface-2: #FDFBF7;
+  --surface-2-hex: #FDFBF7;
+  --surface-3: #F3EFE6;
+  --surface-3-hex: #F3EFE6;
+  --surface-4: #FFFFFF;
+  --surface-4-hex: #FFFFFF;
 
-  /* Photonic Ambient Occlusion Shadows */
-  --shadow-sm: 0 2px 8px -1px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 8px 24px -2px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 240, 225, 0.06);
-  --shadow-lg: 0 18px 48px -4px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 240, 225, 0.08);
+  --bg: #FAF7F2;
+  --card-bg: #FFFFFF;
+  --card-bg-elevated: #FDFBF7;
+  --card-border: #E8E2D8;
+  --border-specular: #D5CCC0;
+  --border-subtle: #E8E2D8;
+  --border-strong: #D5CCC0;
+  --border-active: #C85A32;
 
-  /* --- 2. Analog Intimacy Palette (35mm Film, Warm Candlelight, Terracotta) --- */
-  --accent-terracotta: oklch(72% 0.145 42);   /* #e57353: Intimacy highlight & Elena signal */
-  --accent-terracotta-glow: rgba(229, 115, 83, 0.22);
-  --accent-amber: oklch(80% 0.135 75);       /* #f0b343: Candlelight amber / Compatibility score */
-  --accent-amber-glow: rgba(240, 179, 67, 0.24);
-  --accent-gold: var(--accent-amber);
+  /* Photonic Ambient Occlusion Shadows (Soft & Tactile) */
+  --shadow-sm: 0 1px 3px rgba(26, 25, 23, 0.04), 0 1px 2px rgba(26, 25, 23, 0.02);
+  --shadow-md: 0 4px 14px rgba(26, 25, 23, 0.06), 0 1px 3px rgba(26, 25, 23, 0.03);
+  --shadow-lg: 0 12px 28px -6px rgba(26, 25, 23, 0.08), 0 1px 4px rgba(26, 25, 23, 0.03);
+  --shadow-card: 0 2px 12px rgba(26, 25, 23, 0.04), 0 1px 3px rgba(26, 25, 23, 0.02);
+  --shadow-elevated: 0 12px 28px -6px rgba(26, 25, 23, 0.08), 0 1px 4px rgba(26, 25, 23, 0.03);
 
-  /* --- 3. Sovereign Computation Palette (AirGap Verification, Beryllium Sage, Iris) --- */
-  --accent-emerald: oklch(76% 0.12 155);     /* #45c48b: Cryptographic pass & Julian signal */
-  --accent-emerald-glow: rgba(69, 196, 139, 0.22);
-  --accent-rose: oklch(68% 0.16 28);         /* #dc5353: Guardrail abort & dealbreaker */
-  --accent-rose-glow: rgba(220, 83, 83, 0.24);
-  --accent-violet: oklch(74% 0.09 300);      /* #a697c8: Heather iris & subtext */
-  --accent-violet-glow: rgba(166, 151, 200, 0.2);
+  /* Analog Intimacy & Brand Palette: Hinge Deep Plum & Warm Terracotta */
+  --accent-primary: #4A1D3E;      /* Hinge signature deep plum/aubergine */
+  --accent-primary-soft: #F5EBF2; /* Delicate plum wash for active pills & tags */
+  --accent-secondary: #C85A32;    /* Warm terracotta / rust */
+  --accent-secondary-soft: #FBF0EB;
+  --accent-terracotta: #C85A32;
+  --accent-terracotta-glow: rgba(200, 90, 50, 0.12);
+  --accent-amber: #B45309;        /* Warm ochre */
+  --accent-amber-glow: rgba(180, 83, 9, 0.12);
+  --accent-gold: #B45309;
+  --accent-violet: #4A1D3E;
+  --accent-violet-glow: rgba(74, 29, 62, 0.12);
 
-  /* --- 4. APCA-Compliant Typography Hierarchy (Effortless Contrast on Dark Canvas) --- */
-  --text-main: oklch(96% 0.008 75);          /* #f6f3ee: Warm Alabaster (APCA Lc 94+) */
-  --text-muted: oklch(80% 0.015 65);         /* #c9c1b9: Warm Parchment (APCA Lc 74+) */
-  --text-subtle: oklch(62% 0.018 58);        /* #948b83: Muted Linen (APCA Lc 52+) */
-  --text-dim: oklch(46% 0.016 55);           /* #6b635c: Structural borders & captions */
+  /* Sovereign Computation Palette */
+  --accent-emerald: #2D6A4F;      /* Forest/Sage green: Verified Match, High LSM, Passed AirGap */
+  --accent-emerald-soft: #EBF4EE;
+  --accent-emerald-glow: rgba(45, 106, 79, 0.12);
+  --accent-rose: #9F1239;         /* Deep cranberry/wine: Guardrail abort & dealbreaker */
+  --accent-rose-soft: #FFE4E6;
+  --accent-rose-glow: rgba(159, 18, 57, 0.12);
+
+  /* Typography / Text Colors: Deep Charcoal Ink */
+  --text-primary: #1A1917;        /* High-contrast deep warm charcoal */
+  --text-secondary: #5C5852;      /* Warm stone for labels, subtitles, metadata */
+  --text-tertiary: #8C867E;       /* Muted taupe for timestamps, disabled, borders */
+  --text-main: #1A1917;
+  --text-muted: #5C5852;
+  --text-subtle: #8C867E;
+  --text-dim: #8C867E;
 }
 
 * {
@@ -65,7 +81,7 @@ body {
     radial-gradient(ellipse 70% 45% at 50% -5%, rgba(229, 115, 83, 0.08) 0%, rgba(240, 179, 67, 0.03) 45%, transparent 75%),
     radial-gradient(ellipse 60% 50% at 50% 100%, rgba(69, 196, 139, 0.03) 0%, transparent 70%);
   color: var(--text-main);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   height: 100vh;
   overflow: hidden;
   display: flex;
@@ -77,7 +93,7 @@ body {
    Top Navigation Header
    ========================================================================== */
 .header {
-  background: rgba(18, 15, 20, 0.88);
+  background: rgba(250, 247, 242, 0.94);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
@@ -99,21 +115,21 @@ body {
 .brand-mark {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, var(--accent-terracotta), var(--accent-amber));
+  background: var(--accent-primary);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-family: 'Cinzel', serif;
-  color: #120e10;
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: #FFFFFF;
   font-size: 1.05rem;
   box-shadow: 0 4px 12px var(--accent-terracotta-glow), inset 0 1px 1px rgba(255, 255, 255, 0.35);
   flex-shrink: 0;
 }
 
 .brand-text h1 {
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 1.15rem;
   letter-spacing: 0.06em;
   line-height: 1.1;
@@ -144,7 +160,7 @@ body {
   padding: 0.42rem 0.85rem;
   border-radius: 8px;
   font-size: 0.8rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   cursor: pointer;
   outline: none;
   transition: border-color 0.2s ease;
@@ -251,7 +267,7 @@ body {
    Stage Progression Banner (Discovery -> Banter -> Friction -> Synthesis)
    ========================================================================== */
 .stage-banner {
-  background: rgba(18, 15, 21, 0.75);
+  background: var(--bg-canvas);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0.55rem 1.5rem;
@@ -316,12 +332,12 @@ body {
   justify-content: space-between;
   gap: 1.25rem;
   padding: 0.65rem 1.5rem;
-  background: linear-gradient(180deg, rgba(20, 17, 23, 0.95) 0%, rgba(13, 11, 15, 0.98) 100%);
+  background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
   position: relative;
   z-index: 10;
   flex-shrink: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-sm);
 }
 
 .muse-avatar-card {
@@ -432,7 +448,7 @@ body {
 }
 
 .muse-name {
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 0.92rem;
   font-weight: 700;
   color: var(--text-main);
@@ -525,7 +541,7 @@ body {
   gap: 0.3rem;
   padding: 0.45rem 1.15rem;
   border-radius: 14px;
-  background: rgba(22, 19, 25, 0.7);
+  background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   box-shadow: var(--shadow-sm);
@@ -570,7 +586,7 @@ body {
 
 .resonance-metric-center {
   position: relative;
-  background: #141116;
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 20px;
   padding: 0.15rem 0.65rem;
@@ -624,7 +640,7 @@ body {
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  background: rgba(16, 14, 18, 0.4);
+  background: var(--bg-canvas);
   overflow: hidden;
 }
 
@@ -634,7 +650,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(22, 19, 25, 0.6);
+  background: var(--bg-surface);
 }
 
 .track-title {
@@ -768,7 +784,7 @@ body {
 }
 
 .msg-agent-a .msg-bubble {
-  background: linear-gradient(145deg, rgba(38, 28, 33, 0.85) 0%, rgba(22, 18, 24, 0.95) 100%);
+  background: var(--bg-surface);
   border: 1px solid rgba(229, 115, 83, 0.28);
   border-top: 1px solid rgba(240, 179, 67, 0.35);
   border-bottom-left-radius: 4px;
@@ -776,7 +792,7 @@ body {
 }
 
 .msg-agent-b .msg-bubble {
-  background: linear-gradient(145deg, rgba(24, 30, 27, 0.85) 0%, rgba(18, 22, 20, 0.95) 100%);
+  background: var(--accent-emerald-soft);
   border: 1px solid rgba(69, 196, 139, 0.25);
   border-top: 1px solid rgba(69, 196, 139, 0.35);
   border-bottom-right-radius: 4px;
@@ -836,7 +852,7 @@ body {
 .airgap-banner-sub {
   font-size: 0.74rem;
   color: #fca5a5;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   line-height: 1.45;
 }
 
@@ -868,7 +884,7 @@ body {
 .track-right {
   display: flex;
   flex-direction: column;
-  background: rgba(18, 15, 22, 0.5);
+  background: var(--bg-canvas);
   overflow: hidden;
 }
 
@@ -878,11 +894,11 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.85rem;
-  background: rgba(22, 19, 25, 0.5);
+  background: var(--bg-surface);
 }
 
 .stat-pill {
-  background: linear-gradient(170deg, rgba(28, 24, 31, 0.75) 0%, rgba(18, 16, 21, 0.85) 100%);
+  background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 12px;
@@ -1055,7 +1071,7 @@ body {
 }
 
 .monologue-card {
-  background: linear-gradient(165deg, rgba(28, 24, 30, 0.75) 0%, rgba(18, 16, 21, 0.85) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-left: 3px solid var(--accent-terracotta);
@@ -1112,7 +1128,7 @@ body {
    Bottom Verdict Announcement Bar
    ========================================================================== */
 .finish-bar {
-  background: rgba(20, 17, 23, 0.96);
+  background: rgba(250, 247, 242, 0.96);
   backdrop-filter: blur(16px);
   border-top: 1px solid var(--border-subtle);
   padding: 0.95rem 1.75rem;
@@ -1202,7 +1218,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(12, 10, 14, 0.94);
+  background: rgba(250, 247, 242, 0.96);
   backdrop-filter: blur(24px) saturate(140%);
   z-index: 150;
   display: none;
@@ -1227,7 +1243,7 @@ body {
 }
 
 .moat-title-group h2, .funnel-title-group h2 {
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 1.55rem;
   color: var(--text-main);
   display: flex;
@@ -1251,7 +1267,7 @@ body {
 }
 
 .moat-ribbon-item {
-  background: linear-gradient(170deg, rgba(26, 23, 29, 0.8) 0%, rgba(18, 16, 21, 0.9) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 10px;
@@ -1331,7 +1347,7 @@ body {
 }
 
 .domain-radar-card {
-  background: linear-gradient(170deg, rgba(26, 23, 29, 0.8) 0%, rgba(18, 16, 21, 0.9) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 14px;
@@ -1348,7 +1364,7 @@ body {
 }
 
 .domain-card {
-  background: linear-gradient(170deg, rgba(26, 23, 29, 0.8) 0%, rgba(18, 16, 21, 0.9) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 10px;
@@ -1507,7 +1523,7 @@ body {
 }
 
 .scale-step-card {
-  background: linear-gradient(170deg, rgba(26, 23, 29, 0.8) 0%, rgba(18, 16, 21, 0.9) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 10px;
@@ -1570,7 +1586,7 @@ body {
 .guide-modal {
   position: fixed;
   inset: 0;
-  background: rgba(8, 7, 10, 0.9);
+  background: rgba(26, 25, 23, 0.45);
   backdrop-filter: blur(20px) saturate(140%);
   z-index: 1000;
   display: none;
@@ -1585,7 +1601,7 @@ body {
 }
 
 .guide-card {
-  background: linear-gradient(150deg, rgba(26, 22, 28, 0.96) 0%, rgba(14, 12, 16, 0.98) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid rgba(240, 179, 67, 0.4);
   border-radius: 22px;
@@ -1599,7 +1615,7 @@ body {
 
 .guide-header {
   padding: 1.35rem 1.85rem;
-  background: linear-gradient(90deg, rgba(229, 115, 83, 0.14), rgba(240, 179, 67, 0.08));
+  background: var(--bg-subtle);
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
@@ -1629,7 +1645,7 @@ body {
 }
 
 .guide-title {
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 1.55rem;
   color: var(--text-main);
   letter-spacing: 0.02em;
@@ -1648,7 +1664,7 @@ body {
 }
 
 .guide-step-card {
-  background: linear-gradient(170deg, rgba(26, 23, 29, 0.8) 0%, rgba(18, 16, 21, 0.9) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 14px;
@@ -1679,7 +1695,7 @@ body {
 
 .guide-footer {
   padding: 1.25rem 1.85rem;
-  background: rgba(14, 12, 16, 0.85);
+  background: var(--bg-surface);
   border-top: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;

@@ -6,7 +6,7 @@
   <title>MuseMeet — Autonomous Lounge Rendezvous</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -743,7 +743,7 @@
       const transitRadiusPx = 205; // 15-mile radius representation
 
       // 1. Draw Neighborhood Reference Grid & Concentric Transit Isochrones
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.strokeStyle = 'rgba(26, 25, 23, 0.08)';
       ctx.lineWidth = 1;
       for (let r of [65, 135]) {
         ctx.beginPath();
@@ -753,24 +753,24 @@
 
       // Draw Step 1: 15-Mile Transit Isochrone Circle
       if (currentFunnelStep >= 1) {
-        // Glowing 15-mile transit boundary
+        // High-contrast 15-mile transit boundary on ivory canvas
         ctx.save();
         ctx.beginPath();
         ctx.arc(elenaX, elenaY, transitRadiusPx, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(56, 189, 248, 0.035)';
+        ctx.fillStyle = 'rgba(2, 132, 199, 0.04)';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.strokeStyle = 'rgba(2, 132, 199, 0.55)';
         ctx.lineWidth = 2;
         ctx.setLineDash([6, 6]);
         ctx.stroke();
         ctx.restore();
 
-        ctx.fillStyle = 'rgba(56, 189, 248, 0.75)';
+        ctx.fillStyle = '#0284c7';
         ctx.font = 'bold 10px "JetBrains Mono"';
         ctx.fillText('15-Mile Transit Isochrone Boundary', elenaX + transitRadiusPx - 170, elenaY - transitRadiusPx + 16);
       } else {
         // Base transit circle
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.strokeStyle = 'rgba(26, 25, 23, 0.08)';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(elenaX, elenaY, transitRadiusPx, 0, Math.PI * 2);
@@ -778,7 +778,7 @@
       }
 
       // Isochrone ring labels
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fillStyle = 'rgba(92, 88, 82, 0.6)';
       ctx.font = '10px "JetBrains Mono"';
       ctx.fillText('5 mi', elenaX + 68, elenaY - 5);
       ctx.fillText('10 mi', elenaX + 138, elenaY - 5);
@@ -793,8 +793,8 @@
         { name: 'Park Slope', lat: 40.6720, lng: -73.9770 }
       ];
 
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-      ctx.font = '11px "Inter", sans-serif';
+      ctx.fillStyle = 'rgba(92, 88, 82, 0.35)';
+      ctx.font = '11px "Plus Jakarta Sans", sans-serif';
       neighborhoods.forEach(n => {
         ctx.fillText(n.name, toX(n.lng), toY(n.lat));
       });
@@ -804,34 +804,34 @@
         ctx.save();
         ctx.beginPath();
         ctx.arc(elenaX, elenaY, scanRippleRadius, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(245, 158, 11, 0.65)';
+        ctx.strokeStyle = 'rgba(200, 90, 50, 0.65)';
         ctx.lineWidth = 3;
         ctx.stroke();
 
         ctx.beginPath();
         ctx.arc(elenaX, elenaY, Math.max(0, scanRippleRadius - 20), 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(245, 158, 11, 0.25)';
+        ctx.strokeStyle = 'rgba(200, 90, 50, 0.25)';
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        ctx.fillStyle = 'rgba(245, 158, 11, 0.8)';
+        ctx.fillStyle = '#C85A32';
         ctx.font = 'bold 11px "JetBrains Mono"';
         ctx.fillText('⚡ Meta FAISS Latent Cosine Vector Scan...', elenaX - 110, elenaY + scanRippleRadius + 18);
         ctx.restore();
       }
 
       // 2. Draw Elena's Studio Anchor
-      ctx.fillStyle = '#f43f5e';
+      ctx.fillStyle = '#9F1239';
       ctx.beginPath();
       ctx.arc(elenaX, elenaY, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(244, 63, 94, 0.45)';
+      ctx.strokeStyle = 'rgba(159, 18, 57, 0.35)';
       ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.arc(elenaX, elenaY, 13, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = '#f43f5e';
+      ctx.fillStyle = '#9F1239';
       ctx.font = 'bold 11px "JetBrains Mono"';
       ctx.fillText('★ Elena (Bushwick Studio)', elenaX + 16, elenaY + 4);
 
@@ -841,48 +841,48 @@
         const x = toX(u.lng);
         const y = toY(u.lat);
 
-        let color = 'rgba(255, 255, 255, 0.3)';
+        let color = 'rgba(92, 88, 82, 0.35)';
         let radius = 3;
 
         if (currentFunnelStep === 0) {
           // All 250 dots scattered across NYC
-          color = 'rgba(255, 255, 255, 0.4)';
+          color = 'rgba(92, 88, 82, 0.35)';
           radius = 3.5;
         } else if (currentFunnelStep === 1) {
           // Step 1: Draws a 15-mile transit radius circle. 188 dots fade to gray (leaving 62 candidates).
           if (u.p1a) {
-            color = '#38bdf8'; // Vibrant cyan for the 62 surviving candidates
+            color = '#0284c7'; // Vibrant sky/blue for surviving candidates
             radius = 4.5;
           } else {
-            color = 'rgba(100, 116, 139, 0.28)'; // 188 dots faded to gray
+            color = 'rgba(140, 134, 126, 0.22)'; // 188 dots faded
             radius = 2.2;
           }
         } else if (currentFunnelStep === 2) {
-          // Step 2: Meta FAISS coarse vector scan ripples across remaining dots, highlighting Top 12 in amber.
+          // Step 2: Meta FAISS coarse vector scan ripples across remaining dots, highlighting Top 12 in amber/terracotta.
           if (u.p1b) {
-            color = '#f59e0b'; // Luminous AMBER for Top 12
+            color = '#C85A32'; // Terracotta for Top 12
             radius = 6;
           } else if (u.p1a) {
-            color = 'rgba(56, 189, 248, 0.25)'; // Remaining 50 candidates
+            color = 'rgba(2, 132, 199, 0.3)'; // Remaining 50 candidates
             radius = 2.8;
           } else {
-            color = 'rgba(100, 116, 139, 0.15)'; // Faded 188
+            color = 'rgba(140, 134, 126, 0.15)'; // Faded 188
             radius = 1.8;
           }
         } else if (currentFunnelStep === 3) {
           // Step 3: Pareto router selects Top 3 finalists:
-          // Julian in emerald (#10b981), Marcus in amber (#f59e0b), David in blue (#3b82f6)
+          // Julian in emerald (#2D6A4F), Marcus in amber (#B45309), David in blue (#2563EB)
           if (u.fin === 1) {
-            color = '#10b981'; // Julian in emerald
+            color = '#2D6A4F'; // Julian in emerald
             radius = 8.5;
           } else if (u.fin === 2) {
-            color = '#f59e0b'; // Marcus in amber
+            color = '#B45309'; // Marcus in amber
             radius = 7.5;
           } else if (u.fin === 3) {
-            color = '#3b82f6'; // David in blue
+            color = '#2563EB'; // David in blue
             radius = 7.0;
           } else if (u.p1b) {
-            color = 'rgba(245, 158, 11, 0.25)';
+            color = 'rgba(200, 90, 50, 0.25)';
             radius = 3.2;
           } else {
             color = 'rgba(100, 116, 139, 0.12)';
@@ -1458,7 +1458,7 @@
         <h2><span>🗺️</span> Metropolitan Cohort Funnel (250 Local NYC Pool)</h2>
         <p>Eliminating O(N²) Scaling: 250 Local Candidates → 15-mi Transit Barrier (62) → Meta FAISS Vector Scan (12) → Top 3 Finalists (&lt;0.3ms)</p>
       </div>
-      <button class="action-btn" onclick="closeFunnelModal()" style="background: rgba(255,255,255,0.06); color: var(--text-main);">
+      <button class="action-btn" onclick="closeFunnelModal()" style="background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-strong);">
         ✕ Return to Lounge
       </button>
     </div>
@@ -1478,7 +1478,7 @@
         <span>Step 3: Pareto Router (Top 3 Finalists)</span>
       </button>
 
-      <button class="funnel-autorun-btn" onclick="autoRunFunnel()" style="box-shadow: 0 0 15px rgba(245, 158, 11, 0.35);">
+      <button class="funnel-autorun-btn" onclick="autoRunFunnel()" style="box-shadow: 0 2px 6px rgba(74, 29, 62, 0.2);">
         <span>▶</span> Run Funnel
       </button>
     </div>
@@ -1487,13 +1487,13 @@
       <!-- Interactive Spatial Canvas -->
       <div class="canvas-card">
         <div class="canvas-overlay-legend">
-          <div class="legend-item"><span class="legend-dot" style="background: #f43f5e; box-shadow: 0 0 6px #f43f5e;"></span> <span>Elena (Bushwick Studio)</span></div>
-          <div class="legend-item"><span class="legend-dot" style="background: #64748b;"></span> <span>188 Faded (Barrier Excluded)</span></div>
-          <div class="legend-item"><span class="legend-dot" style="background: #38bdf8;"></span> <span>62 Surviving (&le;15 mi transit)</span></div>
-          <div class="legend-item"><span class="legend-dot" style="background: #f59e0b; box-shadow: 0 0 6px #f59e0b;"></span> <span>Top 12 (Meta FAISS Vector Scan)</span></div>
-          <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> <span>🥇 #1 Julian (Emerald)</span></div>
-          <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> <span>🥈 #2 Marcus (Amber)</span></div>
-          <div class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span> <span>🥉 #3 David (Blue)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #9F1239;"></span> <span>Elena (Bushwick Studio)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #8C867E;"></span> <span>188 Faded (Barrier Excluded)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #0284C7;"></span> <span>62 Surviving (&le;15 mi transit)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #C85A32;"></span> <span>Top 12 (Meta FAISS Vector Scan)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #2D6A4F;"></span> <span>🥇 #1 Julian (Emerald)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #B45309;"></span> <span>🥈 #2 Marcus (Amber)</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background: #2563EB;"></span> <span>🥉 #3 David (Blue)</span></div>
         </div>
         <canvas id="funnelCanvas" width="700" height="480"></canvas>
         <div id="canvasTooltip" class="tooltip-box"></div>

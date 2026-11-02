@@ -5,51 +5,68 @@
    ========================================================================== */
 
 :root {
-  /* --- Photonic Surface Elevations (Deep Velvet Obsidian with Warm Espresso Rolloff) --- */
-  --surface-0: oklch(12.5% 0.012 45);        /* #0c0b0d: Base canvas */
-  --surface-0-hex: #0c0b0d;
-  --surface-1: oklch(16% 0.014 42);          /* #141215: Base container cards */
-  --surface-1-hex: #141215;
-  --surface-2: oklch(19.5% 0.016 40);        /* #1c191e: Elevated cards & metrics */
-  --surface-2-hex: #1c191e;
-  --surface-3: oklch(23.5% 0.018 38);        /* #262229: Interactive & hover states */
-  --surface-3-hex: #262229;
-  --surface-4: oklch(28% 0.02 38);           /* #322b36: Prominent badges & modals */
-  --surface-4-hex: #322b36;
+  /* Surfaces: Warm Alabaster, Linen & Crisp Ivory (Zero cold blue-grays) */
+  --bg-canvas: #FAF7F2;           /* Warm editorial linen background */
+  --bg-surface: #FFFFFF;          /* Crisp white card surface */
+  --bg-subtle: #F3EFE6;           /* Soft sand/stone secondary container & pill fill */
+  --bg-elevated: #FDFBF7;         /* Slightly warm modal/drawer canvas */
 
-  /* --- Translucent Glass & Specular Photonic Borders (Top-lit 0deg model) --- */
-  --card-bg: rgba(22, 19, 25, 0.78);
-  --card-bg-elevated: rgba(28, 24, 32, 0.88);
-  --card-border: rgba(255, 235, 215, 0.07);
-  --border-specular: rgba(255, 240, 225, 0.14); /* Directional top edge specular rim */
-  --border-subtle: rgba(255, 235, 215, 0.07);
-  --border-active: rgba(240, 179, 67, 0.4);
+  --surface-0: #FAF7F2;
+  --surface-0-hex: #FAF7F2;
+  --surface-1: #FFFFFF;
+  --surface-1-hex: #FFFFFF;
+  --surface-2: #FDFBF7;
+  --surface-2-hex: #FDFBF7;
+  --surface-3: #F3EFE6;
+  --surface-3-hex: #F3EFE6;
+  --surface-4: #FFFFFF;
+  --surface-4-hex: #FFFFFF;
 
-  /* --- Ambient Photonic Shadows --- */
-  --shadow-sm: 0 2px 8px -1px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 8px 24px -2px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 240, 225, 0.06);
-  --shadow-lg: 0 18px 48px -4px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 240, 225, 0.08);
+  --bg: #FAF7F2;
+  --card-bg: #FFFFFF;
+  --card-bg-elevated: #FDFBF7;
+  --card-border: #E8E2D8;
+  --border-specular: #D5CCC0;
+  --border-subtle: #E8E2D8;
+  --border-strong: #D5CCC0;
+  --border-active: #C85A32;
 
-  /* --- Analog Intimacy Palette (35mm Film, Warm Candlelight, Terracotta) --- */
-  --accent-terracotta: oklch(72% 0.145 42);   /* #e57353: Intimacy highlight & Elena signal */
-  --accent-terracotta-glow: rgba(229, 115, 83, 0.22);
-  --accent-amber: oklch(80% 0.135 75);       /* #f0b343: Candlelight amber / Compatibility score */
-  --accent-amber-glow: rgba(240, 179, 67, 0.24);
-  --accent-gold: var(--accent-amber);
+  /* Photonic Ambient Occlusion Shadows (Soft & Tactile) */
+  --shadow-sm: 0 1px 3px rgba(26, 25, 23, 0.04), 0 1px 2px rgba(26, 25, 23, 0.02);
+  --shadow-md: 0 4px 14px rgba(26, 25, 23, 0.06), 0 1px 3px rgba(26, 25, 23, 0.03);
+  --shadow-lg: 0 12px 28px -6px rgba(26, 25, 23, 0.08), 0 1px 4px rgba(26, 25, 23, 0.03);
+  --shadow-card: 0 2px 12px rgba(26, 25, 23, 0.04), 0 1px 3px rgba(26, 25, 23, 0.02);
+  --shadow-elevated: 0 12px 28px -6px rgba(26, 25, 23, 0.08), 0 1px 4px rgba(26, 25, 23, 0.03);
 
-  /* --- Sovereign Computation Palette (AirGap Verification, Beryllium Sage, Iris) --- */
-  --accent-emerald: oklch(76% 0.12 155);     /* #45c48b: Cryptographic pass & Julian signal */
-  --accent-emerald-glow: rgba(69, 196, 139, 0.22);
-  --accent-rose: oklch(68% 0.16 28);         /* #dc5353: Guardrail abort & dealbreaker */
-  --accent-rose-glow: rgba(220, 83, 83, 0.24);
-  --accent-violet: oklch(74% 0.09 300);      /* #a697c8: Heather iris & subtext */
-  --accent-violet-glow: rgba(166, 151, 200, 0.2);
+  /* Analog Intimacy & Brand Palette: Hinge Deep Plum & Warm Terracotta */
+  --accent-primary: #4A1D3E;      /* Hinge signature deep plum/aubergine */
+  --accent-primary-soft: #F5EBF2; /* Delicate plum wash for active pills & tags */
+  --accent-secondary: #C85A32;    /* Warm terracotta / rust */
+  --accent-secondary-soft: #FBF0EB;
+  --accent-terracotta: #C85A32;
+  --accent-terracotta-glow: rgba(200, 90, 50, 0.12);
+  --accent-amber: #B45309;        /* Warm ochre */
+  --accent-amber-glow: rgba(180, 83, 9, 0.12);
+  --accent-gold: #B45309;
+  --accent-violet: #4A1D3E;
+  --accent-violet-glow: rgba(74, 29, 62, 0.12);
 
-  /* --- APCA-Compliant Typography Hierarchy (Effortless Contrast on Dark Canvas) --- */
-  --text-main: oklch(96% 0.008 75);          /* #f6f3ee: Warm Alabaster (APCA Lc 94+) */
-  --text-muted: oklch(80% 0.015 65);         /* #c9c1b9: Warm Parchment (APCA Lc 74+) */
-  --text-subtle: oklch(62% 0.018 58);        /* #948b83: Muted Linen (APCA Lc 52+) */
-  --text-dim: oklch(46% 0.016 55);           /* #6b635c: Structural borders & captions */
+  /* Sovereign Computation Palette */
+  --accent-emerald: #2D6A4F;      /* Forest/Sage green: Verified Match, High LSM, Passed AirGap */
+  --accent-emerald-soft: #EBF4EE;
+  --accent-emerald-glow: rgba(45, 106, 79, 0.12);
+  --accent-rose: #9F1239;         /* Deep cranberry/wine: Guardrail abort & dealbreaker */
+  --accent-rose-soft: #FFE4E6;
+  --accent-rose-glow: rgba(159, 18, 57, 0.12);
+
+  /* Typography / Text Colors: Deep Charcoal Ink */
+  --text-primary: #1A1917;        /* High-contrast deep warm charcoal */
+  --text-secondary: #5C5852;      /* Warm stone for labels, subtitles, metadata */
+  --text-tertiary: #8C867E;       /* Muted taupe for timestamps, disabled, borders */
+  --text-main: #1A1917;
+  --text-muted: #5C5852;
+  --text-subtle: #8C867E;
+  --text-dim: #8C867E;
 }
 
 * {
@@ -64,7 +81,7 @@ body {
     radial-gradient(ellipse 70% 45% at 50% -5%, rgba(229, 115, 83, 0.08) 0%, rgba(240, 179, 67, 0.03) 45%, transparent 75%),
     radial-gradient(ellipse 60% 50% at 50% 100%, rgba(69, 196, 139, 0.03) 0%, transparent 70%);
   color: var(--text-main);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
   padding: 2.5rem 1.5rem;
   display: flex;
@@ -110,7 +127,7 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   color: #120e10;
   font-size: 1.15rem;
   box-shadow: 0 4px 14px var(--accent-terracotta-glow), inset 0 1px 1px rgba(255, 255, 255, 0.35);
@@ -118,7 +135,7 @@ body {
 }
 
 .brand-title {
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 1.25rem;
   letter-spacing: 0.08em;
   font-weight: 700;
@@ -136,7 +153,7 @@ body {
 
 .vignette-selector {
   display: flex;
-  background: rgba(24, 20, 27, 0.7);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 9999px;
   padding: 0.25rem;
@@ -154,7 +171,7 @@ body {
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -178,7 +195,7 @@ body {
    Hero Card: Dyadic Compatibility Overview & Score Ring
    -------------------------------------------------------------------------- */
 .hero-card {
-  background: linear-gradient(165deg, rgba(28, 24, 31, 0.85) 0%, rgba(18, 16, 21, 0.95) 100%);
+  background: var(--bg-surface);
   backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
@@ -249,7 +266,7 @@ body {
 }
 
 .hero-title {
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 2.2rem;
   line-height: 1.2;
   font-weight: 700;
@@ -339,7 +356,7 @@ body {
 }
 
 .telemetry-card {
-  background: linear-gradient(170deg, rgba(26, 23, 29, 0.8) 0%, rgba(18, 16, 21, 0.9) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 15px;
@@ -396,7 +413,7 @@ body {
 }
 
 .aesthetic-card {
-  background: linear-gradient(170deg, rgba(26, 23, 30, 0.85) 0%, rgba(18, 16, 21, 0.95) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 16px;
@@ -438,7 +455,7 @@ body {
 }
 
 .premortem-card {
-  background: linear-gradient(170deg, rgba(26, 23, 30, 0.85) 0%, rgba(18, 16, 21, 0.95) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 16px;
@@ -523,7 +540,7 @@ body {
 }
 
 .column-card {
-  background: linear-gradient(170deg, rgba(26, 23, 30, 0.85) 0%, rgba(18, 16, 21, 0.95) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 16px;
@@ -578,7 +595,7 @@ body {
    Icebreaker Starters Section
    -------------------------------------------------------------------------- */
 .section-title {
-  font-family: 'Cinzel', serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -595,7 +612,7 @@ body {
 }
 
 .icebreaker-card {
-  background: linear-gradient(170deg, rgba(26, 23, 29, 0.8) 0%, rgba(18, 16, 21, 0.9) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 14px;
@@ -647,7 +664,7 @@ body {
    Grounded Tactile Itinerary (Vinyl, Darkroom, Coffee Warmth)
    -------------------------------------------------------------------------- */
 .itinerary-card {
-  background: linear-gradient(150deg, rgba(38, 28, 33, 0.8) 0%, rgba(20, 17, 23, 0.94) 100%);
+  background: var(--bg-surface);
   border: 1px solid rgba(229, 115, 83, 0.25);
   border-top: 1px solid rgba(240, 179, 67, 0.45);
   border-radius: 18px;
@@ -713,7 +730,7 @@ body {
 }
 
 .panel-card {
-  background: linear-gradient(170deg, rgba(28, 24, 30, 0.82) 0%, rgba(18, 16, 21, 0.94) 100%);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-top: 1px solid var(--border-specular);
   border-radius: 16px;
@@ -734,7 +751,7 @@ body {
   position: relative;
   height: 230px;
   overflow: hidden;
-  background: #110e13;
+  background: var(--bg-subtle);
 }
 
 .panel-img {
@@ -752,7 +769,7 @@ body {
   position: absolute;
   top: 0.85rem;
   left: 0.85rem;
-  background: rgba(14, 12, 16, 0.82);
+  background: var(--bg-surface);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 235, 215, 0.15);
   color: var(--text-main);
