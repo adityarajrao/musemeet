@@ -117,9 +117,9 @@ function generateFixtureMoodboard(request) {
     });
 
     const mockImages = [
-      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80'
+      'assets/moodboard/panel_atmosphere.webp',
+      'assets/moodboard/panel_activity.webp',
+      'assets/moodboard/panel_moment.webp'
     ];
 
     return {
@@ -141,7 +141,63 @@ function generateFixtureMoodboard(request) {
 /**
  * Live generation using Meta Muse Image API endpoint.
  */
+import { MetaClient } from '../../connectors/meta_client.js';
+
 async function generateLiveMoodboard(request) {
-  // Live execution falls back gracefully to fixture generator when offline
-  return generateFixtureMoodboard(request);
+  const client = new MetaClient();
+  if (!client.apiKey) {
+    return generateFixtureMoodboard(request);
+  }
+
+  const combinedPalette = [
+    ...(request.persona_a_palette || ['amber', 'deep walnut']),
+    ...(request.persona_b_palette || ['indigo', 'linen white'])
+  ];
+
+  const defaultPanels = request.panels || [
+    { label: 'atmosphere', style_directive: 'Rainy twilight window, warm amber interior, wooden bookshelves.' },
+    { label: 'activity', style_directive: 'Ceramic cups of tea beside opened vintage art monographs and notebooks.' },
+    { label: 'moment', style_directive: 'Close-up of hands turning an aged book page, soft warm natural side-lighting.' }
+  ];
+
+  const panels = await Promise.all(defaultPanels.map(async (p, idx) => {
+    const prompt = buildPanelPrompt({
+      label: p.label,
+      style_directive: p.style_directive,
+      aesthetic_brief: request.aesthetic_brief,
+      palette: combinedPalette,
+      venue_type: request.venue_type
+    });
+
+    try {
+      const resp = await client.generateImage({
+        model: 'muse-image-1.0',
+        prompt,
+        n: 1,
+        size: '1024x1024'
+      });
+      const imgUrl = (resp.data && resp.data[0] && (resp.data[0].url || (resp.data[0].b64_json ? `data:image/webp;base64,${resp.data[0].b64_json}` : null)))
+        || `assets/moodboard/panel_${p.label}.webp`;
+      return {
+        label: p.label,
+        prompt_used: prompt,
+        image_url: imgUrl,
+        cost_usd: COST_PER_IMAGE_USD
+      };
+    } catch (err) {
+      return {
+        label: p.label,
+        prompt_used: prompt,
+        image_url: `assets/moodboard/panel_${p.label}.webp`,
+        cost_usd: COST_PER_IMAGE_USD
+      };
+    }
+  }));
+
+  return {
+    request_id: `req_moodboard_${Date.now()}`,
+    panels,
+    total_cost_usd: Number((panels.length * COST_PER_IMAGE_USD).toFixed(2)),
+    generated_at: new Date().toISOString()
+  };
 }

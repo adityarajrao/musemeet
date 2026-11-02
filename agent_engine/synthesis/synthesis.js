@@ -237,9 +237,11 @@ export function synthesizeDossierDynamically({ transcript, verdict, persona_a, p
         'Mutual preference for intimate, low-stimulation cultural venues over loud commercial nightlife.'
       ],
       icebreakers: [
-        'What is the most memorable handwritten marginal note you have ever discovered in a secondhand book?',
-        'Why do you think analog physical media commands so much more emotional presence than digital streams?',
-        'The one neighborhood cultural spot in the city that feels completely isolated from the modern rush.'
+        persona_a?.authentic_passions?.[0] && persona_b?.authentic_passions?.[0]
+          ? `Compare notes on ${persona_a.authentic_passions[0]} and ${persona_b.authentic_passions[0]}: where do your craft philosophies converge?`
+          : 'What is the most memorable handwritten marginal note you have ever discovered in a secondhand book?',
+        persona_a?.conversation_seeds?.[0] || 'Why do you think analog physical media commands so much more emotional presence than digital streams?',
+        persona_b?.conversation_seeds?.[0] || 'The one neighborhood cultural spot in the city that feels completely isolated from the modern rush.'
       ],
       first_date_itinerary: {
         location_type: matchedVenue ? `${matchedVenue.neighborhood}, ${matchedVenue.city}` : 'Independent Cultural District',

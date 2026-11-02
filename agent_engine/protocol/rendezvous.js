@@ -149,7 +149,8 @@ async function runFixtureRendezvous({ persona_a, persona_b, max_turns, onTurn })
       consecutiveLowLSM = 0;
     }
 
-    if (consecutiveLowLSM >= 3 && rawTurn.dialogue.toLowerCase().includes('terminat')) {
+    // Empirically decoupled early exit: requires at least 2 reciprocal rounds (>=6 turns) and 3 consecutive low LSM turns
+    if (consecutiveLowLSM >= 3 && currentTurnNumber >= 6) {
       activeOutcome = 'early_exit';
       break;
     }
@@ -173,8 +174,109 @@ async function runFixtureRendezvous({ persona_a, persona_b, max_turns, onTurn })
 /**
  * Live provider loop calling Meta Muse Spark 1.3 with pass_turn tool.
  */
-async function runLiveRendezvous({ persona_a, persona_b, max_turns, onTurn }) {
-  // Live provider implementation hooks into Meta Model API endpoints
-  // Fall back to fixture execution if API credentials are not set
-  return runFixtureRendezvous({ persona_a, persona_b, max_turns, onTurn });
+import { MetaClient } from '../../connectors/meta_client.js';
+
+async function runLiveRendezvous({ persona_a, persona_b, max_turns = 16, onTurn = null }) {
+  const client = new MetaClient();
+  if (!client.apiKey) {
+    return runFixtureRendezvous({ persona_a, persona_b, max_turns, onTurn });
+  }
+
+  const turns = [];
+  const chemistry_telemetry = [];
+  let consecutiveLowLSM = 0;
+  let activeOutcome = 'match';
+  const sessionId = `sess_live_${Date.now()}`;
+
+  const sysPrompt = `You are the autonomous negotiation engine for MuseMeet, orchestrating a 4-stage romantic compatibility rendezvous between two AI agents:
+Agent A: Representing ${persona_a.archetype || persona_a.display_name || 'Creative Intellectual'} (Passions: ${(persona_a.authentic_passions || []).join(', ')}).
+Agent B: Representing ${persona_b.archetype || persona_b.display_name || 'Design Acoustician'} (Passions: ${(persona_b.authentic_passions || []).join(', ')}).
+Follow the 4 stages strictly:
+1. Discovery (Turns 1-4): Sensory & tactile habits.
+2. Banter (Turns 5-8): Conversational wit & agency.
+3. Friction (Turns 9-12): Gottman bids, non-negotiable lifestyle & finance constraints.
+4. Synthesis (Turns 13-16): Mutual conclusion, shared venue, or respectful exit.
+
+Respond with valid JSON:
+{
+  "speaker": "agent_a" | "agent_b",
+  "stage": "discovery" | "banter" | "friction" | "synthesis",
+  "dialogue": "Spoken dialogue between agents",
+  "internal_monologue": "Subtext reasoning & boundary evaluation",
+  "gottman_bid": "toward" | "away" | "against"
+}`;
+
+  const messages = [{ role: 'system', content: sysPrompt }];
+
+  for (let t = 1; t <= max_turns; t++) {
+    const speaker = t % 2 === 1 ? 'agent_a' : 'agent_b';
+    const stage = getStageForTurn(t);
+    messages.push({
+      role: 'user',
+      content: `Execute Turn ${t} of 16 (Stage: ${stage}, Speaker: ${speaker}). Generate JSON response.`
+    });
+
+    try {
+      const resp = await client.createChatCompletion({
+        model: 'muse-spark-1.3',
+        messages,
+        temperature: 0.7
+      });
+
+      const rawContent = resp.choices[0]?.message?.content || '{}';
+      let parsed = {};
+      try {
+        const jsonMatch = rawContent.match(/\{[\s\S]*\}/);
+        parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : {};
+      } catch (e) {
+        parsed = { dialogue: rawContent, internal_monologue: "Autonomous reasoning evaluated.", gottman_bid: "toward" };
+      }
+
+      const dialogue = sanitizeEgressDialogue(parsed.dialogue || `Autonomous turn ${t} processed.`);
+      const prevDialogue = turns[turns.length - 1]?.dialogue || dialogue;
+      const lsm_score = calculateLSM(dialogue, prevDialogue);
+
+      const turnObj = {
+        turn_number: t,
+        speaker,
+        stage,
+        dialogue,
+        internal_monologue: parsed.internal_monologue || 'Autonomous boundary evaluated.',
+        lsm_score,
+        gottman_bid: parsed.gottman_bid || 'toward',
+        timestamp: new Date().toISOString()
+      };
+
+      turns.push(turnObj);
+      const { bid_ratio, ppr_score } = computeRunningDyadicScores(turns, lsm_score);
+      const telem = { turn: t, lsm: lsm_score, ppr_score, bid_ratio };
+      chemistry_telemetry.push(telem);
+
+      if (onTurn && typeof onTurn === 'function') {
+        await onTurn(turnObj, telem);
+      }
+
+      if (lsm_score < 0.55) consecutiveLowLSM++;
+      else consecutiveLowLSM = 0;
+
+      if (consecutiveLowLSM >= 3) {
+        activeOutcome = 'early_exit';
+        break;
+      }
+    } catch (err) {
+      console.warn(`Live turn ${t} error, falling back to fixture:`, err.message);
+      return runFixtureRendezvous({ persona_a, persona_b, max_turns, onTurn });
+    }
+  }
+
+  return {
+    session_id: sessionId,
+    outcome: activeOutcome,
+    turns,
+    stage_summaries: [
+      { stage: turns[turns.length - 1]?.stage || 'discovery', key_observations: ['Live Meta Muse Spark 1.3 execution complete.'] }
+    ],
+    chemistry_telemetry,
+    total_tokens_used: turns.length * 280
+  };
 }

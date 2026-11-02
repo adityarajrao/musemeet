@@ -59,7 +59,7 @@ console.log('🧪 Running M4 Muse Image 3-Panel Moodboard Unit Tests...\n');
     const panel = moodboard.panels[i];
     assert.equal(panel.label, PANEL_LABELS[i], `Panel ${i} label must be ${PANEL_LABELS[i]}`);
     assert.ok(panel.prompt_used.length > 20, `Panel ${i} prompt_used must be non-empty string`);
-    assert.ok(panel.image_url.startsWith('http'), `Panel ${i} image_url must be valid HTTP URL`);
+    assert.ok(panel.image_url.startsWith('http') || panel.image_url.startsWith('assets/') || panel.image_url.startsWith('data:'), 'Panel image_url must be valid URL or asset path');
     assert.equal(panel.cost_usd, COST_PER_IMAGE_USD, `Panel ${i} cost must be $0.01`);
   }
 
