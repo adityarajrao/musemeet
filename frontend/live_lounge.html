@@ -1732,6 +1732,142 @@
       opacity: 0.5;
     }
 
+  
+    /* --- JUDGE ONBOARDING GUIDE MODAL --- */
+    .guide-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 11, 0.88);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      animation: fadeIn 0.25s ease forwards;
+    }
+
+    .guide-modal.active {
+      display: flex;
+    }
+
+    .guide-card {
+      background: linear-gradient(145deg, rgba(16, 20, 32, 0.95), rgba(9, 11, 18, 0.98));
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 20px;
+      max-width: 780px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(245, 158, 11, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .guide-header {
+      padding: 1.25rem 1.75rem;
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.15), rgba(139, 92, 246, 0.1));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .guide-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .guide-body {
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .guide-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--text-main);
+      letter-spacing: 0.02em;
+    }
+
+    .guide-lead {
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--text-muted);
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    .guide-step-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .step-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--accent-gold);
+    }
+
+    .step-card-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .step-card-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .guide-footer {
+      padding: 1.1rem 1.75rem;
+      background: rgba(10, 12, 19, 0.7);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .guide-btn-primary {
+      background: linear-gradient(135deg, var(--accent-gold), #d97706);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.86rem;
+      padding: 0.6rem 1.4rem;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .guide-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+    }
+
   </style>
 
 </head>
@@ -1754,6 +1890,10 @@
       </select>
 
       
+      <button id="guideBtn" class="action-btn" onclick="openGuideModal()" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(244, 63, 94, 0.18)); color: #fde68a; border-color: rgba(245, 158, 11, 0.5); font-weight: 600; box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);">
+        <span>ℹ️</span> <span>Judge Guide</span>
+      </button>
+
       <button id="moatBtn" class="action-btn" onclick="openMoatModal()" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(59, 130, 246, 0.22)); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.5); font-weight: 600; box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);">
         <span>🧬</span> <span>Inspect Dimensional Moat</span>
       </button>
@@ -3614,6 +3754,29 @@
 
   <script>
     // --- DIMENSIONAL MOAT INSPECTOR CONTROLLERS ---
+    
+    function openGuideModal() {
+      document.getElementById('guideModal').classList.add('active');
+    }
+
+    function closeGuideModal(startStream = false) {
+      document.getElementById('guideModal').classList.remove('active');
+      const check = document.getElementById('dontShowGuideCheck');
+      if (check && check.checked) {
+        sessionStorage.setItem('musemeet_guide_dismissed', 'true');
+      }
+      if (startStream && !isPlaying) {
+        togglePlay();
+      }
+    }
+
+    // Auto-open guide modal on first visit in session
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!sessionStorage.getItem('musemeet_guide_dismissed')) {
+        setTimeout(openGuideModal, 350);
+      }
+    });
+
     function openMoatModal() {
       document.getElementById('moatModal').classList.add('active');
     }
@@ -3672,6 +3835,78 @@
       });
     }
   </script>
+
+
+  <!-- Judge Onboarding & Evaluation Guide Modal -->
+  <div id="guideModal" class="guide-modal">
+    <div class="guide-card">
+      <div class="guide-header">
+        <span class="guide-badge">Meta Global AI Hackathon 2026 · Indie Track</span>
+        <button class="modal-close-btn" onclick="closeGuideModal()" style="background:none; border:none; color:var(--text-subtle); font-size:1.2rem; cursor:pointer;">✕</button>
+      </div>
+      <div class="guide-body">
+        <div>
+          <h2 class="guide-title">Welcome to MuseMeet</h2>
+          <p class="guide-lead">
+            <strong>The Sovereign Agentic Dating Protocol:</strong> Instead of humans enduring endless swiping and repetitive interview-style first dates, two autonomous Meta Muse AI agents negotiate romantic compatibility on their behalf in a local, AirGap-protected lounge across 4 empirical stages.
+          </p>
+        </div>
+
+        <div class="guide-grid">
+          <div class="guide-step-card">
+            <span class="step-badge">1. AUTONOMOUS LOUNGE</span>
+            <div class="step-card-title">Mascot Rendezvous Deck</div>
+            <div class="step-card-desc">
+              Watch Elena's and the Candidate's Meta Muse 3D plush mascots converse in real time. Dynamic aura rings pulse while speaking, with circular mascot thumbnails beside dialogue bubbles.
+            </div>
+          </div>
+
+          <div class="guide-step-card">
+            <span class="step-badge">2. RELATIONAL TELEMETRY</span>
+            <div class="step-card-title">LSM & Gottman Metrics</div>
+            <div class="step-card-desc">
+              Live Ireland-Pennebaker Linguistic Style Matching (LSM) and Gottman bid responsiveness tracking. Toggle between the live sparkline and the 7-domain heptagon radar.
+            </div>
+          </div>
+
+          <div class="guide-step-card">
+            <span class="step-badge">3. ZERO-LEAKAGE SECURITY</span>
+            <div class="step-card-title">AirGap Sovereign Vault</div>
+            <div class="step-card-desc">
+              Click <strong>"Simulate Adversarial Injection"</strong> to witness our kernel-level security intercept raw calendar, phone, and location probes without network egress.
+            </div>
+          </div>
+
+          <div class="guide-step-card">
+            <span class="step-badge">4. 128D DIMENSIONAL MOAT</span>
+            <div class="step-card-title">5-Stage Metropolitan Funnel</div>
+            <div class="step-card-desc">
+              Click <strong>"[🧬 Inspect Dimensional Moat]"</strong> to benchmark our 128D latent topology filtering 2,500 candidates down to top 3 in <strong>8.77ms</strong>.
+            </div>
+          </div>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.78rem; color: #a7f3d0; line-height: 1.45;">
+          <strong>🎯 Suggested 60-Second Evaluation Path:</strong>
+          Click <em>"🚀 Begin Live Rendezvous"</em> below to watch Pair 1 complete a 92% match, or switch to Pair 2 (Marcus) to see a graceful Stage 3 abort, or Pair 3 (David) for an early conversational flatline exit.
+        </div>
+      </div>
+      <div class="guide-footer">
+        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; color:var(--text-subtle); cursor:pointer;">
+          <input type="checkbox" id="dontShowGuideCheck" style="accent-color: var(--accent-gold);">
+          Do not show automatically again this session
+        </label>
+        <div style="display:flex; gap:0.75rem;">
+          <a href="dossier.html?scenario=bookshop" class="action-btn" style="text-decoration:none; display:inline-flex; align-items:center; background:rgba(255,255,255,0.05); color:var(--text-main); border-color:var(--card-border);">
+            View Dossier →
+          </a>
+          <button class="guide-btn-primary" onclick="closeGuideModal(true)">
+            🚀 Begin Live Rendezvous
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
