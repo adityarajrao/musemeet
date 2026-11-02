@@ -983,12 +983,12 @@
           },
           {
             label: "activity",
-            image_url: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80",
+            image_url: "assets/moodboard/marcus_activity.webp",
             prompt: "Vintage 16mm film projector whirring in a dark projection booth, illuminated dust motes in the light beam, analog warmth."
           },
           {
             label: "moment",
-            image_url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80",
+            image_url: "assets/moodboard/marcus_moment.webp",
             prompt: "Single luggage duffel bag packed by a doorway, soft departure light, quiet bittersweet aesthetic."
           }
         ]
@@ -1040,12 +1040,12 @@
           },
           {
             label: "activity",
-            image_url: "https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1200&q=80",
+            image_url: "assets/moodboard/david_activity.webp",
             prompt: "Empty stopwatch on glass table, precise 15-minute intervals, sharp monochrome contrast."
           },
           {
             label: "moment",
-            image_url: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80",
+            image_url: "assets/moodboard/david_moment.webp",
             prompt: "Divided frame: cold gray digital display contrasting with warm darkroom red safelight, disconnected and distant."
           }
         ]
@@ -1057,7 +1057,10 @@
 
       // Update Active Selector Button
       document.querySelectorAll('.vignette-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('onclick').includes(name));
+        const onClickAttr = btn.getAttribute('onclick');
+        if (onClickAttr) {
+          btn.classList.toggle('active', onClickAttr.includes(name));
+        }
       });
 
       // Update Hero Header
