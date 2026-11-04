@@ -154,19 +154,41 @@
   <!-- Muse Autonomous Rendezvous Stage (SPECs 1 & 4) -->
   <div class="muse-rendezvous-stage" id="museRendezvousStage">
     <!-- Center Kinetic Harmonic Wave Canvas -->
-    <canvas id="kineticWaveCanvas" class="kinetic-wave-canvas"></canvas>
+    <!-- Canal Backdrop & Dynamic Subtle Dotted Vibe Bridge -->
+    <div class="vibe-canal-backdrop">
+      <svg id="vibeBridgeSvg" class="vibe-bridge-svg" viewBox="0 0 1000 80" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="vibeGradPositive" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.75" />
+            <stop offset="50%" stop-color="#D97706" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#2D6A4F" stop-opacity="0.75" />
+          </linearGradient>
+          <linearGradient id="vibeGradWarning" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#E11D48" stop-opacity="0.75" />
+            <stop offset="50%" stop-color="#DC2626" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#991B1B" stop-opacity="0.75" />
+          </linearGradient>
+          <filter id="vibeGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        <path id="vibeBridgePathTrack" class="vibe-track-path" d="M 50,42 Q 500,10 950,42" />
+        <path id="vibeBridgePathBeam" class="vibe-beam-path" d="M 50,42 Q 500,10 950,42" />
+      </svg>
+      <div id="vibeParticleOverlay" class="vibe-particle-overlay"></div>
+      <div id="vibeMismatchBadge" class="vibe-mismatch-badge">🛑 Vibe Mismatch</div>
+      <canvas id="kineticWaveCanvas" class="kinetic-wave-canvas" style="display:none;"></canvas>
+    </div>
 
-    <!-- Left Spatial Node: Elena's Muse (280px) -->
-    <div id="spatialNodeA" class="spatial-node node-left speaking">
+    <!-- Left Spatial Node: Elena's Muse Mascot (Authentic Animated Card) -->
+    <div id="spatialNodeA" class="spatial-node node-left">
       <div id="spatialHaloA" class="spatial-halo"></div>
-      <div class="spatial-canvas-container" onclick="pokeMuse('agent_a', event)" title="👋 Click to interact with Elena's Muse">
-        <canvas id="avatarCanvasA" class="spatial-agent-canvas" width="108" height="108"></canvas>
-      </div>
       
-      <!-- Glassmorphic Pedestal Pill (Preserving ID museCardA!) -->
-      <div id="museCardA" class="pedestal-pill card-a active-speaker" onclick="pokeMuse('agent_a', event)">
+      <!-- Authentic Animated Avatar Card -->
+      <div id="museCardA" class="muse-avatar-card card-a active-speaker muse-speaking" onclick="pokeMuse('agent_a', event)" title="👋 Click to interact with Elena's Muse">
         <div id="museQuipA" class="muse-quip-bubble quip-left"></div>
-        <div class="muse-avatar-wrapper" style="display:none;">
+        <div class="muse-avatar-wrapper">
           <img id="museAvatarImgA" src="assets/elena_muse.jpg" alt="Elena's Muse" class="muse-avatar-img">
           <div id="museStatusPulseA" class="muse-pulse-ring"></div>
         </div>
@@ -179,7 +201,6 @@
             </span>
           </div>
           <div class="muse-subtitle">Architect & Sound Artist · Manhattan</div>
-
         </div>
       </div>
     </div>
@@ -211,15 +232,12 @@
       </div>
     </div>
 
-    <!-- Right Spatial Node: Julian's Muse (280px) -->
-    <div id="spatialNodeB" class="spatial-node node-right listening">
+    <!-- Right Spatial Node: Candidate's Muse Mascot (Authentic Animated Card) -->
+    <div id="spatialNodeB" class="spatial-node node-right">
       <div id="spatialHaloB" class="spatial-halo"></div>
-      <div class="spatial-canvas-container" onclick="pokeMuse('agent_b', event)" title="👋 Click to interact with Candidate's Muse">
-        <canvas id="avatarCanvasB" class="spatial-agent-canvas" width="108" height="108"></canvas>
-      </div>
 
-      <!-- Glassmorphic Pedestal Pill (Preserving ID museCardB!) -->
-      <div id="museCardB" class="pedestal-pill card-b listening" onclick="pokeMuse('agent_b', event)">
+      <!-- Authentic Animated Avatar Card -->
+      <div id="museCardB" class="muse-avatar-card card-b listening muse-listening" onclick="pokeMuse('agent_b', event)" title="👋 Click to interact with Candidate's Muse">
         <div id="museQuipB" class="muse-quip-bubble quip-right"></div>
         <div class="muse-info" style="align-items: flex-end; text-align: right;">
           <div class="muse-title-row" style="justify-content: flex-end;">
@@ -227,22 +245,17 @@
             <span id="museNameB" class="muse-name">Julian's Muse</span>
           </div>
           <div id="museSubtitleB" class="muse-subtitle">Industrial Designer & Acoustician · Greenpoint</div>
-<span id="museCharmBadgeB" style="display:none;"></span>
+          <span id="museCharmBadgeB" style="display:none;"></span>
         </div>
-        <div class="muse-avatar-wrapper" style="display:none;">
+        <div class="muse-avatar-wrapper">
           <img id="museAvatarImgB" src="assets/julian_muse.jpg" alt="Candidate's Muse" class="muse-avatar-img">
           <div id="museStatusPulseB" class="muse-pulse-ring"></div>
         </div>
       </div>
     </div>
 
-    <!-- Hidden / Fallback Legacy IDs -->
-    <div class="vibe-canal-backdrop" style="display:none; pointer-events:none;">
-      <canvas id="muse-3d-stage" class="muse-3d-canvas" style="display:none;"></canvas>
-      <svg id="vibeBridgeSvg"><path id="vibeBridgePathTrack"/><path id="vibeBridgePathBeam"/></svg>
-      <div id="vibeParticleOverlay"></div>
-      <div id="vibeMismatchBadge"></div>
-    </div>
+    <!-- Hidden Legacy Fallbacks -->
+    <canvas id="muse-3d-stage" class="muse-3d-canvas" style="display:none;"></canvas>
 
     <!-- SPEC 4: Turn 16 Stage 4 Synthesis Payoff Card -->
     <div id="synthesisDossierPayoff" class="synthesis-dossier-payoff" style="display: none;">
@@ -448,7 +461,7 @@
     </section>
   </div>
 
-  <!-- Completion & Transition Footer -->
+  <!-- Completion & Transition Footer (Translucent Frosted Glass) -->
   <footer id="finishBar" class="finish-bar">
     <div class="verdict-announce">
       <span id="finishBadge" class="verdict-badge verdict-match">
@@ -458,10 +471,15 @@
         Interaction synthesized by Neutral Moderator. 92% Dyadic Resonance verified.
       </span>
     </div>
-    <a id="dossierLink" href="dossier.html?scenario=bookshop" class="dossier-nav-btn">
-      <span>View Explainable Dossier</span>
-      <span>→</span>
-    </a>
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <a id="dossierLink" href="dossier.html?scenario=bookshop" class="dossier-nav-btn">
+        <span>View Explainable Dossier</span>
+        <span>→</span>
+      </a>
+      <button class="action-btn" onclick="toggleFinishBar(false)" title="Dismiss bar to view telemetry underneath" style="padding: 0.32rem 0.65rem; font-size: 0.75rem; background: rgba(0,0,0,0.04); border: 1px solid var(--border-subtle); border-radius: 6px; cursor: pointer; color: var(--text-muted);">
+        ✕
+      </button>
+    </div>
   </footer>
 
   <script>
@@ -1539,31 +1557,6 @@
     if (jA && jB && threeStage.camera) {
       const stageEl = document.getElementById('museRendezvousStage');
       if (stageEl) {
-        const rect = stageEl.getBoundingClientRect();
-
-        const vA = new THREE.Vector3(-3.6, -0.7 + 2.75, 0);
-        vA.project(threeStage.camera);
-        const xA = (vA.x * 0.5 + 0.5) * rect.width;
-        const yA = (-(vA.y * 0.5) + 0.5) * rect.height;
-
-        const quipA = document.getElementById('museQuipA');
-        if (quipA) {
-          quipA.style.left = xA + 'px';
-          quipA.style.top = yA + 'px';
-          quipA.style.transform = 'translate(-50%, -100%)';
-        }
-
-        const vB = new THREE.Vector3(3.6, -0.7 + 2.75, 0);
-        vB.project(threeStage.camera);
-        const xB = (vB.x * 0.5 + 0.5) * rect.width;
-        const yB = (-(vB.y * 0.5) + 0.5) * rect.height;
-
-        const quipB = document.getElementById('museQuipB');
-        if (quipB) {
-          quipB.style.left = xB + 'px';
-          quipB.style.top = yB + 'px';
-          quipB.style.transform = 'translate(-50%, -100%)';
-        }
       }
     }
 
@@ -1845,7 +1838,9 @@
       }
 
       // Check scenario clash vs positive vibe
-      const isClash = (activeScenario === 'travel' && turnNumber >= 9) || 
+      const isClash = (activeScenario === 'record_store' && turnNumber >= 9) || 
+                      (activeScenario === 'market' && turnNumber >= 2) ||
+                      (activeScenario === 'travel' && turnNumber >= 9) || 
                       (activeScenario === 'finance' && turnNumber >= 2);
 
       if (isClash) {
@@ -2752,6 +2747,7 @@
 
       // Update Presence Header and Resonance Bridge
       updatePresenceHeader(turn.speaker, turn.turn_number, turn);
+      if (typeof set3DTurnState === 'function') set3DTurnState(turn.speaker, turn.turn_number, turn);
       const bridgeLsm = document.getElementById('bridgeLsmVal');
       if (bridgeLsm) bridgeLsm.textContent = turn.lsm.toFixed(3);
 
@@ -2929,6 +2925,11 @@
       } else {
         text.textContent = "Stage 1 conversational synchrony flatlined (LSM 0.428). Early exit executed to save human time.";
       }
+    }
+
+    function toggleFinishBar(show) {
+      const bar = document.getElementById('finishBar');
+      if (bar) bar.style.display = show ? 'flex' : 'none';
     }
 
     // Initialize
@@ -3452,6 +3453,17 @@
       } else if (state === 'rendezvous') {
         sessionStorage.setItem('musemeet_guide_dismissed', '1');
         closeGuideModal(true);
+        return;
+      } else if (state === 'finish') {
+        sessionStorage.setItem('musemeet_guide_dismissed', '1');
+        setTimeout(() => {
+          currentTurnIndex = 15;
+          stepNextTurn();
+          setTimeout(() => {
+            currentTurnIndex = 16;
+            stepNextTurn();
+          }, 300);
+        }, 200);
         return;
       }
 
@@ -4503,9 +4515,9 @@
     if (!stage || !payoff) return;
 
     if (scenario.outcome === 'match') {
-      // Expand stage smoothly to 360px
+      // Show synthesis payoff in stage
       stage.classList.add('synthesis-active');
-      payoff.style.display = 'block';
+      payoff.style.display = 'flex';
 
       // Update payoff content
       const scoreBig = document.getElementById('synthesisScoreBig');
@@ -4523,7 +4535,7 @@
     } else if (scenario.outcome === 'graceful_abort') {
       // Pair 2 Marcus: Graceful release
       stage.classList.add('synthesis-active');
-      payoff.style.display = 'block';
+      payoff.style.display = 'flex';
 
       const scoreBig = document.getElementById('synthesisScoreBig');
       if (scoreBig) scoreBig.textContent = '64%';
@@ -4545,7 +4557,7 @@
     } else {
       // Pair 3 David: Early Exit
       stage.classList.add('synthesis-active');
-      payoff.style.display = 'block';
+      payoff.style.display = 'flex';
 
       const scoreBig = document.getElementById('synthesisScoreBig');
       if (scoreBig) scoreBig.textContent = '24%';

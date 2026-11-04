@@ -1258,7 +1258,9 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg-canvas);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .telemetry-dashboard {
@@ -1268,6 +1270,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 0.65rem;
   background: var(--bg-surface);
+  flex-shrink: 0;
 }
 
 .stat-pill {
@@ -1313,6 +1316,7 @@ body {
   align-items: stretch;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
 
 .partition-pane {
@@ -1521,24 +1525,38 @@ body {
 }
 
 /* ==========================================================================
-   Bottom Verdict Announcement Bar
+   Bottom Verdict Announcement Bar (Floating Glassmorphic Capsule)
    ========================================================================== */
 .finish-bar {
-  background: rgba(250, 247, 242, 0.96);
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 1080px;
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
-  border-top: 1px solid var(--border-subtle);
-  padding: 0.95rem 1.75rem;
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(232, 226, 216, 0.95);
+  border-radius: 14px;
+  padding: 0.6rem 1.35rem;
   display: none;
   justify-content: space-between;
   align-items: center;
-  flex-shrink: 0;
-  animation: slideUp 0.3s ease forwards;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 36px -4px rgba(74, 29, 62, 0.16), 0 2px 8px rgba(0, 0, 0, 0.04);
+  z-index: 100;
+  animation: finishSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+@keyframes finishSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 .verdict-announce {
@@ -2187,11 +2205,26 @@ body {
   pointer-events: auto;
 }
 
-/* Eliminate broken 2D dashed lines cutting across center */
-.vibe-track-path,
-.vibe-beam-path,
-.vibe-canal-backdrop {
+/* Subtle Dotted Vibe Bridge & Hidden Heavy Kinetic Canvas */
+.kinetic-wave-canvas {
   display: none !important;
+}
+.vibe-track-path {
+  fill: none;
+  stroke: rgba(200, 90, 50, 0.12);
+  stroke-width: 1.0;
+  stroke-dasharray: 2 4;
+}
+.vibe-beam-path {
+  fill: none;
+  stroke: url(#vibeGradPositive);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.35;
+  filter: url(#vibeGlow);
+  transition: stroke 0.4s ease, opacity 0.4s ease;
+  stroke-dasharray: 4 6;
+  animation: beamFlow 6s linear infinite;
 }
 
 /* Borderless Editorial Nameplates anchored cleanly below each 3D Meta Jolly */
@@ -2375,8 +2408,17 @@ body {
 }
 
 .muse-rendezvous-stage.synthesis-active {
-  height: 360px;
-  min-height: 360px;
+  height: 185px;
+  min-height: 185px;
+  max-height: 185px;
+}
+
+.muse-rendezvous-stage.synthesis-active #spatialNodeA,
+.muse-rendezvous-stage.synthesis-active #spatialNodeB,
+.muse-rendezvous-stage.synthesis-active #biometricHudLens,
+.muse-rendezvous-stage.synthesis-active #kineticWaveCanvas,
+.muse-rendezvous-stage.synthesis-active .vibe-canal-backdrop {
+  display: none !important;
 }
 
 /* Center Kinetic Harmonic Wave Canvas */
@@ -2391,67 +2433,36 @@ body {
   pointer-events: none;
 }
 
-/* Spatial Agent Nodes (Left & Right 280px Columns) */
+/* Spatial Agent Nodes (Left & Right Columns) */
 .spatial-node {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: 0.35rem;
   z-index: 10;
-  width: 280px;
+  width: 100%;
   transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .spatial-node.node-left {
   align-items: flex-start;
-  padding-left: 0.5rem;
+  padding-left: 0.25rem;
 }
 
 .spatial-node.node-right {
   align-items: flex-end;
-  padding-right: 0.5rem;
+  padding-right: 0.25rem;
 }
 
-/* 140px x 140px 3D Spatial Canvas Container */
-.spatial-canvas-container {
-  position: relative;
-  width: 108px;
-  height: 108px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(243, 239, 230, 0.7));
-  box-shadow: 0 8px 24px -4px rgba(74, 29, 62, 0.12), inset 0 2px 6px rgba(255, 255, 255, 0.8);
-  border: 1.5px solid rgba(232, 226, 216, 0.85);
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+.spatial-node .muse-avatar-card {
+  width: 100%;
+  max-width: 295px;
+  min-width: 250px;
 }
 
-.spatial-canvas-container:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 28px -4px rgba(74, 29, 62, 0.18);
-}
-
-.spatial-node.speaking .spatial-canvas-container {
-  transform: scale(1.12);
-  box-shadow: 0 0 28px rgba(200, 90, 50, 0.28), 0 12px 32px rgba(74, 29, 62, 0.16);
-  border-color: var(--accent-terracotta);
-}
-
-.spatial-node.node-right.speaking .spatial-canvas-container {
-  box-shadow: 0 0 28px rgba(45, 106, 79, 0.28), 0 12px 32px rgba(74, 29, 62, 0.16);
-  border-color: var(--accent-emerald);
-}
-
+.spatial-canvas-container,
 .spatial-agent-canvas {
-  width: 108px;
-  height: 108px;
-  border-radius: 50%;
-  display: block;
+  display: none !important;
 }
 
 /* Radial Frequency Halo */
@@ -2942,39 +2953,39 @@ body {
   position: absolute;
   inset: 0;
   z-index: 30;
-  background: rgba(250, 247, 242, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1rem 1.4rem;
+  padding: 0.55rem 1.15rem;
   box-sizing: border-box;
-  animation: payoffFadeIn 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
+  animation: payoffFadeIn 0.4s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
 @keyframes payoffFadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .synthesis-payoff-card {
   display: grid;
   grid-template-columns: 1.1fr 1fr 1.1fr;
-  gap: 1rem;
-  height: 250px;
+  gap: 0.75rem;
+  height: 125px;
 }
 
 .payoff-wing,
 .payoff-core {
   background: var(--bg-surface);
   border: 1.5px solid var(--border-subtle);
-  border-radius: 14px;
-  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  gap: 0.3rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
 }
 
 .wing-badge {
@@ -2996,7 +3007,7 @@ body {
 
 .score-big {
   font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--accent-emerald);
   line-height: 1;
@@ -3156,9 +3167,9 @@ body {
 .synthesis-cta-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding-top: 0.5rem;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding-top: 0.2rem;
 }
 
 .cta-btn {
