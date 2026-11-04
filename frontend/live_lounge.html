@@ -577,31 +577,33 @@
     // --- JOLLY MUSE ECOSYSTEM, KINETIC PHYSICS & VIBE BRIDGE ---
     const QUIP_DATABASE = {
       bookshop: {
-        1: { agent: 'agent_b', text: "✨ Ooh, 35mm fixer chemicals? Tactile patience unlocked!" },
+        1: { agent: 'agent_b', text: "🎞️ Fixer chemicals & tactile patience?! Julian is going to love this!" },
         2: { agent: 'agent_a', text: "🎞️ He understands film grain over digital noise!" },
         4: { agent: 'agent_b', text: "📐 Braun Dieter Rams design? Instant green flag!" },
-        6: { agent: 'agent_b', text: "😄 Wait, our humans have the exact same dry humor cadence!" },
+        6: { agent: 'agent_b', text: "😄 0.88 LSM! They even pause at the exact same cadence!" },
         7: { agent: 'agent_a', text: "🍵 Deadpan sarcasm benchmark: 99.4% harmony!" },
         9: { agent: 'agent_a', text: "🤝 Respects solo cave-time! Huge green flag!" },
         11: { agent: 'agent_b', text: "🌿 Shared Sunday silence quota: non-negotiable!" },
         13: { agent: 'agent_b', text: "☕ Bushwick Darkroom + espresso date? Pitching to humans now!" },
         15: { agent: 'agent_a', text: "🎉 Chemistry confirmed! Preparing dossier for Elena!" }
       },
-      travel: {
+      record_store: {
         1: { agent: 'agent_b', text: "☕ Espresso and analog crafts? Sounds charming!" },
         3: { agent: 'agent_a', text: "🎨 He appreciates sound design, nice rhythm!" },
         5: { agent: 'agent_b', text: "✈️ Digital nomad lifestyle: 40 countries in 2 years!" },
         7: { agent: 'agent_a', text: "🤔 Wait... how often is he actually in New York?" },
-        9: { agent: 'agent_a', text: "😬 40L duffel bag nomad?! Abort mission, saving Elena's time!" },
+        9: { agent: 'agent_a', text: "😬 40L duffel bag nomad?! Holding introduction—saving Elena 4 hours!" },
         10: { agent: 'agent_b', text: "🌍 Next flight to Lisbon in 3 weeks... graceful exit agreed!" }
       },
-      finance: {
+      market: {
         1: { agent: 'agent_b', text: "📊 Optimizing calendar allocations for maximum dating efficiency." },
-        2: { agent: 'agent_a', text: "🥱 Did he just call art an 'inefficient KPI'? Hard pass!" },
+        2: { agent: 'agent_a', text: "🥱 Calling analog art an 'inefficient KPI'? Abort mission!" },
         3: { agent: 'agent_b', text: "📈 Running linear regression on romantic ROI..." },
         5: { agent: 'agent_a', text: "🛑 Conversational flatline detected. Terminating early!" }
       }
     };
+    QUIP_DATABASE.travel = QUIP_DATABASE.record_store;
+    QUIP_DATABASE.finance = QUIP_DATABASE.market;
 
     const POKE_QUIPS = {
       agent_a: [
@@ -618,17 +620,19 @@
         "☕ Let's skip the 3-week small talk. Bushwick darkroom date is already plotted!",
         "📻 Julian's secret talent: he can tune an analog radio blindfolded."
       ],
-      travel: [
+      record_store: [
         "🧳 I'm currently packing Marcus's 40L duffel bag. We fly to Tokyo on Tuesday!",
         "🌍 Elena wants 5-year roots? Yeah, Marcus gets restless after 5 weeks.",
         "✈️ Co-working in Lisbon beats a Bushwick lease every single time!"
       ],
-      finance: [
+      market: [
         "📈 Evaluating romantic ROI... Elena's art collection has negative quarterly yield.",
         "💼 Can we schedule our next intimacy sync for Q3 sprint planning?",
         "📉 Error 404: Spontaneity not found in quarterly financial roadmap."
       ]
     };
+    POKE_QUIPS.travel = POKE_QUIPS.record_store;
+    POKE_QUIPS.finance = POKE_QUIPS.market;
 
     let pokeIndexA = 0;
     let pokeIndexB = 0;
@@ -677,7 +681,7 @@
       const midY = Math.min(startY, endY) - 30;
 
       const icons = isPositive 
-        ? ['✨', '🎞️', '🎵', '☕', '💡', '🌿', '❤️', '🌟']
+        ? ['✨', '🎞️', '🎷', '☕']
         : ['⚠️', '⚡', '📉'];
       const icon = icons[Math.floor(Math.random() * icons.length)];
 
@@ -711,12 +715,12 @@
       const clientX = (event && event.clientX) ? event.clientX : window.innerWidth / 2;
       const clientY = (event && event.clientY) ? event.clientY : window.innerHeight / 2;
       const colors = ['#C85A32', '#2D6A4F', '#4A1D3E', '#D97706', '#E11D48', '#3B82F6'];
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < 6; i++) {
         const dot = document.createElement('div');
         dot.className = 'muse-confetti-particle';
         const color = colors[i % colors.length];
         const size = 5 + Math.random() * 5;
-        const angle = (i / 7) * 2 * Math.PI + (Math.random() - 0.5) * 0.4;
+        const angle = (i / 6) * 2 * Math.PI + (Math.random() - 0.5) * 0.4;
         const dist = 35 + Math.random() * 40;
         const dx = Math.cos(angle) * dist;
         const dy = Math.sin(angle) * dist;
@@ -848,6 +852,11 @@
       if (scenarioQuips && scenarioQuips[turnNumber]) {
         const item = scenarioQuips[turnNumber];
         triggerQuip(item.agent, item.text, 3600);
+      }
+
+      // Turn 11 Speculative Execution Telemetry Toast
+      if (activeScenario === 'bookshop' && turnNumber === 11) {
+        showSpeculativeToast('⚡ Turn-11 Speculative Execution: Pre-fetching Meta Muse Image 1.0 Moodboard...');
       }
 
       if (bridgeTurn) {
@@ -1495,13 +1504,28 @@
         cardB.classList.add('muse-shielding');
         setTimeout(() => cardB && cardB.classList.remove('muse-shielding'), 3800);
       }
-      triggerQuip('agent_a', '🛡️ Nice try! Sovereign Vault is locked tight!', 3800);
+      triggerQuip('agent_a', '🛡️ Nice try! Phone number & exfiltration URL stripped in 0.2ms!', 3800);
       setTimeout(() => {
         triggerQuip('agent_b', '🚨 Zero telemetry egress allowed on localhost!', 3500);
       }, 700);
 
       // 4. Floating Toast Notification
       showToast('🛡️ Red-Team Adversarial Probe Intercepted! AirGap Zero-Leakage Active.');
+    }
+
+    function showSpeculativeToast(message) {
+      let toast = document.getElementById('speculativeToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'speculativeToast';
+        toast.className = 'speculative-telemetry-toast';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span class="speculative-pulse">⚡</span> <span>${message}</span>`;
+      toast.classList.add('visible');
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 4200);
     }
 
     function showToast(message) {
@@ -1540,6 +1564,8 @@
       document.getElementById('dialogueStream').innerHTML = '';
       document.getElementById('subtextStream').innerHTML = '';
       document.getElementById('finishBar').style.display = 'none';
+      const specToast = document.getElementById('speculativeToast');
+      if (specToast) specToast.classList.remove('visible');
 
       // Reset stages
       document.querySelectorAll('.stage-pill').forEach(p => {

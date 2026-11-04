@@ -822,3 +822,78 @@ body {
   padding: 1.5rem 0 0.5rem 0;
   border-top: 1px solid var(--border-subtle);
 }
+
+/* --------------------------------------------------------------------------
+   Moodboard Header Row & Speculative Execution Telemetry Badge
+   -------------------------------------------------------------------------- */
+.moodboard-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.moodboard-header-row .section-title {
+  margin-bottom: 0;
+}
+
+.speculative-cache-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--accent-primary-soft);
+  color: var(--accent-primary);
+  border: 1px solid rgba(74, 29, 62, 0.2);
+  border-radius: 9999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-sm);
+}
+
+.speculative-pulse {
+  display: inline-block;
+  animation: specPulseDossier 1.8s ease-in-out infinite;
+}
+
+@keyframes specPulseDossier {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.7; }
+}
+
+/* --------------------------------------------------------------------------
+   Transcript-to-Image Provenance Pins
+   -------------------------------------------------------------------------- */
+.provenance-pin {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.71rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(26, 25, 23, 0.08);
+  pointer-events: none;
+  z-index: 5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.panel-card:hover .provenance-pin {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 6px 16px rgba(26, 25, 23, 0.12);
+}

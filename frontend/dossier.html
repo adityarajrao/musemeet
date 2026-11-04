@@ -172,7 +172,13 @@
 
     <!-- 3-Panel Moodboard Section -->
     <section id="moodboardSection" class="moodboard-section">
-      <h2 class="section-title">✧ Muse Image Date Moodboard</h2>
+      <div class="moodboard-header-row">
+        <h2 class="section-title">✧ Muse Image Date Moodboard</h2>
+        <div class="speculative-cache-badge">
+          <span class="speculative-pulse">⚡</span>
+          <span>Rendered in 94ms via Speculative Cache</span>
+        </div>
+      </div>
       <div id="moodboardGrid" class="moodboard-grid">
         <!-- Dynamically Populated -->
       </div>
@@ -233,16 +239,19 @@
           {
             label: "atmosphere",
             image_url: "assets/moodboard/panel_atmosphere.webp",
+            provenance_pin: '📌 Turn 1 Callback: "red-lit darkroom, developing 35mm film by hand"',
             prompt: "Warm amber tungsten interior of a quiet Tokyo-style vinyl listening bar, mahogany wood shelving packed with vintage jazz records, glowing McIntosh vacuum tubes."
           },
           {
             label: "activity",
             image_url: "assets/moodboard/panel_activity.webp",
+            provenance_pin: '📌 Turn 6 Callback: "1950s vinyl jazz kissa & acoustic warmth"',
             prompt: "Two steaming ceramic cups of artisanal pour-over coffee resting on a dark walnut table next to an open tactile leather journal and a vintage analog Leica camera."
           },
           {
             label: "moment",
             image_url: "assets/moodboard/panel_moment.webp",
+            provenance_pin: '📌 Spatial Match: Daikanyama T-Site / Brooklyn Listening Bar (48dB Acoustic Fit)',
             prompt: "Close-up of hands carefully pulling a vintage vinyl record from its aged paper sleeve, turntable needle hovering over the first groove, warm golden hour."
           }
         ]
@@ -295,16 +304,19 @@
           {
             label: "atmosphere",
             image_url: "assets/moodboard/marcus_atmosphere.webp",
+            provenance_pin: '📌 Turn 3 Callback: "Berlin flea market & analog 16mm gear"',
             prompt: "Moody rainy city street at twilight, neon reflections on wet asphalt, two distant umbrellas walking in opposite directions, bittersweet and poetic."
           },
           {
             label: "activity",
             image_url: "assets/moodboard/marcus_activity.webp",
+            provenance_pin: '📌 Turn 5 Callback: "Nomadic travel across 40 countries"',
             prompt: "Vintage 16mm film projector whirring in a dark projection booth, illuminated dust motes in the light beam, analog warmth."
           },
           {
             label: "moment",
             image_url: "assets/moodboard/marcus_moment.webp",
+            provenance_pin: '📌 Turn 9 Dealbreaker: "40L duffel bag vs permanent studio"',
             prompt: "Single luggage duffel bag packed by a doorway, soft departure light, quiet bittersweet aesthetic."
           }
         ]
@@ -352,16 +364,19 @@
           {
             label: "atmosphere",
             image_url: "assets/moodboard/david_atmosphere.webp",
+            provenance_pin: '📌 Turn 1 Callback: "Friction: 15-minute scheduled blocks"',
             prompt: "Cold minimalist modern desk with digital stopwatch and calendar spreadsheet grid, stark cool blue lighting."
           },
           {
             label: "activity",
             image_url: "assets/moodboard/david_activity.webp",
+            provenance_pin: '📌 Turn 2 Callback: "Efficiency KPIs vs analog darkroom"',
             prompt: "Empty stopwatch on glass table, precise 15-minute intervals, sharp monochrome contrast."
           },
           {
             label: "moment",
             image_url: "assets/moodboard/david_moment.webp",
+            provenance_pin: '📌 Turn 5 Collision: "Conversational flatline detected"',
             prompt: "Divided frame: cold gray digital display contrasting with warm darkroom red safelight, disconnected and distant."
           }
         ]
@@ -488,6 +503,7 @@
         <div class="panel-card">
           <div class="panel-img-wrapper">
             <span class="panel-badge">${p.label}</span>
+            ${p.provenance_pin ? `<div class="provenance-pin" title="${p.provenance_pin}">${p.provenance_pin}</div>` : ''}
             <img class="panel-img" src="${p.image_url}" alt="${p.label}" loading="lazy" />
           </div>
           <div class="panel-info">
