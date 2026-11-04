@@ -27,40 +27,48 @@
     </div>
 
     <div class="controls-group">
-      <select id="scenarioSelect" class="scenario-select" onchange="changeScenario(this.value)">
-        <option value="bookshop">Pair 1: Elena × Julian (Match, 92%)</option>
-        <option value="record_store">Pair 2: Elena × Marcus (Graceful Abort, 64%)</option>
-        <option value="market">Pair 3: Elena × David (Early Exit, 24%)</option>
-      </select>
+      <!-- Session & Playback Group -->
+      <div class="header-control-group playback-group">
+        <select id="scenarioSelect" class="scenario-select" onchange="changeScenario(this.value)">
+          <option value="bookshop">Pair 1: Elena × Julian (Match, 92%)</option>
+          <option value="record_store">Pair 2: Elena × Marcus (Graceful Abort, 64%)</option>
+          <option value="market">Pair 3: Elena × David (Early Exit, 24%)</option>
+        </select>
 
-      
-      <button id="guideBtn" class="action-btn" onclick="openGuideModal()">
-        <span>ℹ️</span> <span>Judge Guide</span>
-      </button>
+        <button id="playBtn" class="action-btn play-btn" onclick="togglePlay()" title="Play / Pause Dialogue Stream">
+          <span id="playIcon">⏸</span> <span id="playLabel">Pause</span>
+        </button>
 
-      <button id="moatBtn" class="action-btn" onclick="openMoatModal()">
-        <span>🧬</span> <span>Inspect Dimensional Moat</span>
-      </button>
+        <button id="replayBtn" class="action-btn replay-btn" onclick="restartStream()" title="Restart Live Conversation">
+          <span>↺</span> <span>Replay</span>
+        </button>
 
-      <button id="funnelBtn" class="action-btn" onclick="openFunnelModal()">
-        <span>🗺️</span> <span>Explore 250-User Local Funnel</span>
-      </button>
-      
-      <button id="pentestBtn" class="action-btn" onclick="triggerAdversarialProbe()">
-        <span>🛡️</span> <span>Simulate Adversarial Injection</span>
-      </button>
-      <button id="playBtn" class="action-btn" onclick="togglePlay()">
-        <span id="playIcon">⏸</span> <span id="playLabel">Pause</span>
-      </button>
+        <div class="speed-group" title="Playback Speed Multiplier">
+          <button class="speed-btn active" onclick="setSpeed(1, this)">1x</button>
+          <button class="speed-btn" onclick="setSpeed(2, this)">2x</button>
+          <button class="speed-btn" onclick="setSpeed(5, this)">5x</button>
+        </div>
+      </div>
 
-      <button id="replayBtn" class="action-btn replay-btn" onclick="restartStream()">
-        ↺ Replay
-      </button>
+      <div class="header-v-divider"></div>
 
-      <div style="display: flex; gap: 0.25rem;">
-        <button class="speed-btn active" onclick="setSpeed(1, this)">1x</button>
-        <button class="speed-btn" onclick="setSpeed(2, this)">2x</button>
-        <button class="speed-btn" onclick="setSpeed(5, this)">5x</button>
+      <!-- Evaluation Modals & Deep-Dive Tools -->
+      <div class="header-control-group tools-group">
+        <button id="guideBtn" class="action-btn tool-btn" onclick="openGuideModal()" title="View Judge Onboarding & Evaluation Guide">
+          <span>ℹ️</span> <span>Judge Guide</span>
+        </button>
+
+        <button id="moatBtn" class="action-btn tool-btn" onclick="openMoatModal()" title="Inspect 128D Behavioral Dimensional Moat">
+          <span>🧬</span> <span>128D Moat</span>
+        </button>
+
+        <button id="funnelBtn" class="action-btn tool-btn" onclick="openFunnelModal()" title="Explore 250-User Local Cohort Funnel">
+          <span>🗺️</span> <span>250-User Funnel</span>
+        </button>
+        
+        <button id="pentestBtn" class="action-btn tool-btn" onclick="triggerAdversarialProbe()" title="Simulate Prompt Injection Attack Against Sovereign Boundary">
+          <span>🛡️</span> <span>AirGap Defense</span>
+        </button>
       </div>
     </div>
   </header>
@@ -97,25 +105,25 @@
     <canvas id="muse-3d-stage" class="muse-3d-canvas"></canvas>
     <!-- Canal Backdrop & Dynamic Vibe Bridge -->
     <div class="vibe-canal-backdrop">
-      <svg id="vibeBridgeSvg" class="vibe-bridge-svg" viewBox="0 0 1000 80" preserveAspectRatio="none">
+      <svg id="vibeBridgeSvg" class="vibe-bridge-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
         <defs>
           <linearGradient id="vibeGradPositive" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.4" />
-            <stop offset="50%" stop-color="#D97706" stop-opacity="0.5" />
-            <stop offset="100%" stop-color="#2D6A4F" stop-opacity="0.4" />
+            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.35" />
+            <stop offset="50%" stop-color="#D97706" stop-opacity="0.45" />
+            <stop offset="100%" stop-color="#2D6A4F" stop-opacity="0.35" />
           </linearGradient>
           <linearGradient id="vibeGradWarning" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#E11D48" stop-opacity="0.4" />
-            <stop offset="50%" stop-color="#DC2626" stop-opacity="0.5" />
-            <stop offset="100%" stop-color="#991B1B" stop-opacity="0.4" />
+            <stop offset="0%" stop-color="#E11D48" stop-opacity="0.35" />
+            <stop offset="50%" stop-color="#DC2626" stop-opacity="0.45" />
+            <stop offset="100%" stop-color="#991B1B" stop-opacity="0.35" />
           </linearGradient>
           <filter id="vibeGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="1.2" result="blur" />
+            <feGaussianBlur stdDeviation="1.0" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
-        <path id="vibeBridgePathTrack" class="vibe-track-path" d="M 50,42 Q 500,10 950,42" />
-        <path id="vibeBridgePathBeam" class="vibe-beam-path" d="M 50,42 Q 500,10 950,42" />
+        <path id="vibeBridgePathTrack" class="vibe-track-path" d="M 50,30 Q 500,8 950,30" />
+        <path id="vibeBridgePathBeam" class="vibe-beam-path" d="M 50,30 Q 500,8 950,30" />
       </svg>
       <div id="vibeParticleOverlay" class="vibe-particle-overlay"></div>
       <div id="vibeMismatchBadge" class="vibe-mismatch-badge">🛑 Vibe Mismatch</div>
@@ -238,40 +246,46 @@
       </div>
 
       
-      <!-- Telemetry Navigation Tabs: LSM vs 7-Domain Radar -->
-      <div class="telemetry-tabs">
-        <button id="tabLsm" class="telemetry-tab-btn active" onclick="switchTelemetryTab('lsm')">
-          <span>📈</span> <span>LSM Telemetry</span>
-        </button>
-        <button id="tabRadar" class="telemetry-tab-btn" onclick="switchTelemetryTab('radar')">
-          <span>🕸️</span> <span>7-Domain Heptagon Radar</span>
-        </button>
-      </div>
-
-      <!-- Real-Time LSM Sparkline Chart -->
-      <div id="lsmChartBox" class="chart-container">
-        <div class="chart-header">
-          <span>Linguistic Style Matching (Turn Progression)</span>
-          <span id="chartMinMax">Min: 0.50 | Current: 1.00</span>
+      <!-- Dual Telemetry Partition: LSM Telemetry & 7-Domain Heptagon Radar (Both Visible At Once) -->
+      <div class="telemetry-dual-partition">
+        <!-- Left Partition: Real-Time LSM Sparkline Progression -->
+        <div id="lsmChartBox" class="partition-pane lsm-partition-pane">
+          <div class="partition-pane-header">
+            <span class="partition-pane-title">
+              <span class="chart-sparkle" style="color: var(--accent-amber);">📈</span>
+              <span>LSM Synchrony Curve</span>
+            </span>
+            <span id="chartMinMax" class="partition-badge">Min: 0.50 | Current: 1.000</span>
+          </div>
+          <div class="sparkline-wrapper">
+            <svg id="sparklineSvg" class="sparkline-svg" viewBox="0 0 400 65" preserveAspectRatio="none">
+              <path id="sparklineArea" class="sparkline-area" d="" />
+              <path id="sparklinePath" class="sparkline-path" d="" />
+            </svg>
+          </div>
         </div>
-        <svg id="sparklineSvg" class="sparkline-svg" viewBox="0 0 400 60">
-          <path id="sparklineArea" class="sparkline-area" d="" />
-          <path id="sparklinePath" class="sparkline-path" d="" />
-        </svg>
-      </div>
 
-      <!-- Progressive 7-Domain Heptagon SVG Radar -->
-      <div id="radarChartBox" class="chart-container radar-box">
-        <div class="chart-header" style="width: 100%;">
-          <span>Progressive Dyadic Behavioral Topology</span>
-          <span id="radarStageLabel" style="color: var(--accent-gold);">Stage 1: Discovery</span>
+        <!-- Vertical Hairline Partition Divider -->
+        <div class="telemetry-partition-divider"></div>
+
+        <!-- Right Partition: Progressive 7-Domain Heptagon Radar -->
+        <div id="radarChartBox" class="partition-pane radar-partition-pane">
+          <div class="partition-pane-header">
+            <span class="partition-pane-title">
+              <span class="chart-sparkle" style="color: var(--accent-emerald);">🕸️</span>
+              <span>7-Domain Topology Radar</span>
+            </span>
+            <span id="radarStageLabel" class="partition-badge badge-stage">Stage 1: Discovery</span>
+          </div>
+          <div class="radar-wrapper">
+            <svg id="radarSvg" class="radar-svg" viewBox="0 0 400 200">
+              <!-- Background Grid & Spokes populated dynamically -->
+              <g id="radarGridGroup"></g>
+              <polygon id="radarPolygon" class="radar-polygon" points="" />
+              <g id="radarLabelsGroup"></g>
+            </svg>
+          </div>
         </div>
-        <svg id="radarSvg" class="radar-svg" viewBox="0 0 400 200">
-          <!-- Background Grid & Spokes populated dynamically -->
-          <g id="radarGridGroup"></g>
-          <polygon id="radarPolygon" class="radar-polygon" points="" />
-          <g id="radarLabelsGroup"></g>
-        </svg>
       </div>
 
 
@@ -595,16 +609,16 @@
 
     threeStage.canvas = canvas;
     const width = container.clientWidth || window.innerWidth;
-    const height = 240;
+    const height = container.clientHeight || 155;
 
     // 1. Scene & Warm Editorial Environment
     const scene = new THREE.Scene();
     threeStage.scene = scene;
 
-    // 2. Camera: Slight cinematic angle (FOV: 38)
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
-    camera.position.set(0, 1.15, 5.6);
-    camera.lookAt(0, 0.45, 0);
+    // 2. Camera: Slight cinematic angle (FOV: 36)
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 50);
+    camera.position.set(0, 1.05, 5.2);
+    camera.lookAt(0, 0.38, 0);
     threeStage.camera = camera;
 
     // 3. Renderer with soft contact shadows & ACES Filmic Tone Mapping
@@ -1285,7 +1299,7 @@
     const container = document.getElementById('museRendezvousStage');
     if (!container || !threeStage.renderer || !threeStage.camera) return;
     const w = container.clientWidth || window.innerWidth;
-    const h = 240;
+    const h = container.clientHeight || 155;
     threeStage.camera.aspect = w / h;
     threeStage.camera.updateProjectionMatrix();
     threeStage.renderer.setSize(w, h);
@@ -1337,8 +1351,8 @@
     threeStage.mouse.y += (threeStage.mouse.targetY - threeStage.mouse.y) * 0.06;
 
     threeStage.camera.position.x = threeStage.camTargetX + threeStage.mouse.x;
-    threeStage.camera.position.y = 1.15 + threeStage.mouse.y;
-    threeStage.camera.lookAt(0, 0.45, 0);
+    threeStage.camera.position.y = 1.05 + threeStage.mouse.y;
+    threeStage.camera.lookAt(0, 0.38, 0);
 
     const isSpeakingA = threeStage.activeSpeaker === 'agent_a';
     const charA = threeStage.charA;
@@ -2450,19 +2464,8 @@
     }
 
     function switchTelemetryTab(tab) {
-      const isLsm = tab === 'lsm';
-      const tabLsm = document.getElementById('tabLsm');
-      const tabRadar = document.getElementById('tabRadar');
-      const lsmBox = document.getElementById('lsmChartBox');
-      const radarBox = document.getElementById('radarChartBox');
-
-      if (tabLsm) tabLsm.classList.toggle('active', isLsm);
-      if (tabRadar) tabRadar.classList.toggle('active', !isLsm);
-      if (lsmBox) lsmBox.style.display = isLsm ? 'block' : 'none';
-      if (radarBox) {
-        radarBox.classList.toggle('active', !isLsm);
-        if (!isLsm) updateRadarValues();
-      }
+      // Both LSM and 7-Domain Radar are simultaneously visible in the partitioned telemetry panel
+      updateRadarValues();
     }
 
     // --- ADVERSARIAL INJECTION & AIRGAP DEFENSE ---
@@ -3353,7 +3356,7 @@
             <span class="step-badge">2. RELATIONAL TELEMETRY</span>
             <div class="step-card-title">LSM & Gottman Metrics</div>
             <div class="step-card-desc">
-              Live Ireland-Pennebaker Linguistic Style Matching (LSM) and Gottman bid responsiveness tracking. Toggle between the live sparkline and the 7-domain heptagon radar.
+              Live Ireland-Pennebaker Linguistic Style Matching (LSM) and Gottman bid responsiveness tracking. Both the live sparkline and 7-domain behavioral topology radar are visible simultaneously in real time.
             </div>
           </div>
 
