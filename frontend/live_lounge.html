@@ -160,7 +160,7 @@
     <div id="spatialNodeA" class="spatial-node node-left speaking">
       <div id="spatialHaloA" class="spatial-halo"></div>
       <div class="spatial-canvas-container" onclick="pokeMuse('agent_a', event)" title="👋 Click to interact with Elena's Muse">
-        <canvas id="avatarCanvasA" class="spatial-agent-canvas" width="130" height="130"></canvas>
+        <canvas id="avatarCanvasA" class="spatial-agent-canvas" width="108" height="108"></canvas>
       </div>
       
       <!-- Glassmorphic Pedestal Pill (Preserving ID museCardA!) -->
@@ -215,7 +215,7 @@
     <div id="spatialNodeB" class="spatial-node node-right listening">
       <div id="spatialHaloB" class="spatial-halo"></div>
       <div class="spatial-canvas-container" onclick="pokeMuse('agent_b', event)" title="👋 Click to interact with Candidate's Muse">
-        <canvas id="avatarCanvasB" class="spatial-agent-canvas" width="130" height="130"></canvas>
+        <canvas id="avatarCanvasB" class="spatial-agent-canvas" width="108" height="108"></canvas>
       </div>
 
       <!-- Glassmorphic Pedestal Pill (Preserving ID museCardB!) -->
@@ -3866,9 +3866,9 @@
 
       compState.wavePhase += 0.028;
 
-      const nodeAx = 160;
+      const nodeAx = 150;
       const nodeAy = h / 2;
-      const nodeBx = w - 160;
+      const nodeBx = w - 150;
       const nodeBy = h / 2;
 
       // Determine wave dynamics based on stage
@@ -3903,7 +3903,7 @@
           const x = nodeAx + i * dx;
           const normX = i / numPoints;
           const envelope = Math.sin(normX * Math.PI); // Pinched at nodes
-          const y = nodeAy + envelope * 24 * Math.sin(normX * Math.PI * 3) * Math.cos(compState.wavePhase * 1.5);
+          const y = nodeAy + envelope * 18 * Math.sin(normX * Math.PI * 3) * Math.cos(compState.wavePhase * 1.5);
           if (i === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         }
@@ -3913,24 +3913,24 @@
         // Strands A & B (Stages 1, 2, 3)
         let freqA = 2.0;
         let freqB = 2.0;
-        let ampA = 20;
-        let ampB = 20;
+        let ampA = 16;
+        let ampB = 16;
         let phaseOffsetB = Math.PI * 0.45; // Default phase separation
 
         if (stageNum === 2) {
           // Stage 2: Braided Double Helix (crosses at nodes)
           freqA = 3.5;
           freqB = 3.5;
-          ampA = 22;
-          ampB = 22;
+          ampA = 18;
+          ampB = 18;
           phaseOffsetB = Math.PI; // Interlocking double helix
         } else if (stageNum === 3) {
           // Stage 3: Chromatic Aberration & Friction Dip
           const isFrictionDip = typeof activeScenario !== 'undefined' && 
                                (activeScenario === 'record_store' || activeScenario === 'market');
           if (isFrictionDip) {
-            ampA = 28;
-            ampB = 28;
+            ampA = 22;
+            ampB = 22;
             phaseOffsetB = Math.PI * 0.85; // Repelling strands
           } else {
             freqA = 2.8;
@@ -3942,8 +3942,8 @@
           // Pre-turn SUBTEXT_EVAL: Tight high-frequency sawtooth wave
           freqA = 9.0;
           freqB = 9.0;
-          ampA = 9;
-          ampB = 9;
+          ampA = 7;
+          ampB = 7;
         }
 
         // Draw Strand A
@@ -4050,6 +4050,7 @@
       ctx.clearRect(0, 0, w, h);
       const cx = w / 2;
       const cy = h / 2;
+      const s = w / 130; // Dynamic scale factor relative to 130px baseline
 
       const isSpeaking = compState.currentSpeaker === (isAgentA ? 'agent_a' : 'agent_b');
       const isSubtext = compState.isSubtextEval && !isSpeaking;
@@ -4057,8 +4058,8 @@
       ctx.save();
 
       // 1. Persistent Ambient Radial Glow (P0 Item #1)
-      const glowR = 60 + Math.sin(rigTime * 2) * (isSpeaking ? 4 : 1.5);
-      const auraGrad = ctx.createRadialGradient(cx, cy, 32, cx, cy, glowR);
+      const glowR = (60 + Math.sin(rigTime * 2) * (isSpeaking ? 4 : 1.5)) * s;
+      const auraGrad = ctx.createRadialGradient(cx, cy, 32 * s, cx, cy, glowR);
       if (isAgentA) {
         auraGrad.addColorStop(0, isSpeaking ? 'rgba(200, 90, 50, 0.35)' : 'rgba(200, 90, 50, 0.18)');
         auraGrad.addColorStop(1, 'rgba(200, 90, 50, 0)');
@@ -4071,9 +4072,9 @@
       ctx.arc(cx, cy, glowR, 0, Math.PI * 2);
       ctx.fill();
 
-      // 2. High-Craft Porcelain Spherical Base (r=50, filling 130px canvas)
-      const bodyR = 50;
-      const bodyGrad = ctx.createRadialGradient(cx - 16, cy - 16, 8, cx, cy, bodyR);
+      // 2. High-Craft Porcelain Spherical Base (r=50*s, filling canvas)
+      const bodyR = 50 * s;
+      const bodyGrad = ctx.createRadialGradient(cx - 16 * s, cy - 16 * s, 8 * s, cx, cy, bodyR);
       if (isAgentA) {
         bodyGrad.addColorStop(0, '#FFFFFF');
         bodyGrad.addColorStop(0.5, '#F8F4EE');
@@ -4088,28 +4089,28 @@
       ctx.arc(cx, cy, bodyR, 0, Math.PI * 2);
       ctx.fillStyle = bodyGrad;
       ctx.shadowColor = isAgentA ? 'rgba(200, 90, 50, 0.25)' : 'rgba(45, 106, 79, 0.25)';
-      ctx.shadowBlur = isSpeaking ? 16 : 8;
+      ctx.shadowBlur = (isSpeaking ? 16 : 8) * s;
       ctx.fill();
 
       // 3. Tactile Ring Rim
       ctx.strokeStyle = isAgentA ? 'rgba(200, 90, 50, 0.65)' : 'rgba(45, 106, 79, 0.65)';
-      ctx.lineWidth = isSpeaking ? 2.5 : 1.8;
+      ctx.lineWidth = (isSpeaking ? 2.5 : 1.8) * s;
       ctx.stroke();
 
-      // 4. Expressive Core / Visor (r_x=32, r_y=19)
-      const coreGrad = ctx.createLinearGradient(cx - 30, cy - 16, cx + 30, cy + 16);
+      // 4. Expressive Core / Visor (r_x=32*s, r_y=19*s)
+      const coreGrad = ctx.createLinearGradient(cx - 30 * s, cy - 16 * s, cx + 30 * s, cy + 16 * s);
       coreGrad.addColorStop(0, '#262220');
       coreGrad.addColorStop(0.5, '#171615');
       coreGrad.addColorStop(1, '#0F0E0E');
 
       ctx.beginPath();
-      ctx.ellipse(cx, cy - 1, 32, 19, 0, 0, Math.PI * 2);
+      ctx.ellipse(cx, cy - 1 * s, 32 * s, 19 * s, 0, 0, Math.PI * 2);
       ctx.fillStyle = coreGrad;
       ctx.fill();
 
       // Subtle Visor Specular Glass Sheen
       ctx.beginPath();
-      ctx.ellipse(cx, cy - 10, 20, 4.5, 0, 0, Math.PI * 2);
+      ctx.ellipse(cx, cy - 10 * s, 20 * s, 4.5 * s, 0, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
       ctx.fill();
 
@@ -4119,54 +4120,54 @@
         typeof activeScenario !== 'undefined' && activeScenario === 'market' ? 'D' : 'J'
       );
 
-      ctx.font = '700 8.5px "JetBrains Mono", monospace';
+      ctx.font = `700 ${8.5 * s}px "JetBrains Mono", monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = isAgentA ? 'rgba(200, 90, 50, 0.95)' : 'rgba(45, 106, 79, 0.95)';
-      ctx.fillText(initialChar, cx, cy - 11);
+      ctx.fillText(initialChar, cx, cy - 11 * s);
 
       // 6. Dynamic Visor Content: Speaking Equalizer vs Listening Eyes vs Subtext Spin
       if (isSpeaking) {
         // Equalizer wave inside visor with rounded bars
         ctx.fillStyle = isAgentA ? '#E07A5F' : '#52B788';
         const numBars = 5;
-        const barW = 3.5;
-        const startX = cx - 13;
+        const barW = 3.5 * s;
+        const startX = cx - 13 * s;
         for (let b = 0; b < numBars; b++) {
-          const barH = 6 + Math.abs(Math.sin(rigTime * 6 + b * 1.25)) * 14;
+          const barH = (6 + Math.abs(Math.sin(rigTime * 6 + b * 1.25)) * 14) * s;
           if (ctx.roundRect) {
             ctx.beginPath();
-            ctx.roundRect(startX + b * 6.5, cy + 2 - barH / 2, barW, barH, 2);
+            ctx.roundRect(startX + b * 6.5 * s, cy + 2 * s - barH / 2, barW, barH, 2 * s);
             ctx.fill();
           } else {
-            ctx.fillRect(startX + b * 6.5, cy + 2 - barH / 2, barW, barH);
+            ctx.fillRect(startX + b * 6.5 * s, cy + 2 * s - barH / 2, barW, barH);
           }
         }
       } else if (isSubtext) {
         // Amber orbital spin
         ctx.strokeStyle = '#F59E0B';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2.5 * s;
         ctx.beginPath();
-        ctx.arc(cx, cy + 2, 9, rigTime * 5, rigTime * 5 + Math.PI * 1.4);
+        ctx.arc(cx, cy + 2 * s, 9 * s, rigTime * 5, rigTime * 5 + Math.PI * 1.4);
         ctx.stroke();
       } else {
         // Gentle resting expressive eyes with lifelike twinkle & blink
         const isBlink = Math.sin(rigTime * 0.75) > 0.95;
         ctx.fillStyle = isAgentA ? '#E07A5F' : '#52B788';
         if (isBlink) {
-          ctx.fillRect(cx - 13, cy + 2, 10, 2);
-          ctx.fillRect(cx + 3, cy + 2, 10, 2);
+          ctx.fillRect(cx - 13 * s, cy + 2 * s, 10 * s, 2 * s);
+          ctx.fillRect(cx + 3 * s, cy + 2 * s, 10 * s, 2 * s);
         } else {
           ctx.beginPath();
-          ctx.arc(cx - 8, cy + 2, 4.2, 0, Math.PI * 2);
-          ctx.arc(cx + 8, cy + 2, 4.2, 0, Math.PI * 2);
+          ctx.arc(cx - 8 * s, cy + 2 * s, 4.2 * s, 0, Math.PI * 2);
+          ctx.arc(cx + 8 * s, cy + 2 * s, 4.2 * s, 0, Math.PI * 2);
           ctx.fill();
 
           // Tiny twinkle highlight
           ctx.fillStyle = '#FFFFFF';
           ctx.beginPath();
-          ctx.arc(cx - 7, cy + 0.8, 1.4, 0, Math.PI * 2);
-          ctx.arc(cx + 9, cy + 0.8, 1.4, 0, Math.PI * 2);
+          ctx.arc(cx - 7 * s, cy + 0.8 * s, 1.4 * s, 0, Math.PI * 2);
+          ctx.arc(cx + 9 * s, cy + 0.8 * s, 1.4 * s, 0, Math.PI * 2);
           ctx.fill();
         }
       }
@@ -4176,8 +4177,8 @@
 
     function animateRigs() {
       rigTime += 0.035;
-      renderRig(ctxA, true, 130, 130);
-      renderRig(ctxB, false, 130, 130);
+      renderRig(ctxA, true, canvasA.width, canvasA.height);
+      renderRig(ctxB, false, canvasB.width, canvasB.height);
       compState.avatarAnimId = requestAnimationFrame(animateRigs);
     }
 
