@@ -53,3 +53,4 @@ cmd = [
 print("Rendering clean subagent journey animation...")
 subprocess.run(cmd, check=True)
 print(f"Success! Output: {out_subagent} ({os.path.getsize(out_subagent)/(1024*1024):.2f} MB)")
+
