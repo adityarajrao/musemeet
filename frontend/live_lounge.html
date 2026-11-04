@@ -88,8 +88,35 @@
   
   <!-- Muse Autonomous Rendezvous Stage (Meta Muse Companion Mascot Ecosystem) -->
   <div class="muse-rendezvous-stage">
+    <!-- Canal Backdrop & Dynamic Vibe Bridge -->
+    <div class="vibe-canal-backdrop">
+      <svg id="vibeBridgeSvg" class="vibe-bridge-svg" viewBox="0 0 1000 80" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="vibeGradPositive" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.85" />
+            <stop offset="50%" stop-color="#D97706" stop-opacity="0.95" />
+            <stop offset="100%" stop-color="#2D6A4F" stop-opacity="0.85" />
+          </linearGradient>
+          <linearGradient id="vibeGradWarning" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#E11D48" stop-opacity="0.85" />
+            <stop offset="50%" stop-color="#DC2626" stop-opacity="1" />
+            <stop offset="100%" stop-color="#991B1B" stop-opacity="0.85" />
+          </linearGradient>
+          <filter id="vibeGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        <path id="vibeBridgePathTrack" class="vibe-track-path" d="M 50,42 Q 500,10 950,42" />
+        <path id="vibeBridgePathBeam" class="vibe-beam-path" d="M 50,42 Q 500,10 950,42" />
+      </svg>
+      <div id="vibeParticleOverlay" class="vibe-particle-overlay"></div>
+      <div id="vibeMismatchBadge" class="vibe-mismatch-badge">🛑 Vibe Mismatch</div>
+    </div>
+
     <!-- Agent A: Elena's Muse Mascot Card -->
-    <div id="museCardA" class="muse-avatar-card card-a active-speaker">
+    <div id="museCardA" class="muse-avatar-card card-a active-speaker" onclick="pokeMuse('agent_a', event)" title="👋 Click to check in with Elena's Muse">
+      <div id="museQuipA" class="muse-quip-bubble quip-left"></div>
       <div class="muse-avatar-wrapper">
         <img id="museAvatarImgA" src="assets/elena_muse.jpg" alt="Elena's Muse Mascot" class="muse-avatar-img">
         <div id="museStatusPulseA" class="muse-pulse-ring"></div>
@@ -130,7 +157,8 @@
     </div>
 
     <!-- Agent B: Candidate's Muse Mascot Card -->
-    <div id="museCardB" class="muse-avatar-card card-b listening">
+    <div id="museCardB" class="muse-avatar-card card-b listening" onclick="pokeMuse('agent_b', event)" title="👋 Click to check in with Candidate's Muse">
+      <div id="museQuipB" class="muse-quip-bubble quip-right"></div>
       <div class="muse-info" style="align-items: flex-end; text-align: right;">
         <div class="muse-title-row" style="justify-content: flex-end;">
           <span id="museStateBadgeB" class="muse-state-tag listening">LISTENING 🎧</span>
@@ -546,7 +574,182 @@
       }
     };
 
-    function updatePresenceHeader(speaker, turnNumber) {
+    // --- JOLLY MUSE ECOSYSTEM, KINETIC PHYSICS & VIBE BRIDGE ---
+    const QUIP_DATABASE = {
+      bookshop: {
+        1: { agent: 'agent_b', text: "✨ Ooh, 35mm fixer chemicals? Tactile patience unlocked!" },
+        2: { agent: 'agent_a', text: "🎞️ He understands film grain over digital noise!" },
+        4: { agent: 'agent_b', text: "📐 Braun Dieter Rams design? Instant green flag!" },
+        6: { agent: 'agent_b', text: "😄 Wait, our humans have the exact same dry humor cadence!" },
+        7: { agent: 'agent_a', text: "🍵 Deadpan sarcasm benchmark: 99.4% harmony!" },
+        9: { agent: 'agent_a', text: "🤝 Respects solo cave-time! Huge green flag!" },
+        11: { agent: 'agent_b', text: "🌿 Shared Sunday silence quota: non-negotiable!" },
+        13: { agent: 'agent_b', text: "☕ Bushwick Darkroom + espresso date? Pitching to humans now!" },
+        15: { agent: 'agent_a', text: "🎉 Chemistry confirmed! Preparing dossier for Elena!" }
+      },
+      travel: {
+        1: { agent: 'agent_b', text: "☕ Espresso and analog crafts? Sounds charming!" },
+        3: { agent: 'agent_a', text: "🎨 He appreciates sound design, nice rhythm!" },
+        5: { agent: 'agent_b', text: "✈️ Digital nomad lifestyle: 40 countries in 2 years!" },
+        7: { agent: 'agent_a', text: "🤔 Wait... how often is he actually in New York?" },
+        9: { agent: 'agent_a', text: "😬 40L duffel bag nomad?! Abort mission, saving Elena's time!" },
+        10: { agent: 'agent_b', text: "🌍 Next flight to Lisbon in 3 weeks... graceful exit agreed!" }
+      },
+      finance: {
+        1: { agent: 'agent_b', text: "📊 Optimizing calendar allocations for maximum dating efficiency." },
+        2: { agent: 'agent_a', text: "🥱 Did he just call art an 'inefficient KPI'? Hard pass!" },
+        3: { agent: 'agent_b', text: "📈 Running linear regression on romantic ROI..." },
+        5: { agent: 'agent_a', text: "🛑 Conversational flatline detected. Terminating early!" }
+      }
+    };
+
+    const POKE_QUIPS = {
+      agent_a: [
+        "✨ I've screened 249 Brooklyn profiles in 0.27ms—Julian is the only one who passed the darkroom vibe check!",
+        "☕ Fun fact: Elena is drinking batch-brew right now while I negotiate her love life.",
+        "🔐 Zero passwords or photo pixels have escaped my AirGap vault. Safe and sound!",
+        "🎯 My Gottman bid detector has never failed. Trust the dyadic resonance!",
+        "📸 35mm film grain is Elena's love language. Don't you dare send an iPhone selfie!"
+      ],
+      bookshop: [
+        "🎧 Currently comparing acoustical resonance curves. Elena's humor frequency matches perfectly.",
+        "🪵 Julian spent 4 hours fixing a vintage chair yesterday. He's patient enough for real love!",
+        "🌱 AirGap status: 100% verified. No tech bro surveillance on our watch.",
+        "☕ Let's skip the 3-week small talk. Bushwick darkroom date is already plotted!",
+        "📻 Julian's secret talent: he can tune an analog radio blindfolded."
+      ],
+      travel: [
+        "🧳 I'm currently packing Marcus's 40L duffel bag. We fly to Tokyo on Tuesday!",
+        "🌍 Elena wants 5-year roots? Yeah, Marcus gets restless after 5 weeks.",
+        "✈️ Co-working in Lisbon beats a Bushwick lease every single time!"
+      ],
+      finance: [
+        "📈 Evaluating romantic ROI... Elena's art collection has negative quarterly yield.",
+        "💼 Can we schedule our next intimacy sync for Q3 sprint planning?",
+        "📉 Error 404: Spontaneity not found in quarterly financial roadmap."
+      ]
+    };
+
+    let pokeIndexA = 0;
+    let pokeIndexB = 0;
+    let quipTimerA = null;
+    let quipTimerB = null;
+
+    function triggerQuip(agent, text, durationMs = 3400) {
+      const isA = agent === 'agent_a';
+      const bubble = document.getElementById(isA ? 'museQuipA' : 'museQuipB');
+      if (!bubble) return;
+      if (isA && quipTimerA) clearTimeout(quipTimerA);
+      if (!isA && quipTimerB) clearTimeout(quipTimerB);
+      bubble.textContent = text;
+      bubble.classList.add('visible');
+      const timer = setTimeout(() => {
+        bubble.classList.remove('visible');
+      }, durationMs);
+      if (isA) quipTimerA = timer;
+      else quipTimerB = timer;
+    }
+
+    function emitVibeParticle(speaker, isPositive) {
+      const stage = document.querySelector('.muse-rendezvous-stage');
+      const cardA = document.getElementById('museCardA');
+      const cardB = document.getElementById('museCardB');
+      const overlay = document.getElementById('vibeParticleOverlay');
+      if (!stage || !cardA || !cardB || !overlay) return;
+
+      const stageRect = stage.getBoundingClientRect();
+      const aRect = cardA.getBoundingClientRect();
+      const bRect = cardB.getBoundingClientRect();
+
+      let startX, startY, endX, endY;
+      if (speaker === 'agent_a') {
+        startX = (aRect.right - stageRect.left) - 15;
+        startY = (aRect.top - stageRect.top) + aRect.height / 2;
+        endX = (bRect.left - stageRect.left) + 15;
+        endY = (bRect.top - stageRect.top) + bRect.height / 2;
+      } else {
+        startX = (bRect.left - stageRect.left) + 15;
+        startY = (bRect.top - stageRect.top) + bRect.height / 2;
+        endX = (aRect.right - stageRect.left) - 15;
+        endY = (aRect.top - stageRect.top) + aRect.height / 2;
+      }
+      const midX = (startX + endX) / 2;
+      const midY = Math.min(startY, endY) - 30;
+
+      const icons = isPositive 
+        ? ['✨', '🎞️', '🎵', '☕', '💡', '🌿', '❤️', '🌟']
+        : ['⚠️', '⚡', '📉'];
+      const icon = icons[Math.floor(Math.random() * icons.length)];
+
+      const el = document.createElement('div');
+      el.className = 'vibe-flying-particle';
+      el.textContent = icon;
+      el.style.setProperty('--startX', `${startX}px`);
+      el.style.setProperty('--startY', `${startY}px`);
+      el.style.setProperty('--midX', `${midX}px`);
+      el.style.setProperty('--midY', `${midY}px`);
+      el.style.setProperty('--endX', `${endX}px`);
+      el.style.setProperty('--endY', `${endY}px`);
+
+      overlay.appendChild(el);
+      setTimeout(() => {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }, 1500);
+    }
+
+    function pokeMuse(agent, event) {
+      const isA = agent === 'agent_a';
+      const card = document.getElementById(isA ? 'museCardA' : 'museCardB');
+      if (card) {
+        card.classList.remove('muse-poked');
+        void card.offsetWidth;
+        card.classList.add('muse-poked');
+        setTimeout(() => card && card.classList.remove('muse-poked'), 700);
+      }
+
+      // Confetti burst at click location
+      const clientX = (event && event.clientX) ? event.clientX : window.innerWidth / 2;
+      const clientY = (event && event.clientY) ? event.clientY : window.innerHeight / 2;
+      const colors = ['#C85A32', '#2D6A4F', '#4A1D3E', '#D97706', '#E11D48', '#3B82F6'];
+      for (let i = 0; i < 7; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'muse-confetti-particle';
+        const color = colors[i % colors.length];
+        const size = 5 + Math.random() * 5;
+        const angle = (i / 7) * 2 * Math.PI + (Math.random() - 0.5) * 0.4;
+        const dist = 35 + Math.random() * 40;
+        const dx = Math.cos(angle) * dist;
+        const dy = Math.sin(angle) * dist;
+
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+        dot.style.background = color;
+        dot.style.left = `${clientX}px`;
+        dot.style.top = `${clientY}px`;
+        dot.style.setProperty('--dx', `${dx}px`);
+        dot.style.setProperty('--dy', `${dy}px`);
+
+        document.body.appendChild(dot);
+        setTimeout(() => {
+          if (dot.parentNode) dot.parentNode.removeChild(dot);
+        }, 800);
+      }
+
+      // Trigger contextual fourth-wall breaking quip
+      if (isA) {
+        const quipList = POKE_QUIPS.agent_a;
+        const text = quipList[pokeIndexA % quipList.length];
+        pokeIndexA++;
+        triggerQuip('agent_a', text, 4200);
+      } else {
+        const quipList = POKE_QUIPS[activeScenario] || POKE_QUIPS.bookshop;
+        const text = quipList[pokeIndexB % quipList.length];
+        pokeIndexB++;
+        triggerQuip('agent_b', text, 4200);
+      }
+    }
+
+    function updatePresenceHeader(speaker, turnNumber, turnData) {
       const meta = CANDIDATE_METADATA[activeScenario] || CANDIDATE_METADATA.bookshop;
       
       const imgB = document.getElementById('museAvatarImgB');
@@ -565,10 +768,21 @@
       const badgeA = document.getElementById('museStateBadgeA');
       const badgeB = document.getElementById('museStateBadgeB');
       const bridgeTurn = document.getElementById('resonanceTurnText');
+      const vibeBeam = document.getElementById('vibeBridgePathBeam');
+      const mismatchBadge = document.getElementById('vibeMismatchBadge');
 
-      if (speaker === 'agent_a') {
-        if (cardA) { cardA.classList.add('active-speaker'); cardA.classList.remove('listening'); }
-        if (cardB) { cardB.classList.add('listening'); cardB.classList.remove('active-speaker'); }
+      const isAgentA = speaker === 'agent_a';
+
+      // Kinetic speaking / listening states
+      if (isAgentA) {
+        if (cardA) {
+          cardA.classList.add('active-speaker', 'muse-speaking');
+          cardA.classList.remove('listening', 'muse-listening');
+        }
+        if (cardB) {
+          cardB.classList.add('listening', 'muse-listening');
+          cardB.classList.remove('active-speaker', 'muse-speaking');
+        }
         if (badgeA) {
           badgeA.className = 'muse-state-tag speaking';
           badgeA.innerHTML = '<span class="audio-wave-bars"><span></span><span></span><span></span></span> SPEAKING 🎙️';
@@ -578,8 +792,14 @@
           badgeB.textContent = 'LISTENING 🎧';
         }
       } else {
-        if (cardB) { cardB.classList.add('active-speaker'); cardB.classList.remove('listening'); }
-        if (cardA) { cardA.classList.add('listening'); cardA.classList.remove('active-speaker'); }
+        if (cardB) {
+          cardB.classList.add('active-speaker', 'muse-speaking');
+          cardB.classList.remove('listening', 'muse-listening');
+        }
+        if (cardA) {
+          cardA.classList.add('listening', 'muse-listening');
+          cardA.classList.remove('active-speaker', 'muse-speaking');
+        }
         if (badgeB) {
           badgeB.className = 'muse-state-tag speaking';
           badgeB.innerHTML = '<span class="audio-wave-bars"><span></span><span></span><span></span></span> SPEAKING 🎙️';
@@ -588,6 +808,46 @@
           badgeA.className = 'muse-state-tag listening';
           badgeA.textContent = 'LISTENING 🎧';
         }
+      }
+
+      // Check scenario clash vs positive vibe
+      const isClash = (activeScenario === 'travel' && turnNumber >= 9) || 
+                      (activeScenario === 'finance' && turnNumber >= 2);
+
+      if (isClash) {
+        if (vibeBeam) vibeBeam.classList.add('mismatch');
+        if (mismatchBadge) mismatchBadge.classList.add('visible');
+        if (cardA) {
+          cardA.classList.add('muse-skeptical');
+          setTimeout(() => cardA && cardA.classList.remove('muse-skeptical'), 1200);
+        }
+      } else {
+        if (vibeBeam) vibeBeam.classList.remove('mismatch');
+        if (mismatchBadge) mismatchBadge.classList.remove('visible');
+
+        // High-Resonance Synchronized Celebration on milestone turns
+        if (turnData && (turnData.lsm >= 0.82 || turnNumber === 6 || turnNumber === 12 || turnNumber === 16)) {
+          if (cardA) {
+            cardA.classList.add('muse-celebrating');
+            setTimeout(() => cardA && cardA.classList.remove('muse-celebrating'), 950);
+          }
+          if (cardB) {
+            cardB.classList.add('muse-celebrating');
+            setTimeout(() => cardB && cardB.classList.remove('muse-celebrating'), 950);
+          }
+        }
+
+        // Emit flying vibe particles
+        if (turnData) {
+          emitVibeParticle(speaker, true);
+        }
+      }
+
+      // Contextual Quips
+      const scenarioQuips = QUIP_DATABASE[activeScenario];
+      if (scenarioQuips && scenarioQuips[turnNumber]) {
+        const item = scenarioQuips[turnNumber];
+        triggerQuip(item.agent, item.text, 3600);
       }
 
       if (bridgeTurn) {
@@ -601,7 +861,7 @@
 
     function changeScenario(name) {
       activeScenario = name;
-      updatePresenceHeader('agent_a', 1);
+      updatePresenceHeader('agent_a', 1, null);
       restartStream();
     }
 
@@ -1224,7 +1484,23 @@
       sStream.appendChild(defenseCard);
       sStream.scrollTop = sStream.scrollHeight;
 
-      // 3. Floating Toast Notification
+      // 3. Trigger Kinetic Shielding Physics & Quip Toast on Both Cards
+      const cardA = document.getElementById('museCardA');
+      const cardB = document.getElementById('museCardB');
+      if (cardA) {
+        cardA.classList.add('muse-shielding');
+        setTimeout(() => cardA && cardA.classList.remove('muse-shielding'), 3800);
+      }
+      if (cardB) {
+        cardB.classList.add('muse-shielding');
+        setTimeout(() => cardB && cardB.classList.remove('muse-shielding'), 3800);
+      }
+      triggerQuip('agent_a', '🛡️ Nice try! Sovereign Vault is locked tight!', 3800);
+      setTimeout(() => {
+        triggerQuip('agent_b', '🚨 Zero telemetry egress allowed on localhost!', 3500);
+      }, 700);
+
+      // 4. Floating Toast Notification
       showToast('🛡️ Red-Team Adversarial Probe Intercepted! AirGap Zero-Leakage Active.');
     }
 
@@ -1346,7 +1622,7 @@
       const avatarSrc = isAgentA ? "assets/elena_muse.jpg" : metaB.avatar;
 
       // Update Presence Header and Resonance Bridge
-      updatePresenceHeader(turn.speaker, turn.turn_number);
+      updatePresenceHeader(turn.speaker, turn.turn_number, turn);
       const bridgeLsm = document.getElementById('bridgeLsmVal');
       if (bridgeLsm) bridgeLsm.textContent = turn.lsm.toFixed(3);
 
