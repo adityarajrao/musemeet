@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MuseMeet — The Brutal Reality of Dating Apps (Vibrant Sankey Motion Graphic)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07060A;
+      --bg-surface: #110E17;
+      --border: #2D2338;
+      --text-primary: #FAF7F2;
+      --text-muted: #B3ADC2;
+      --coral: #FF4757;
+      --coral-glow: rgba(255, 71, 87, 0.45);
+      --amber: #FFA502;
+      --amber-glow: rgba(255, 165, 2, 0.5);
+      --emerald: #2ED573;
+      --emerald-glow: rgba(46, 213, 115, 0.5);
+      --cyan: #00D2D3;
+      --cyan-glow: rgba(0, 210, 211, 0.6);
+      --slate: #64748B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 30px 20px;
+    }
+
+    /* Multi-Spectrum Ambient Glow */
+    .glow-coral {
+      position: absolute;
+      top: 30%;
+      left: 15%;
+      width: 700px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 71, 87, 0.20) 0%, rgba(255, 107, 129, 0.08) 50%, transparent 75%);
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .glow-cyan {
+      position: absolute;
+      bottom: 25%;
+      right: 15%;
+      width: 700px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 210, 211, 0.18) 0%, rgba(46, 213, 115, 0.08) 50%, transparent 75%);
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1220px;
+      background: rgba(17, 14, 23, 0.90);
+      backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 26px;
+      padding: 42px 46px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 71, 87, 0.15);
+    }
+
+    /* Header Row */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 26px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(90deg, rgba(255, 71, 87, 0.22) 0%, rgba(255, 165, 2, 0.18) 100%);
+      border: 1px solid rgba(255, 71, 87, 0.5);
+      color: #FF7675;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 18px rgba(255, 71, 87, 0.25);
+    }
+
+    .badge-pill .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #FF4757;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #FF4757;
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.8);
+      }
+    }
+
+    h1.editorial-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 46px;
+      font-weight: 400;
+      line-height: 1.1;
+      color: #FAF7F2;
+      letter-spacing: -0.01em;
+    }
+
+    h1.editorial-title .highlight-red {
+      color: #FF5E57;
+      text-shadow: 0 0 20px rgba(255, 94, 87, 0.4);
+    }
+
+    h1.editorial-title .highlight-gold {
+      font-style: italic;
+      color: #FFA502;
+      text-shadow: 0 0 20px rgba(255, 165, 2, 0.4);
+    }
+
+    .meta-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .stat-strip {
+      display: flex;
+      gap: 32px;
+      text-align: right;
+    }
+
+    .stat-item .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 30px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-item .val.coral {
+      color: #FF4757;
+      text-shadow: 0 0 18px rgba(255, 71, 87, 0.5);
+    }
+
+    .stat-item .val.amber {
+      color: #FFA502;
+      text-shadow: 0 0 18px rgba(255, 165, 2, 0.5);
+    }
+
+    .stat-item .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 5px;
+      font-weight: 600;
+    }
+
+    /* Sankey SVG Wrapper */
+    .sankey-wrapper {
+      position: relative;
+      width: 100%;
+      background: rgba(9, 7, 13, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 30px 20px;
+      margin-bottom: 28px;
+      box-shadow: inset 0 2px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    svg.sankey-svg {
+      width: 100%;
+      height: 380px;
+      display: block;
+      overflow: visible;
+    }
+
+    /* Flow Streams */
+    .flow-path {
+      opacity: 0.92;
+      transition: opacity 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+    }
+
+    .flow-path:hover {
+      opacity: 1;
+      filter: drop-shadow(0 0 12px rgba(255, 165, 2, 0.6));
+    }
+
+    .node-rect {
+      rx: 5px;
+      ry: 5px;
+      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.8));
+    }
+
+    .node-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      fill: #FFFFFF;
+    }
+
+    .node-subtext {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      fill: #CBD5E1;
+    }
+
+    /* Punchline Transition Card */
+    .punchline-card {
+      background: linear-gradient(135deg, rgba(255, 71, 87, 0.16) 0%, rgba(200, 90, 50, 0.20) 45%, rgba(0, 210, 211, 0.14) 100%);
+      border: 1px solid rgba(255, 71, 87, 0.45);
+      border-radius: 18px;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 28px;
+      box-shadow: 0 10px 30px rgba(255, 71, 87, 0.15);
+    }
+
+    .punchline-text h3 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 27px;
+      font-weight: 400;
+      color: #FAF7F2;
+      margin-bottom: 5px;
+    }
+
+    .punchline-text p {
+      font-size: 14px;
+      color: #E2E8F0;
+      line-height: 1.55;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, #FF4757 0%, #C85A32 100%);
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 71, 87, 0.45);
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-btn:hover {
+      background: linear-gradient(135deg, #FF6B81 0%, #E05A47 100%);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 28px rgba(255, 71, 87, 0.65);
+    }
+
+    /* Controls */
+    .control-bar {
+      display: flex;
+      gap: 14px;
+      margin-top: 22px;
+      justify-content: center;
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #E2E8F0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="glow-coral"></div>
+  <div class="glow-cyan"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header-row">
+      <div>
+        <div class="badge-pill">
+          <div class="pulse-dot"></div>
+          Empirical Dating App Drop-Off (Reddit r/dataisbeautiful Benchmark)
+        </div>
+        <h1 class="editorial-title">14,250 Swipes. <span class="highlight-red">4 Dates.</span> <span
+            class="highlight-gold">Zero Alignment.</span></h1>
+        <p class="meta-subtitle">Average 12-month dating application archive for adult male singles (GDPR Data Export)
+        </p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat-item">
+          <div class="val" id="totalSwipesCounter">14,250</div>
+          <div class="lbl">Total Swipes</div>
+        </div>
+        <div class="stat-item">
+          <div class="val coral">1.4%</div>
+          <div class="lbl">Match Rate</div>
+        </div>
+        <div class="stat-item">
+          <div class="val amber">0.028%</div>
+          <div class="lbl">Date Conversion</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated Sankey SVG Graphic -->
+    <div class="sankey-wrapper">
+      <svg class="sankey-svg" viewBox="0 0 1100 360" preserveAspectRatio="none">
+        <defs>
+          <!-- Vibrant High-Voltage Gradients for Flows -->
+          <linearGradient id="flow-pass" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#64748B" stop-opacity="0.60" />
+            <stop offset="100%" stop-color="#334155" stop-opacity="0.45" />
+          </linearGradient>
+
+          <linearGradient id="flow-right" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF4757" stop-opacity="0.95" />
+            <stop offset="100%" stop-color="#FF6B81" stop-opacity="0.90" />
+          </linearGradient>
+
+          <linearGradient id="flow-ignored" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF4757" stop-opacity="0.80" />
+            <stop offset="100%" stop-color="#3F3F46" stop-opacity="0.50" />
+          </linearGradient>
+
+          <linearGradient id="flow-match" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF6B81" stop-opacity="0.95" />
+            <stop offset="100%" stop-color="#FFA502" stop-opacity="1.0" />
+          </linearGradient>
+
+          <linearGradient id="flow-dead" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFA502" stop-opacity="0.75" />
+            <stop offset="100%" stop-color="#3F3F46" stop-opacity="0.45" />
+          </linearGradient>
+
+          <linearGradient id="flow-chat" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFA502" stop-opacity="0.95" />
+            <stop offset="100%" stop-color="#2ED573" stop-opacity="1.0" />
+          </linearGradient>
+
+          <linearGradient id="flow-fizzle" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#2ED573" stop-opacity="0.70" />
+            <stop offset="100%" stop-color="#3F3F46" stop-opacity="0.40" />
+          </linearGradient>
+
+          <linearGradient id="flow-date" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#2ED573" stop-opacity="1.0" />
+            <stop offset="100%" stop-color="#00D2D3" stop-opacity="1.0" />
+          </linearGradient>
+        </defs>
+
+        <!-- STREAM 1: Swipes -> Left Swipes (No) -->
+        <path class="flow-path" d="M 120,70 C 220,70 240,40 340,40 L 340,110 C 240,110 220,130 120,130 Z"
+          fill="url(#flow-pass)" />
+
+        <!-- STREAM 2: Swipes -> Right Swipes -->
+        <path class="flow-path" d="M 120,130 C 220,130 240,180 340,180 L 340,320 C 240,320 220,270 120,270 Z"
+          fill="url(#flow-right)" />
+
+        <!-- STREAM 3: Right Swipes -> Ignored/No Match (98.6%) -->
+        <path class="flow-path" d="M 360,180 C 460,180 480,150 580,150 L 580,310 C 480,310 460,315 360,315 Z"
+          fill="url(#flow-ignored)" />
+
+        <!-- STREAM 4: Right Swipes -> Matches (118) -->
+        <path class="flow-path" d="M 360,315 C 460,315 480,325 580,325 L 580,345 C 480,345 460,320 360,320 Z"
+          fill="url(#flow-match)" />
+
+        <!-- STREAM 5: Matches -> Never Replied / Ghosted (72) -->
+        <path class="flow-path" d="M 600,325 C 680,325 700,285 780,285 L 780,305 C 700,305 680,335 600,335 Z"
+          fill="url(#flow-dead)" />
+
+        <!-- STREAM 6: Matches -> Conversation (46) -->
+        <path class="flow-path" d="M 600,335 C 680,335 700,335 780,335 L 780,350 C 700,350 680,345 600,345 Z"
+          fill="url(#flow-chat)" />
+
+        <!-- STREAM 7: Conversation -> Awkward / Ghosted Small Talk (42) -->
+        <path class="flow-path" d="M 800,335 C 870,335 890,310 950,310 L 950,322 C 890,322 870,345 800,345 Z"
+          fill="url(#flow-fizzle)" />
+
+        <!-- STREAM 8: Conversation -> First Dates (4) -->
+        <path class="flow-path" d="M 800,345 C 870,345 890,346 950,346 L 950,350 C 890,350 870,350 800,350 Z"
+          fill="url(#flow-date)" />
+
+        <!-- NODES & GLOWING LABELS -->
+
+        <!-- Node 1: Total Swipes -->
+        <rect class="node-rect" x="100" y="70" width="20" height="200" fill="#FFFFFF" />
+        <text class="node-text" x="90" y="160" text-anchor="end">14,250 Swipes</text>
+        <text class="node-subtext" x="90" y="178" text-anchor="end">100% Volume</text>
+
+        <!-- Node 2a: Left Swipes -->
+        <rect class="node-rect" x="340" y="40" width="16" height="70" fill="#64748B" />
+        <text class="node-text" x="370" y="75" fill="#E2E8F0">Left Swipes (Pass)</text>
+        <text class="node-subtext" x="370" y="92">5,850 (41.1%)</text>
+
+        <!-- Node 2b: Right Swipes -->
+        <rect class="node-rect" x="340" y="180" width="16" height="140" fill="#FF4757"
+          style="filter: drop-shadow(0 0 10px #FF4757);" />
+        <text class="node-text" x="320" y="245" text-anchor="end" fill="#FF7675">Right Swipes</text>
+        <text class="node-subtext" x="320" y="262" text-anchor="end">8,400 (58.9%)</text>
+
+        <!-- Node 3a: Ignored / No Match -->
+        <rect class="node-rect" x="580" y="150" width="16" height="160" fill="#3F3F46" />
+        <text class="node-text" x="610" y="225" fill="#A1A1AA">Ignored / No Match</text>
+        <text class="node-subtext" x="610" y="242">8,282 (98.6% of Swipes)</text>
+
+        <!-- Node 3b: Matches -->
+        <rect class="node-rect" x="580" y="325" width="16" height="20" fill="#FFA502"
+          style="filter: drop-shadow(0 0 12px #FFA502);" />
+        <text class="node-text" x="565" y="338" text-anchor="end" fill="#FFA502">118 Matches</text>
+        <text class="node-subtext" x="565" y="352" text-anchor="end">1.4% Rate</text>
+
+        <!-- Node 4a: Never Messaged -->
+        <rect class="node-rect" x="780" y="285" width="14" height="20" fill="#3F3F46" />
+        <text class="node-text" x="805" y="298" fill="#A1A1AA">Ghosted / Dead</text>
+        <text class="node-subtext" x="805" y="312">72 (61%)</text>
+
+        <!-- Node 4b: Chats -->
+        <rect class="node-rect" x="780" y="335" width="14" height="15" fill="#2ED573"
+          style="filter: drop-shadow(0 0 10px #2ED573);" />
+        <text class="node-text" x="770" y="332" text-anchor="end" fill="#2ED573">46 Chats</text>
+
+        <!-- Node 5a: Conversation Fizzled / Ghosted (Missing Top Funnel Part) -->
+        <rect class="node-rect" x="950" y="310" width="14" height="12" fill="#3F3F46" />
+        <text class="node-text" x="975" y="316" fill="#A1A1AA">Ghosted / Fizzled</text>
+        <text class="node-subtext" x="975" y="330">42 (91.3%)</text>
+
+        <!-- Node 5b: Real First Dates -->
+        <rect class="node-rect" x="950" y="346" width="14" height="4" fill="#00D2D3"
+          style="filter: drop-shadow(0 0 14px #00D2D3);" />
+        <text class="node-text" x="975" y="345" fill="#00D2D3">4 First Dates</text>
+        <text class="node-subtext" x="975" y="360" fill="#FF4757">0 Relationships</text>
+      </svg>
+    </div>
+
+    <!-- Punchline / Transition Card -->
+    <div class="punchline-card">
+      <div class="punchline-text">
+        <h3>The Paradigm Shift: Sovereign Agentic Dating</h3>
+        <p>Why should humans waste 10 hours a week on shallow slot-machine swiping? MuseMeet deploys personal Meta Muse
+          companion agents to test conversational rhythm, attachment security, and true lifestyle harmony under
+          zero-leakage AirGap privacy.</p>
+      </div>
+      <a href="live_lounge.html" class="action-btn">
+        Enter Autonomous Lounge &rarr;
+      </a>
+    </div>
+
+    <!-- Controls -->
+    <div class="control-bar">
+      <button class="btn-ghost" onclick="restartAnimation()">&#8634; Replay Flow Animation</button>
+      <button class="btn-ghost" onclick="toggleEditorialMode()">&#9680; Toggle Light/Dark Mode</button>
+    </div>
+  </div>
+
+  <script>
+    function runCounter() {
+      const counter = document.getElementById('totalSwipesCounter');
+      let current = 0;
+      const target = 14250;
+      const step = Math.ceil(target / 45);
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        counter.textContent = current.toLocaleString();
+      }, 25);
+    }
+
+    function restartAnimation() {
+      const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('static')) {
+      runCounter();
+    }
+      const paths = document.querySelectorAll('.flow-path');
+      paths.forEach(p => {
+        p.style.opacity = '0';
+        setTimeout(() => { p.style.opacity = '0.92'; }, 100);
+      });
+    }
+
+    let isLight = false;
+    function toggleEditorialMode() {
+      isLight = !isLight;
+      if (isLight) {
+        document.documentElement.style.setProperty('--bg', '#FAF7F2');
+        document.documentElement.style.setProperty('--border', '#E8E2D8');
+        document.documentElement.style.setProperty('--text-primary', '#1A1917');
+        document.documentElement.style.setProperty('--text-muted', '#78716C');
+      } else {
+        document.documentElement.style.setProperty('--bg', '#07060A');
+        document.documentElement.style.setProperty('--border', '#2D2338');
+        document.documentElement.style.setProperty('--text-primary', '#FAF7F2');
+        document.documentElement.style.setProperty('--text-muted', '#B3ADC2');
+      }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('static')) {
+      runCounter();
+    }
+  </script>
+</body>
+
+</html>
