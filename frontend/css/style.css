@@ -3428,3 +3428,135 @@ body {
 .sparkline-area {
   fill: url(#sparklineGrad);
 }
+
+
+/* ==========================================================================
+   HERO STAGE SYMMETRY, HUD SCALING & TELEMETRY STREAM FIXES
+   ========================================================================== */
+
+/* 1. Hero Stage 3-Column Explicit Grid Layout */
+.muse-rendezvous-stage {
+  position: relative;
+  height: 235px;
+  min-height: 235px;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-canvas);
+  border-bottom: 1px solid var(--border-subtle);
+  display: grid;
+  grid-template-columns: 320px 1fr 320px;
+  align-items: center;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  transition: height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 20;
+}
+
+#spatialNodeA {
+  grid-column: 1 !important;
+  justify-self: start !important;
+  z-index: 10;
+  padding-left: 0.5rem;
+}
+
+#biometricHudLens {
+  grid-column: 2 !important;
+  justify-self: center !important;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.45rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(232, 226, 216, 0.95);
+  box-shadow: 0 10px 32px -4px rgba(74, 29, 62, 0.16), 0 2px 10px rgba(0, 0, 0, 0.04);
+  min-width: 310px;
+  pointer-events: auto;
+  user-select: none;
+}
+
+#spatialNodeB {
+  grid-column: 3 !important;
+  justify-self: end !important;
+  z-index: 10;
+  padding-right: 0.5rem;
+}
+
+/* 2. Subtext Reasoning Stream Flexbox Shrink Bug Fix */
+.egress-gate-card {
+  flex-shrink: 0 !important;
+  min-height: 110px;
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1.1fr 56px 1.1fr;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 12px;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+}
+
+.monologue-card {
+  flex-shrink: 0 !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.subtext-feed {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* 3. Header Toolbar Fit & Responsive Trimming */
+.header {
+  padding: 0.35rem 0.85rem !important;
+  gap: 0.5rem;
+}
+
+.controls-group {
+  gap: 0.45rem !important;
+}
+
+.header-control-group {
+  gap: 0.3rem !important;
+}
+
+.action-btn.tool-btn {
+  padding: 0.28rem 0.52rem !important;
+  font-size: 0.68rem !important;
+  gap: 0.28rem !important;
+}
+
+.scenario-select {
+  max-width: 235px !important;
+}
+
+@media (max-width: 1520px) {
+  .brand-text p {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1380px) {
+  .action-btn.tool-btn span:last-child {
+    display: none !important;
+  }
+}
