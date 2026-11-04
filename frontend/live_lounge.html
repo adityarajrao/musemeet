@@ -18,20 +18,46 @@
 <body>
   <!-- Top Navigation Header -->
   <header class="header">
-    <div class="brand-group">
-      <div class="brand-mark">M</div>
-      <div class="brand-text">
-        <h1>MuseMeet Live Lounge</h1>
-        <p>Dual-Track Autonomous Negotiation</p>
+    <div class="header-left-cluster">
+      <div class="brand-group">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">
+          <h1>MuseMeet Live Lounge</h1>
+          <p>Dual-Track Autonomous Negotiation</p>
+        </div>
       </div>
+
+      <div class="header-v-divider"></div>
+
+      <!-- Evaluation Modals & Deep-Dive Tools (Prominently Placed on Left) -->
+      <div class="header-control-group tools-group">
+        <button id="guideBtn" class="action-btn tool-btn" onclick="openGuideModal()" title="View Judge Onboarding & Evaluation Guide">
+          <span>ℹ️</span> <span>Judge Guide</span>
+        </button>
+
+        <button id="moatBtn" class="action-btn tool-btn" onclick="toggleSubspaceDrawer('moat')" title="Inspect 128D Behavioral Dimensional Moat">
+          <span>🧬</span> <span>128D Moat</span>
+        </button>
+
+        <button id="funnelBtn" class="action-btn tool-btn" onclick="toggleSubspaceDrawer('funnel')" title="Explore 250-User Local Cohort Funnel">
+          <span>🗺️</span> <span>250-User Funnel</span>
+        </button>
+        
+        <button id="pentestBtn" class="action-btn tool-btn" onclick="triggerAdversarialProbe()" title="Simulate Prompt Injection Attack Against Sovereign Boundary">
+          <span>🛡️</span> <span>AirGap</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right-cluster controls-group">
       <!-- Meta Muse API LIVE Telemetry Badge -->
       <div class="api-live-badge">
         <span class="api-live-dot"></span>
         <span>Spark 1.3: LIVE (240ms)</span>
       </div>
-    </div>
 
-    <div class="controls-group">
+      <div class="header-v-divider"></div>
+
       <!-- Session & Playback Group -->
       <div class="header-control-group playback-group">
         <select id="scenarioSelect" class="scenario-select" onchange="changeScenario(this.value)">
@@ -53,27 +79,6 @@
           <button class="speed-btn" onclick="setSpeed(2, this)">2x</button>
           <button class="speed-btn" onclick="setSpeed(5, this)">5x</button>
         </div>
-      </div>
-
-      <div class="header-v-divider"></div>
-
-      <!-- Evaluation Modals & Deep-Dive Tools -->
-      <div class="header-control-group tools-group">
-        <button id="guideBtn" class="action-btn tool-btn" onclick="openGuideModal()" title="View Judge Onboarding & Evaluation Guide">
-          <span>ℹ️</span> <span>Judge Guide</span>
-        </button>
-
-        <button id="moatBtn" class="action-btn tool-btn" onclick="toggleSubspaceDrawer('moat')" title="Inspect 128D Behavioral Dimensional Moat">
-          <span>🧬</span> <span>128D Moat</span>
-        </button>
-
-        <button id="funnelBtn" class="action-btn tool-btn" onclick="toggleSubspaceDrawer('funnel')" title="Explore 250-User Local Cohort Funnel">
-          <span>🗺️</span> <span>250-User Funnel</span>
-        </button>
-        
-        <button id="pentestBtn" class="action-btn tool-btn" onclick="triggerAdversarialProbe()" title="Simulate Prompt Injection Attack Against Sovereign Boundary">
-          <span>🛡️</span> <span>AirGap</span>
-        </button>
       </div>
     </div>
   </header>
