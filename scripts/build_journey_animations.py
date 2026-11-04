@@ -23,30 +23,33 @@ s2_img = os.path.join(subagent_dir, "step2_pingpong.jpg")
 s3_img = os.path.join(subagent_dir, "step3_date.jpg")
 
 filter_sub = (
-    # Clip 1: slow zoom-in on mascot
-    "[0:v]scale=1920:1080,setsar=1,zoompan=z='min(zoom+0.0006,1.10)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=324:s=1920x1080:fps=30,"
+    # Clip 1: On-Device Persona Profiling (0 - 10.8s)
+    "[0:v]scale=1920:1080,setsar=1,"
     "drawtext=text='01 / ON-DEVICE SOVEREIGN PROFILING':font='Arial':fontsize=26:fontcolor=white:x=80:y=h-90:box=1:boxcolor=black@0.55:boxborderw=10,"
     "drawtext=text='Continuous learning of authentic rhythm and attachment values · Zero Cloud Egress':font='Arial':fontsize=16:fontcolor=white@0.85:x=80:y=h-50:box=1:boxcolor=black@0.4:boxborderw=6,"
     "fade=t=out:st=10.0:d=0.8[v0];"
-    # Clip 2: slow pan across ping pong match
-    "[1:v]scale=1920:1080,setsar=1,zoompan=z='1.05':x='iw/2-(iw/zoom/2)+sin(in/60)*40':y='ih/2-(ih/zoom/2)':d=360:s=1920x1080:fps=30,"
+    
+    # Clip 2: Autonomous AirGap Ping-Pong Banter (10.0 - 21.5s)
+    "[1:v]scale=1920:1080,setsar=1,"
     "drawtext=text='02 / AUTONOMOUS AIRGAP PING-PONG BANTER':font='Arial':fontsize=26:fontcolor=white:x=80:y=h-90:box=1:boxcolor=black@0.55:boxborderw=10,"
     "drawtext=text='Embodied companion mascots stress-testing alignment at machine speed':font='Arial':fontsize=16:fontcolor=white@0.85:x=80:y=h-50:box=1:boxcolor=black@0.4:boxborderw=6,"
-    "fade=t=in:st=0:d=0.8,fade=t=out:st=11.2:d=0.8[v1];"
-    # Clip 3: slow camera reveal on high five and couple
-    "[2:v]scale=1920:1080,setsar=1,zoompan=z='max(1.10-0.0007*on,1.0)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=360:s=1920x1080:fps=30,"
+    "fade=t=in:st=0:d=0.8,fade=t=out:st=10.7:d=0.8[v1];"
+    
+    # Clip 3: Real-World Offline First Date (20.7 - 32.8s)
+    "[2:v]scale=1920:1080,setsar=1,"
     "drawtext=text='03 / OFFLINE FIRST DATE · 92 PERCENT RESONANCE':font='Arial':fontsize=26:fontcolor=white:x=80:y=h-90:box=1:boxcolor=black@0.55:boxborderw=10,"
     "drawtext=text='Deep compatibility proven · Agents curate real-world Brooklyn rendezvous':font='Arial':fontsize=16:fontcolor=white@0.85:x=80:y=h-50:box=1:boxcolor=black@0.4:boxborderw=6,"
     "fade=t=in:st=0:d=0.8[v2];"
-    # Concat clips
+    
+    # Concat all 3 clips cleanly
     "[v0][v1][v2]concat=n=3:v=1:a=0[vout]"
 )
 
 cmd_sub = [
     ffmpeg, "-y",
     "-loop", "1", "-t", "10.8", "-i", s1_img,
-    "-loop", "1", "-t", "12.0", "-i", s2_img,
-    "-loop", "1", "-t", "11.6", "-i", s3_img,
+    "-loop", "1", "-t", "11.5", "-i", s2_img,
+    "-loop", "1", "-t", "11.2", "-i", s3_img,
     "-i", audio_path,
     "-filter_complex", filter_sub,
     "-map", "[vout]", "-map", "3:a",
