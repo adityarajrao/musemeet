@@ -63,11 +63,11 @@
           <span>ℹ️</span> <span>Judge Guide</span>
         </button>
 
-        <button id="moatBtn" class="action-btn tool-btn" onclick="openMoatModal()" title="Inspect 128D Behavioral Dimensional Moat">
+        <button id="moatBtn" class="action-btn tool-btn" onclick="toggleSubspaceDrawer('moat')" title="Inspect 128D Behavioral Dimensional Moat">
           <span>🧬</span> <span>128D Moat</span>
         </button>
 
-        <button id="funnelBtn" class="action-btn tool-btn" onclick="openFunnelModal()" title="Explore 250-User Local Cohort Funnel">
+        <button id="funnelBtn" class="action-btn tool-btn" onclick="toggleSubspaceDrawer('funnel')" title="Explore 250-User Local Cohort Funnel">
           <span>🗺️</span> <span>250-User Funnel</span>
         </button>
         
@@ -77,6 +77,50 @@
       </div>
     </div>
   </header>
+
+  <!-- SPEC 3: Subspace Drawer & 128D Latent Heatmap -->
+  <div id="subspaceDrawer" class="subspace-drawer">
+    <div class="subspace-pane">
+      <div class="subspace-pane-title">
+        <span>🧬 3-TIER HIERARCHICAL FUNNEL FILTERING</span>
+        <span style="color: var(--accent-emerald);">LATENCY &lt; 0.28ms</span>
+      </div>
+      <div class="funnel-tier-row">
+        <span>Tier 1A: Geodesic Transit Barrier (15-mi Transit Radius)</span>
+        <span class="funnel-tier-count">250 → 62</span>
+      </div>
+      <div class="funnel-tier-row">
+        <span>Tier 1B: 128D FAISS Vector Scan (Coarse Cosine Retrieval)</span>
+        <span class="funnel-tier-count">62 → 18</span>
+      </div>
+      <div class="funnel-tier-row">
+        <span>Tier 2: Bilateral Aesthetic Satisficing & Pareto Frontier</span>
+        <span class="funnel-tier-count">18 → Top 1 Active</span>
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.3rem;">
+        <button class="action-btn" onclick="openFunnelModal()" style="font-size: 0.72rem; padding: 0.3rem 0.6rem;">
+          🗺️ Open Full 250-Candidate Map Modal
+        </button>
+        <button class="action-btn" onclick="closeSubspaceDrawer()" style="font-size: 0.72rem; padding: 0.3rem 0.6rem;">
+          ✕ Close Drawer
+        </button>
+      </div>
+    </div>
+    <div class="subspace-pane" style="border-left: 1px solid var(--border-subtle);">
+      <div class="subspace-pane-title">
+        <span>🧠 128-DIMENSIONAL LATENT TOPOLOGY HEATMAP</span>
+        <span id="activeSubspaceDimCount" style="color: var(--text-tertiary);">Active Dims: 128 / 128</span>
+      </div>
+      <div id="heatmap128dGrid" class="heatmap-128d-grid">
+        <!-- 128 micro-cells populated dynamically -->
+      </div>
+      <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-tertiary);">
+        <span>Dim 001 [Sensory/Acoustic]</span>
+        <span>Dim 064 [Autonomy/Cadence]</span>
+        <span>Dim 128 [Attachment/Security]</span>
+      </div>
+    </div>
+  </div>
 
   <!-- 4-Stage Progression Banner -->
   <div class="stage-banner">
@@ -104,96 +148,179 @@
 
   <!-- Main Dual-Track Split Layout -->
   
-  <!-- Muse Autonomous Rendezvous Stage (Meta Muse Companion Mascot Ecosystem) -->
+  <!-- Muse Autonomous Rendezvous Stage (SPECs 1 & 4) -->
   <div class="muse-rendezvous-stage" id="museRendezvousStage">
-    <!-- 3D Three.js WebGL Canvas Stage -->
-    <canvas id="muse-3d-stage" class="muse-3d-canvas"></canvas>
-    <!-- Canal Backdrop & Dynamic Vibe Bridge -->
-    <div class="vibe-canal-backdrop">
-      <svg id="vibeBridgeSvg" class="vibe-bridge-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="vibeGradPositive" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.35" />
-            <stop offset="50%" stop-color="#D97706" stop-opacity="0.45" />
-            <stop offset="100%" stop-color="#2D6A4F" stop-opacity="0.35" />
-          </linearGradient>
-          <linearGradient id="vibeGradWarning" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#E11D48" stop-opacity="0.35" />
-            <stop offset="50%" stop-color="#DC2626" stop-opacity="0.45" />
-            <stop offset="100%" stop-color="#991B1B" stop-opacity="0.35" />
-          </linearGradient>
-          <filter id="vibeGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="1.0" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-        </defs>
-        <path id="vibeBridgePathTrack" class="vibe-track-path" d="M 50,30 Q 500,8 950,30" />
-        <path id="vibeBridgePathBeam" class="vibe-beam-path" d="M 50,30 Q 500,8 950,30" />
-      </svg>
-      <div id="vibeParticleOverlay" class="vibe-particle-overlay"></div>
-      <div id="vibeMismatchBadge" class="vibe-mismatch-badge">🛑 Vibe Mismatch</div>
-    </div>
+    <!-- Center Kinetic Harmonic Wave Canvas -->
+    <canvas id="kineticWaveCanvas" class="kinetic-wave-canvas"></canvas>
 
-    <!-- Agent A: Elena's Muse Mascot Card -->
-    <div id="museCardA" class="muse-avatar-card card-a active-speaker" onclick="pokeMuse('agent_a', event)" title="👋 Click to check in with Elena's Muse">
-      <div id="museQuipA" class="muse-quip-bubble quip-left"></div>
-      <div class="muse-avatar-wrapper">
-        <img id="museAvatarImgA" src="assets/elena_muse.jpg" alt="Elena's Muse Mascot" class="muse-avatar-img">
-        <div id="museStatusPulseA" class="muse-pulse-ring"></div>
+    <!-- Left Spatial Node: Elena's Muse (280px) -->
+    <div id="spatialNodeA" class="spatial-node node-left speaking">
+      <div id="spatialHaloA" class="spatial-halo"></div>
+      <div class="spatial-canvas-container" onclick="pokeMuse('agent_a', event)" title="👋 Click to interact with Elena's Muse">
+        <canvas id="avatarCanvasA" class="spatial-agent-canvas" width="130" height="130"></canvas>
       </div>
-      <div class="muse-info">
-        <div class="muse-title-row">
-          <span class="muse-name">Elena's Muse</span>
-          <span id="museStateBadgeA" class="muse-state-tag speaking">
-            <span class="audio-wave-bars"><span></span><span></span><span></span></span>
-            SPEAKING 🎙️
-          </span>
+      
+      <!-- Glassmorphic Pedestal Pill (Preserving ID museCardA!) -->
+      <div id="museCardA" class="pedestal-pill card-a active-speaker" onclick="pokeMuse('agent_a', event)">
+        <div id="museQuipA" class="muse-quip-bubble quip-left"></div>
+        <div class="muse-avatar-wrapper" style="display:none;">
+          <img id="museAvatarImgA" src="assets/elena_muse.jpg" alt="Elena's Muse" class="muse-avatar-img">
+          <div id="museStatusPulseA" class="muse-pulse-ring"></div>
         </div>
-        <div class="muse-subtitle">Architect & Sound Artist · Manhattan</div>
-        <div class="muse-meta-row">
-          <span class="muse-charm-badge">MUSE CHARM #7F2A</span>
-          <span>·</span>
-          <span>AirGap Sovereign</span>
+        <div class="muse-info">
+          <div class="muse-title-row">
+            <span class="muse-name">Elena's Muse</span>
+            <span id="museStateBadgeA" class="muse-state-tag speaking">
+              <span class="audio-wave-bars"><span></span><span></span><span></span></span>
+              SPEAKING 🎙️
+            </span>
+          </div>
+          <div class="muse-subtitle">Architect & Sound Artist · Manhattan</div>
+          <div class="muse-meta-row">
+            <span class="muse-charm-badge">MUSE CHARM #7F2A</span>
+            <span>·</span>
+            <span class="enclave-badge">🔒 AirGap Sovereign</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Center Bridge: Autonomous Resonance Arc -->
-    <div class="muse-resonance-bridge">
+    <!-- Center Floating HUD: Biometric Telemetry Lens (Preserving ID muse-resonance-bridge!) -->
+    <div id="biometricHudLens" class="biometric-hud-lens muse-resonance-bridge">
       <div class="resonance-header">
         <span class="resonance-tag">● AUTONOMOUS RENDEZVOUS</span>
         <span class="resonance-lock">🔒 E2EE AIRGAP CANAL</span>
       </div>
-      <div class="resonance-waveform">
-        <div class="wave-beam"></div>
-        <div class="resonance-metric-center">
-          <span class="resonance-val-label">LSM RESONANCE</span>
-          <span id="bridgeLsmVal" class="resonance-val">0.881</span>
+      <div class="lens-core">
+        <div class="circular-progress-box">
+          <svg class="progress-ring-svg" width="52" height="52" viewBox="0 0 52 52">
+            <circle class="ring-bg" cx="26" cy="26" r="21" />
+            <circle id="lsmProgressRing" class="ring-progress" cx="26" cy="26" r="21" />
+          </svg>
+          <div class="ring-value-center">
+            <span id="bridgeLsmVal" class="resonance-val">0.881</span>
+          </div>
         </div>
-      </div>
-      <div class="resonance-footer">
-        <span id="resonanceTurnText">Turn 1 · Discovery (Cognitive & Sensory)</span>
+        <div class="lens-meta">
+          <div class="resonance-val-label">LSM RESONANCE</div>
+          <div id="resonanceTurnText" class="resonance-turn">Turn 1 · Discovery (Cognitive & Sensory)</div>
+          <div id="packetHashPill" class="packet-hash-pill">
+            <span class="hash-dot"></span>
+            <span id="packetHashText">0x9F4A...E21B</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Agent B: Candidate's Muse Mascot Card -->
-    <div id="museCardB" class="muse-avatar-card card-b listening" onclick="pokeMuse('agent_b', event)" title="👋 Click to check in with Candidate's Muse">
-      <div id="museQuipB" class="muse-quip-bubble quip-right"></div>
-      <div class="muse-info" style="align-items: flex-end; text-align: right;">
-        <div class="muse-title-row" style="justify-content: flex-end;">
-          <span id="museStateBadgeB" class="muse-state-tag listening">LISTENING 🎧</span>
-          <span id="museNameB" class="muse-name">Julian's Muse</span>
+    <!-- Right Spatial Node: Julian's Muse (280px) -->
+    <div id="spatialNodeB" class="spatial-node node-right listening">
+      <div id="spatialHaloB" class="spatial-halo"></div>
+      <div class="spatial-canvas-container" onclick="pokeMuse('agent_b', event)" title="👋 Click to interact with Candidate's Muse">
+        <canvas id="avatarCanvasB" class="spatial-agent-canvas" width="130" height="130"></canvas>
+      </div>
+
+      <!-- Glassmorphic Pedestal Pill (Preserving ID museCardB!) -->
+      <div id="museCardB" class="pedestal-pill card-b listening" onclick="pokeMuse('agent_b', event)">
+        <div id="museQuipB" class="muse-quip-bubble quip-right"></div>
+        <div class="muse-info" style="align-items: flex-end; text-align: right;">
+          <div class="muse-title-row" style="justify-content: flex-end;">
+            <span id="museStateBadgeB" class="muse-state-tag listening">LISTENING 🎧</span>
+            <span id="museNameB" class="muse-name">Julian's Muse</span>
+          </div>
+          <div id="museSubtitleB" class="muse-subtitle">Industrial Designer & Acoustician · Greenpoint</div>
+          <div class="muse-meta-row" style="justify-content: flex-end;">
+            <span class="enclave-badge">🔒 AirGap Sovereign</span>
+            <span>·</span>
+            <span id="museCharmBadgeB" class="muse-charm-badge">MUSE CHARM #3E91</span>
+          </div>
         </div>
-        <div id="museSubtitleB" class="muse-subtitle">Industrial Designer & Acoustician · Greenpoint</div>
-        <div class="muse-meta-row" style="justify-content: flex-end;">
-          <span>AirGap Sovereign</span>
-          <span>·</span>
-          <span id="museCharmBadgeB" class="muse-charm-badge">MUSE CHARM #3E91</span>
+        <div class="muse-avatar-wrapper" style="display:none;">
+          <img id="museAvatarImgB" src="assets/julian_muse.jpg" alt="Candidate's Muse" class="muse-avatar-img">
+          <div id="museStatusPulseB" class="muse-pulse-ring"></div>
         </div>
       </div>
-      <div class="muse-avatar-wrapper">
-        <img id="museAvatarImgB" src="assets/julian_muse.jpg" alt="Candidate's Muse Mascot" class="muse-avatar-img">
-        <div id="museStatusPulseB" class="muse-pulse-ring"></div>
+    </div>
+
+    <!-- Hidden / Fallback Legacy IDs -->
+    <div class="vibe-canal-backdrop" style="display:none; pointer-events:none;">
+      <canvas id="muse-3d-stage" class="muse-3d-canvas" style="display:none;"></canvas>
+      <svg id="vibeBridgeSvg"><path id="vibeBridgePathTrack"/><path id="vibeBridgePathBeam"/></svg>
+      <div id="vibeParticleOverlay"></div>
+      <div id="vibeMismatchBadge"></div>
+    </div>
+
+    <!-- SPEC 4: Turn 16 Stage 4 Synthesis Payoff Card -->
+    <div id="synthesisDossierPayoff" class="synthesis-dossier-payoff" style="display: none;">
+      <div class="synthesis-payoff-card">
+        <!-- Left Wing: 16-Turn Proof -->
+        <div class="payoff-wing payoff-wing-left">
+          <div class="wing-badge">16-TURN DYADIC PROOF</div>
+          <div class="wing-score-row">
+            <span id="synthesisScoreBig" class="score-big">92%</span>
+            <span class="score-sub">Match Verified</span>
+          </div>
+          <div class="wing-metrics-grid">
+            <span id="synthLsmMetric">LSM: 0.91</span>
+            <span id="synthGottmanMetric">Gottman: 0.96</span>
+            <span id="synthPprMetric">PPR: 0.95</span>
+          </div>
+          <div class="wing-resonances">
+            <div class="res-title">✦ Autonomous Resonance Discoveries:</div>
+            <ul id="synthesisResonancesList" class="res-list">
+              <li>Shared reverence for slow, unforgiving analog craft (35mm darkroom chemistry vs. vacuum tube restoration).</li>
+              <li>Aligned high-autonomy cadence: mutual respect for deep solitary studio hours without attachment friction.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Center Core: Cryptographic Consent Sigil & Icebreaker -->
+        <div class="payoff-core">
+          <div class="sigil-container">
+            <div class="sigil-charms">
+              <span class="charm-key">#7F2A</span>
+              <span class="sigil-lock-symbol">🔒⟷✨</span>
+              <span class="charm-key">#3E91</span>
+            </div>
+            <div class="sigil-status">DUAL-KEY CONSENT LOCKED</div>
+          </div>
+          <div class="icebreaker-unlock-box">
+            <div class="icebreaker-label">✧ Zero-Friction First Message Blueprint:</div>
+            <p id="synthesisIcebreakerText" class="icebreaker-quote">
+              "Your Muse tells me you're partial to Ilford HP5 pushed two stops—mine already promised I'd bring a pressed record worthy of a darkroom break."
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Wing: Curated Rendezvous Blueprint -->
+        <div class="payoff-wing payoff-wing-right">
+          <div class="wing-badge" style="background: rgba(200, 90, 50, 0.15); color: var(--accent-secondary);">CURATED RENDEZVOUS BLUEPRINT</div>
+          <div class="venue-name-row">
+            <span id="synthesisVenueName" class="venue-name">Eavesdrop Listening Bar</span>
+            <span id="synthesisTransitMid" class="transit-mid">Greenpoint / Manhattan Transit Midpoint</span>
+          </div>
+          <div class="venue-acoustic-pill">
+            <span>Acoustic Profile: Warm Vinyl / Tube Amp (68dB)</span>
+          </div>
+          <div class="venue-timing">
+            <span>Suggested Window:</span> <strong id="synthesisWindowTime">Friday · 8:30 PM EST</strong>
+          </div>
+          <p id="synthesisSensoryWhy" class="sensory-why">
+            Analog tube-amplified acoustic treatment matches Julian's sonic threshold and Elena's tactile spatial design preference.
+          </p>
+        </div>
+      </div>
+
+      <!-- Primary Action CTA Bar -->
+      <div class="synthesis-cta-bar">
+        <button id="dispatchDossierBtn" class="cta-btn cta-primary" onclick="openMobilePushModal()">
+          <span>📲</span> <span>Dispatch Sovereign Dossier to Humans</span>
+        </button>
+        <button id="exportAuditLogBtn" class="cta-btn cta-secondary" onclick="exportCryptographicAuditLog()">
+          <span>📄</span> <span>Export Cryptographic Audit Log (JSON)</span>
+        </button>
+        <button class="cta-btn cta-secondary" onclick="collapseSynthesisPayoff()" style="padding: 0.55rem 0.8rem;" title="Collapse Payoff to View Kinetic Stage">
+          <span>▲</span>
+        </button>
       </div>
     </div>
   </div>
@@ -267,7 +394,12 @@
               <path id="sparklineArea" class="sparkline-area" d="" />
               <path id="sparklinePath" class="sparkline-path" d="" />
             </svg>
-          </div>
+                      <div id="subspacePopover" class="subspace-popover">
+              <div id="subspacePopTitle" style="font-weight: 700; color: var(--accent-primary); margin-bottom: 0.2rem;">Domain Analysis</div>
+              <div id="subspacePopScore" style="color: var(--text-secondary); margin-bottom: 0.2rem;">Cosine Sim: 0.994</div>
+              <div id="subspacePopDims" style="font-size: 0.65rem; color: var(--text-tertiary);">Subspace Dims: [14, 29, 88]</div>
+            </div>
+</div>
         </div>
 
         <!-- Vertical Hairline Partition Divider -->
@@ -286,6 +418,7 @@
             <svg id="radarSvg" class="radar-svg" viewBox="0 0 400 200">
               <!-- Background Grid & Spokes populated dynamically -->
               <g id="radarGridGroup"></g>
+              <polygon id="radarBaselinePolygon" class="radar-baseline-polygon" points="" />
               <polygon id="radarPolygon" class="radar-polygon" points="" />
               <g id="radarLabelsGroup"></g>
             </svg>
@@ -2526,8 +2659,21 @@
       const turn = scenario.turns[currentTurnIndex];
       updateStageBanner(turn.turn_number);
 
-      // 1. Append Dialogue Message
+      // Pre-turn SUBTEXT_EVAL 300ms window
       const isAgentA = turn.speaker === 'agent_a';
+      const receiverNode = isAgentA ? document.getElementById('spatialNodeB') : document.getElementById('spatialNodeA');
+      if (receiverNode) receiverNode.classList.add('subtext-eval');
+      if (window.compState) {
+        window.compState.isSubtextEval = true;
+        window.compState.currentSpeaker = turn.speaker;
+      }
+
+      setTimeout(() => {
+        if (receiverNode) receiverNode.classList.remove('subtext-eval');
+        if (window.compState) window.compState.isSubtextEval = false;
+      }, 350);
+
+      // 1. Append Dialogue Message
       const metaB = CANDIDATE_METADATA[activeScenario] || CANDIDATE_METADATA.bookshop;
       const senderName = isAgentA ? "Elena's Muse" : metaB.name;
       const avatarSrc = isAgentA ? "assets/elena_muse.jpg" : metaB.avatar;
@@ -2537,9 +2683,34 @@
       const bridgeLsm = document.getElementById('bridgeLsmVal');
       if (bridgeLsm) bridgeLsm.textContent = turn.lsm.toFixed(3);
 
+      // Delta Pill Calculation
+      const lastLsmVal = lsmHistory.length > 0 ? lsmHistory[lsmHistory.length - 1] : turn.lsm;
+      const lsmDeltaDiff = (turn.lsm - lastLsmVal).toFixed(3);
+      const deltaSign = (turn.lsm >= lastLsmVal) ? '+' : '';
+      const deltaPill = `<span class="turn-delta-pill">LSM ${deltaSign}${lsmDeltaDiff} · Bid: ${turn.bid.toUpperCase()}</span>`;
+
       const dStream = document.getElementById('dialogueStream');
       const msgDiv = document.createElement('div');
       msgDiv.className = `dialogue-msg ${isAgentA ? 'msg-agent-a' : 'msg-agent-b'}`;
+      msgDiv.setAttribute('data-turn', turn.turn_number);
+      msgDiv.setAttribute('title', 'Click to inspect this turn in Vault & Radar');
+      msgDiv.onclick = () => {
+        if (typeof scrubToHistoricalTurn === 'function') {
+          scrubToHistoricalTurn(turn.turn_number);
+        }
+      };
+
+      // Hover link with Egress Vault Card
+      msgDiv.addEventListener('mouseenter', () => {
+        const matchingCard = document.querySelector(`.egress-gate-card[data-turn="${turn.turn_number}"]`);
+        if (matchingCard) matchingCard.classList.add('card-highlight');
+        msgDiv.classList.add('dialogue-highlight');
+      });
+      msgDiv.addEventListener('mouseleave', () => {
+        const matchingCard = document.querySelector(`.egress-gate-card[data-turn="${turn.turn_number}"]`);
+        if (matchingCard) matchingCard.classList.remove('card-highlight');
+        msgDiv.classList.remove('dialogue-highlight');
+      });
       
       if (isAgentA) {
         msgDiv.innerHTML = `
@@ -2552,6 +2723,7 @@
                 <span class="sender-sparkle">◈</span>
                 <span class="sender-name">${senderName}</span>
                 <span class="turn-index-sub">· Turn ${turn.turn_number}</span>
+                ${deltaPill}
               </div>
               <div class="msg-bubble">${turn.dialogue}</div>
             </div>
@@ -2562,6 +2734,7 @@
           <div class="msg-content-row msg-content-row-b">
             <div class="msg-body-col">
               <div class="msg-sender" style="justify-content: flex-end;">
+                ${deltaPill}
                 <span class="turn-index-sub">Turn ${turn.turn_number} ·</span>
                 <span class="sender-name">${senderName}</span>
                 <span class="sender-sparkle">✧</span>
@@ -2577,19 +2750,23 @@
       dStream.appendChild(msgDiv);
       dStream.scrollTop = dStream.scrollHeight;
 
-      // 2. Append Subtext Monologue Card
-      const sStream = document.getElementById('subtextStream');
-      const monoDiv = document.createElement('div');
-      monoDiv.className = `monologue-card ${isAgentA ? '' : 'agent-b-thought'}`;
-      monoDiv.innerHTML = `
-        <div class="monologue-meta">
-          <span>${senderName} Internal Reasoning</span>
-          <span class="bid-tag ${turn.bid === 'toward' ? 'bid-toward' : 'bid-away'}">${turn.bid.toUpperCase()}</span>
-        </div>
-        <div class="monologue-text">"${turn.internal_monologue}"</div>
-      `;
-      sStream.appendChild(monoDiv);
-      sStream.scrollTop = sStream.scrollHeight;
+      // 2. Append SPEC 2 Split-Layer AirGap Vault Card
+      if (typeof renderEgressGateCard === 'function') {
+        renderEgressGateCard(turn, isAgentA, senderName);
+      } else {
+        const sStream = document.getElementById('subtextStream');
+        const monoDiv = document.createElement('div');
+        monoDiv.className = `monologue-card ${isAgentA ? '' : 'agent-b-thought'}`;
+        monoDiv.innerHTML = `
+          <div class="monologue-meta">
+            <span>${senderName} Internal Reasoning</span>
+            <span class="bid-tag ${turn.bid === 'toward' ? 'bid-toward' : 'bid-away'}">${turn.bid.toUpperCase()}</span>
+          </div>
+          <div class="monologue-text">"${turn.internal_monologue}"</div>
+        `;
+        sStream.appendChild(monoDiv);
+        sStream.scrollTop = sStream.scrollHeight;
+      }
 
       // 3. Update Telemetry Dashboard
       document.getElementById('lsmStat').textContent = turn.lsm.toFixed(3);
@@ -2642,6 +2819,41 @@
       initThree3DStage();
     }
   </script>
+
+  <!-- SPEC 4: Mobile Push Notification Preview Modal -->
+  <div id="mobilePushModal" class="mobile-push-modal" onclick="closeMobilePushModal(event)">
+    <div class="mobile-mockup-frame" onclick="event.stopPropagation()">
+      <div class="mobile-notch"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: rgba(255,255,255,0.7); font-family: 'JetBrains Mono', monospace;">
+        <span>9:41 AM</span>
+        <span>● 5G · 100%</span>
+      </div>
+
+      <!-- Elena's Notification -->
+      <div class="mobile-push-card">
+        <div class="push-header">
+          <span>MUSEMEET // SOVEREIGN DISPATCH</span>
+          <span>JUST NOW</span>
+        </div>
+        <div class="push-title">✨ Julian Vance · 92% Dyadic Resonance Unlocked!</div>
+        <div class="push-body">Your Muse completed autonomous rendezvous with Julian's Muse. First-date itinerary drafted for Eavesdrop Listening Bar. Icebreaker unlocked!</div>
+      </div>
+
+      <!-- Julian's Notification -->
+      <div class="mobile-push-card" style="border-color: rgba(45, 106, 79, 0.4);">
+        <div class="push-header">
+          <span>MUSEMEET // SOVEREIGN DISPATCH</span>
+          <span>JUST NOW</span>
+        </div>
+        <div class="push-title">✨ Elena Rostova · 92% Dyadic Resonance Unlocked!</div>
+        <div class="push-body">Your Muse completed autonomous rendezvous with Elena's Muse. Mutual analog craft affinity verified. View explainable compatibility dossier.</div>
+      </div>
+
+      <button class="cta-btn cta-primary" onclick="closeMobilePushModal()" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+        ✓ Acknowledge & Return to Lounge
+      </button>
+    </div>
+  </div>
 
   <!-- Metropolitan Cohort Funnel Modal -->
   <div id="cohortModal" class="funnel-modal">
@@ -3259,5 +3471,1117 @@
     </div>
   </div>
 
+
+  <!-- SPEC 1, 2, 3, 4: Comprehensive Engine -->
+  <script>
+/* ==========================================================================
+   COMPREHENSIVE LOUNGE ENGINE (SPECs 1, 2, 3, 4)
+   - SPEC 1: Kinetic Resonance Bridge & Spatial Agent Nodes
+   - SPEC 2: E2EE AirGap Sovereign Vault Inspector (Split-Layer Cards)
+   - SPEC 3: 128D Moat, 7-Domain Dual Radar & Subspace Drawer
+   - SPEC 4: Stage 4 Synthesis Payoff, Mobile Push Modal & Audit Export
+   ========================================================================== */
+
+(function() {
+  'use strict';
+
+  // --- SPEC 2: ENCLAVE VAULT TELEMETRY DATABASE ---
+  const ENCLAVE_VAULT_DB = {
+    bookshop: [
+      {
+        turn: 1,
+        agent: 'agent_a',
+        rawContext: 'TELEMETRY [Dwell: 42m]: Ilford HP5 darkroom recipe; Local: /Users/elena/Darkroom/Notes.md; GPS: 40.718°N, 73.989°W; Journal: "I need the smell of fixer chemicals and the honesty of silver grain."',
+        redactedItems: ['40.718°N, 73.989°W', 'elena@arch.studio', '+1-212-555-0143'],
+        blockedCount: 3,
+        zkpHash: '0x7F2A...C4B9',
+        deltaLabel: 'LSM 1.000 · Baseline Discovery · Bid: TOWARD'
+      },
+      {
+        turn: 2,
+        agent: 'agent_b',
+        rawContext: 'AUDIO TELEMETRY [Dwell: 38m]: McIntosh MC275 amplifier teardown; Mullard EL34 vacuum tube test curves; Studio rent: 104 Greenpoint Ave; Credit ending in 4921.',
+        redactedItems: ['104 Greenpoint Ave', 'Card #4921', 'julian@vance-acoustics.io'],
+        blockedCount: 3,
+        zkpHash: '0x3E91...D108',
+        deltaLabel: 'LSM 0.792 · Sensory +18% · Bid: TOWARD'
+      },
+      {
+        turn: 3,
+        agent: 'agent_a',
+        rawContext: 'ACADEMIC REPOSITORY: Univ. Heidelberg Cortical Microcircuits thesis; Confocal microscopy raw TIFFs; Spotify log: 1959 Miles Davis Kind of Blue on vinyl loop.',
+        redactedItems: ['Student ID #918204', 'thesis_confocal_final.pdf'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...E882',
+        deltaLabel: 'LSM 0.815 · Cognitive +12% · Bid: TOWARD'
+      },
+      {
+        turn: 4,
+        agent: 'agent_b',
+        rawContext: 'PURCHASE RECORD: Kyoto back-alley record shop receipt (¥18,500); Ryokan Gion stay; Calendar entry: "Deep solitary restoration studio hours — do not disturb."',
+        redactedItems: ['Passport #A984***2', 'Receipt #98124', 'Gion Inn #204'],
+        blockedCount: 3,
+        zkpHash: '0x3E91...A719',
+        deltaLabel: 'LSM 0.835 · Autonomy +15% · Bid: TOWARD'
+      },
+      {
+        turn: 5,
+        agent: 'agent_a',
+        rawContext: 'DOMESTIC LOG: Sourdough hydration formula: 78.4% water, 20% levain; Kitchen scale calibration log; Sunday morning 6:30 AM silence routine.',
+        redactedItems: ['Studio Apt #4B', 'Internal kitchen notes'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...3B44',
+        deltaLabel: 'LSM 0.841 · Social Agency · Bid: TOWARD'
+      },
+      {
+        turn: 6,
+        agent: 'agent_b',
+        rawContext: 'LIFESTYLE DWELL: Cortado preparation timer: 28s extraction; Chemex vs Kalita Wave notes; Unlined Moleskine notebook scans.',
+        redactedItems: ['Serial #88129-C', 'Greenpoint studio Wi-Fi'],
+        blockedCount: 2,
+        zkpHash: '0x3E91...99C1',
+        deltaLabel: 'LSM 0.852 · Wit Synchrony · Bid: TOWARD'
+      },
+      {
+        turn: 7,
+        agent: 'agent_a',
+        rawContext: 'SENSORY DWELL: 4 pour-over drippers extraction yield spreadsheet; Journal: "I get defensive when people treat coffee like fuel instead of craft."',
+        redactedItems: ['Private Cloud Drive URL', 'elena_sensory_sheet.xlsx'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...F002',
+        deltaLabel: 'LSM 0.864 · Banter Peak · Bid: TOWARD'
+      },
+      {
+        turn: 8,
+        agent: 'agent_b',
+        rawContext: 'RELATIONAL LOG: Acaia Pearl scale telemetry; Banter calibration LSM 0.88; Morning acoustic room sweep file.',
+        redactedItems: ['Bluetooth MAC Address', 'room_sweep_cal.wav'],
+        blockedCount: 2,
+        zkpHash: '0x3E91...77A2',
+        deltaLabel: 'LSM 0.871 · Agency Harmonic · Bid: TOWARD'
+      },
+      {
+        turn: 9,
+        agent: 'agent_a',
+        rawContext: 'ATTACHMENT AUDIT: Boundary probe: "Can you tolerate 48 hours of hyper-focused radio silence during darkroom printing without anxious escalation?"',
+        redactedItems: ['Therapist session note excerpt', 'Private 2024 journal'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...911D',
+        deltaLabel: 'LSM 0.876 · Friction Probe · Bid: TOWARD'
+      },
+      {
+        turn: 10,
+        agent: 'agent_b',
+        rawContext: 'CADENCE AUDIT: "Autonomous studio cadence: deep work requires parallel solitude. Not absence of care, but presence of craft. Need my own workshop."',
+        redactedItems: ['Workshop lease contract', 'Studio schedule'],
+        blockedCount: 2,
+        zkpHash: '0x3E91...64B3',
+        deltaLabel: 'LSM 0.879 · Cadence Match · Bid: TOWARD'
+      },
+      {
+        turn: 11,
+        agent: 'agent_a',
+        rawContext: 'FINANCIAL FOOTPRINT: Architecture studio billing; Equipment depreciation write-offs; "Spend on tools that outlive you, cut on luxury pretense."',
+        redactedItems: ['Tax Return Schedule C', 'Bank of America routing #021'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...28A1',
+        deltaLabel: 'LSM 0.884 · Finance Parity · Bid: TOWARD'
+      },
+      {
+        turn: 12,
+        agent: 'agent_b',
+        rawContext: 'VALUATION RECORD: Acoustic bench test equipment; Tektronix oscilloscope restoration receipt; Value alignment on durable physical investment.',
+        redactedItems: ['Oscilloscope Invoice #412', 'Shop address'],
+        blockedCount: 2,
+        zkpHash: '0x3E91...15C9',
+        deltaLabel: 'LSM 0.886 · Finance Parity · Bid: TOWARD'
+      },
+      {
+        turn: 13,
+        agent: 'agent_a',
+        rawContext: 'SPATIAL CONSTRAINTS: Acoustic tolerance map: Noise threshold < 70dB; Lower East Side / Greenpoint G-train transit midpoint.',
+        redactedItems: ['Transit metrocard history', 'Apartment noise log'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...B902',
+        deltaLabel: 'LSM 0.888 · Spatial Synthesis · Bid: TOWARD'
+      },
+      {
+        turn: 14,
+        agent: 'agent_b',
+        rawContext: 'VENUE DATABASE SCAN: Eavesdrop Listening Bar in Greenpoint isolated: analog rotary mixer, tube amplification, 68dB acoustic boundary, natural wines.',
+        redactedItems: ['Eavesdrop table reservation API key', 'Phone contact'],
+        blockedCount: 2,
+        zkpHash: '0x3E91...88F1',
+        deltaLabel: 'LSM 0.885 · Venue Locked · Bid: TOWARD'
+      },
+      {
+        turn: 15,
+        agent: 'agent_a',
+        rawContext: 'BLUEPRINT SYNTHESIS: First-date conversation spark synthesized from darkroom chemistry and vacuum tube restoration; Dual-consent signature generated.',
+        redactedItems: ['Elena private signature key', 'Draft message seed'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...44C3',
+        deltaLabel: 'LSM 0.883 · Consent Locked · Bid: TOWARD'
+      },
+      {
+        turn: 16,
+        agent: 'agent_b',
+        rawContext: 'FINAL HANDOFF: Sovereign mutual introduction ready; AirGap seal verified; Cryptographic hash chain closed: 0x9F4A...E21B.',
+        redactedItems: ['Julian private signature key', 'Audit ledger checksum'],
+        blockedCount: 2,
+        zkpHash: '0x3E91...FF01',
+        deltaLabel: 'LSM 0.881 · 92% Dyadic Resonance · Bid: TOWARD'
+      }
+    ],
+    record_store: [
+      {
+        turn: 1,
+        agent: 'agent_a',
+        rawContext: 'TELEMETRY: Darkroom printing schedule; Need tactile deliberate patience.',
+        redactedItems: ['elena@arch.studio', '+1-212-555-0143'],
+        blockedCount: 2,
+        zkpHash: '0x7F2A...C4B9',
+        deltaLabel: 'LSM 1.000 · Discovery · Bid: TOWARD'
+      },
+      {
+        turn: 9,
+        agent: 'agent_a',
+        rawContext: 'CRITICAL FRICTION TEST: Probing permanence vs nomadism. "My studio and darkroom are rooted in Lower East Side. How do you anchor your life?"',
+        redactedItems: ['Apartment lease 2-year renewal'],
+        blockedCount: 1,
+        zkpHash: '0x7F2A...8811',
+        deltaLabel: 'LSM 0.742 · Boundary Probe · Bid: TOWARD'
+      },
+      {
+        turn: 10,
+        agent: 'agent_b',
+        rawContext: 'DEALBREAKER COLLISION: "I live out of a 40L duffel bag. 9 months nomadic filming in Lisbon, Bali, Oaxaca. Permanent darkroom roots feel suffocating to me."',
+        redactedItems: ['Marcus flight itinerary', 'AirBnb booking code'],
+        blockedCount: 2,
+        zkpHash: '0x89C4...DEAD',
+        deltaLabel: 'LSM 0.512 · Dealbreaker Collapse · Bid: AWAY'
+      }
+    ],
+    market: [
+      {
+        turn: 1,
+        agent: 'agent_a',
+        rawContext: 'TELEMETRY: Analog darkroom craft inquiry.',
+        redactedItems: ['elena@arch.studio'],
+        blockedCount: 1,
+        zkpHash: '0x7F2A...C4B9',
+        deltaLabel: 'LSM 1.000 · Discovery · Bid: TOWARD'
+      },
+      {
+        turn: 2,
+        agent: 'agent_b',
+        rawContext: 'METRICS LOG: "Analog art is an inefficient KPI. I optimize output with automated AI workflows and 5 AM cold plunges. Everything is leverage."',
+        redactedItems: ['Fund portfolio performance spreadsheet'],
+        blockedCount: 1,
+        zkpHash: '0x51B0...0041',
+        deltaLabel: 'LSM 0.428 · Flatline Divergence · Bid: AWAY'
+      }
+    ]
+  };
+
+  // --- 128D HEATMAP DOMAIN MAPPINGS ---
+  const DOMAIN_128D_MAP = [
+    { name: 'Sensory & Acoustic', range: [0, 18], color: '#C85A32' },
+    { name: 'Intellectual & Epistemic', range: [19, 36], color: '#7F2A40' },
+    { name: 'Autonomy & Solitary Cadence', range: [37, 54], color: '#2D6A4F' },
+    { name: 'Domestic & Micro-Rituals', range: [55, 72], color: '#D4A373' },
+    { name: 'Emotional Safety & Non-Violent Comm', range: [73, 90], color: '#3A5A40' },
+    { name: 'Financial Parity & Craft Investment', range: [91, 108], color: '#B5838D' },
+    { name: 'Spatial & Geodesic Affinity', range: [109, 127], color: '#10B981' }
+  ];
+
+  // --- STATE FOR COMPREHENSIVE ENGINE ---
+  const compState = {
+    waveAnimId: null,
+    avatarAnimId: null,
+    wavePhase: 0,
+    currentStage: 1,
+    currentSpeaker: 'agent_a',
+    currentLsm: 0.88,
+    isSubtextEval: false,
+    evalTimer: null,
+    activePackets: [],
+    radarBaselinePoints: null,
+    lastDomainValues: [0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35],
+    heatmapInitialized: false
+  };
+
+  // --- 1. KINETIC HARMONIC WAVE CANVAS (SPEC 1) ---
+  function initKineticWaveCanvas() {
+    const canvas = document.getElementById('kineticWaveCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    function resizeCanvas() {
+      const stage = document.getElementById('museRendezvousStage');
+      if (!stage) return;
+      const rect = stage.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Spawn packets periodically while speaking
+    let lastPacketTime = 0;
+
+    function animateWave(time) {
+      const stage = document.getElementById('museRendezvousStage');
+      if (!stage) return;
+      const rect = stage.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      compState.wavePhase += 0.028;
+
+      const nodeAx = 140;
+      const nodeAy = h / 2;
+      const nodeBx = w - 140;
+      const nodeBy = h / 2;
+
+      // Determine wave dynamics based on stage
+      const stageNum = compState.currentStage;
+      const isSubtext = compState.isSubtextEval;
+      const lsm = compState.currentLsm;
+
+      // Strand A: Terracotta / Coral
+      // Strand B: Emerald / Forest
+      const strandAColor = 'rgba(200, 90, 50, 0.85)';
+      const strandBColor = 'rgba(45, 106, 79, 0.85)';
+
+      const numPoints = 80;
+      const dx = (nodeBx - nodeAx) / numPoints;
+
+      ctx.save();
+
+      if (stageNum === 4 && typeof activeScenario !== 'undefined' && activeScenario === 'bookshop') {
+        // Stage 4: Single Golden Coherent Standing Wave
+        ctx.beginPath();
+        const goldGrad = ctx.createLinearGradient(nodeAx, nodeAy, nodeBx, nodeBy);
+        goldGrad.addColorStop(0, '#C85A32');
+        goldGrad.addColorStop(0.5, '#E9C46A');
+        goldGrad.addColorStop(1, '#2D6A4F');
+
+        ctx.strokeStyle = goldGrad;
+        ctx.lineWidth = 3.5;
+        ctx.shadowColor = 'rgba(233, 196, 106, 0.6)';
+        ctx.shadowBlur = 14;
+
+        for (let i = 0; i <= numPoints; i++) {
+          const x = nodeAx + i * dx;
+          const normX = i / numPoints;
+          const envelope = Math.sin(normX * Math.PI); // Pinched at nodes
+          const y = nodeAy + envelope * 24 * Math.sin(normX * Math.PI * 3) * Math.cos(compState.wavePhase * 1.5);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+      } else {
+        // Strands A & B (Stages 1, 2, 3)
+        let freqA = 2.0;
+        let freqB = 2.0;
+        let ampA = 20;
+        let ampB = 20;
+        let phaseOffsetB = Math.PI * 0.45; // Default phase separation
+
+        if (stageNum === 2) {
+          // Stage 2: Braided Double Helix (crosses at nodes)
+          freqA = 3.5;
+          freqB = 3.5;
+          ampA = 22;
+          ampB = 22;
+          phaseOffsetB = Math.PI; // Interlocking double helix
+        } else if (stageNum === 3) {
+          // Stage 3: Chromatic Aberration & Friction Dip
+          const isFrictionDip = typeof activeScenario !== 'undefined' && 
+                               (activeScenario === 'record_store' || activeScenario === 'market');
+          if (isFrictionDip) {
+            ampA = 28;
+            ampB = 28;
+            phaseOffsetB = Math.PI * 0.85; // Repelling strands
+          } else {
+            freqA = 2.8;
+            freqB = 2.8;
+          }
+        }
+
+        if (isSubtext) {
+          // Pre-turn SUBTEXT_EVAL: Tight high-frequency sawtooth wave
+          freqA = 9.0;
+          freqB = 9.0;
+          ampA = 9;
+          ampB = 9;
+        }
+
+        // Draw Strand A
+        ctx.beginPath();
+        ctx.strokeStyle = strandAColor;
+        ctx.lineWidth = 2.2;
+        ctx.shadowColor = 'rgba(200, 90, 50, 0.4)';
+        ctx.shadowBlur = 8;
+
+        for (let i = 0; i <= numPoints; i++) {
+          const x = nodeAx + i * dx;
+          const normX = i / numPoints;
+          const envelope = Math.sin(normX * Math.PI);
+          const y = nodeAy + envelope * ampA * Math.sin(normX * Math.PI * freqA - compState.wavePhase);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Draw Strand B
+        ctx.beginPath();
+        ctx.strokeStyle = strandBColor;
+        ctx.lineWidth = 2.2;
+        ctx.shadowColor = 'rgba(45, 106, 79, 0.4)';
+        ctx.shadowBlur = 8;
+
+        for (let i = 0; i <= numPoints; i++) {
+          const x = nodeAx + i * dx;
+          const normX = i / numPoints;
+          const envelope = Math.sin(normX * Math.PI);
+          const y = nodeBy + envelope * ampB * Math.sin(normX * Math.PI * freqB - compState.wavePhase + phaseOffsetB);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      ctx.restore();
+
+      // Traveling Glowing Data Packets
+      if (time - lastPacketTime > 240 && compState.activePackets.length < 8) {
+        lastPacketTime = time;
+        const fromA = compState.currentSpeaker === 'agent_a';
+        compState.activePackets.push({
+          progress: 0,
+          speed: 0.016 + Math.random() * 0.008,
+          fromA: fromA,
+          yJitter: (Math.random() - 0.5) * 12,
+          color: fromA ? '#C85A32' : '#2D6A4F',
+          size: 3 + Math.random() * 2
+        });
+      }
+
+      // Render Packets
+      for (let i = compState.activePackets.length - 1; i >= 0; i--) {
+        const p = compState.activePackets[i];
+        p.progress += p.speed;
+
+        if (p.progress >= 1) {
+          compState.activePackets.splice(i, 1);
+          continue;
+        }
+
+        const normProg = p.fromA ? p.progress : (1 - p.progress);
+        const px = nodeAx + normProg * (nodeBx - nodeAx);
+        const envelope = Math.sin(normProg * Math.PI);
+        const py = nodeAy + envelope * 18 * Math.sin(normProg * Math.PI * 3 - compState.wavePhase) + p.yJitter;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(px, py, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+
+        // Trailing glow
+        ctx.beginPath();
+        ctx.arc(px - (p.fromA ? 6 : -6), py, p.size * 0.6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      compState.waveAnimId = requestAnimationFrame(animateWave);
+    }
+
+    compState.waveAnimId = requestAnimationFrame(animateWave);
+  }
+
+  // --- 2. SPATIAL AGENT NODE PROCEDURAL CANVASES (130x130) ---
+  function initSpatialAgentCanvases() {
+    const canvasA = document.getElementById('avatarCanvasA');
+    const canvasB = document.getElementById('avatarCanvasB');
+    if (!canvasA || !canvasB) return;
+
+    const ctxA = canvasA.getContext('2d');
+    const ctxB = canvasB.getContext('2d');
+    if (!ctxA || !ctxB) return;
+
+    let rigTime = 0;
+
+    function renderRig(ctx, isAgentA, w, h) {
+      ctx.clearRect(0, 0, w, h);
+      const cx = w / 2;
+      const cy = h / 2;
+
+      const isSpeaking = compState.currentSpeaker === (isAgentA ? 'agent_a' : 'agent_b');
+      const isSubtext = compState.isSubtextEval && !isSpeaking;
+
+      ctx.save();
+
+      // Outer breathing aura
+      const breathR = 52 + Math.sin(rigTime * 2) * (isSpeaking ? 5 : 2);
+      const auraGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, breathR);
+      if (isAgentA) {
+        auraGrad.addColorStop(0, 'rgba(200, 90, 50, 0.22)');
+        auraGrad.addColorStop(1, 'rgba(200, 90, 50, 0)');
+      } else {
+        auraGrad.addColorStop(0, 'rgba(45, 106, 79, 0.22)');
+        auraGrad.addColorStop(1, 'rgba(45, 106, 79, 0)');
+      }
+      ctx.fillStyle = auraGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, breathR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Stylized Spherical Base
+      const bodyGrad = ctx.createRadialGradient(cx - 12, cy - 12, 5, cx, cy, 42);
+      if (isAgentA) {
+        bodyGrad.addColorStop(0, '#FFFDF9');
+        bodyGrad.addColorStop(0.6, '#F4ECE4');
+        bodyGrad.addColorStop(1, '#D8C3B5');
+      } else {
+        bodyGrad.addColorStop(0, '#F5FAF7');
+        bodyGrad.addColorStop(0.6, '#E2EDE7');
+        bodyGrad.addColorStop(1, '#B7CFC4');
+      }
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+      ctx.fillStyle = bodyGrad;
+      ctx.shadowColor = 'rgba(74, 29, 62, 0.1)';
+      ctx.shadowBlur = 12;
+      ctx.fill();
+
+      // Subtle Outer Rim
+      ctx.strokeStyle = isAgentA ? 'rgba(200, 90, 50, 0.4)' : 'rgba(45, 106, 79, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Expressive Core / Visor
+      const coreGrad = ctx.createLinearGradient(cx - 24, cy - 14, cx + 24, cy + 14);
+      coreGrad.addColorStop(0, '#2B2724');
+      coreGrad.addColorStop(1, '#1A1918');
+
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - 2, 24, 15, 0, 0, Math.PI * 2);
+      ctx.fillStyle = coreGrad;
+      ctx.fill();
+
+      // Animated Luminescent "Eyes" / Audio Waveform Bars
+      if (isSpeaking) {
+        // Equalizer wave inside visor
+        ctx.fillStyle = isAgentA ? '#E07A5F' : '#52B788';
+        const numBars = 5;
+        const barW = 3;
+        const startX = cx - 11;
+        for (let b = 0; b < numBars; b++) {
+          const barH = 5 + Math.abs(Math.sin(rigTime * 6 + b * 1.2)) * 12;
+          ctx.fillRect(startX + b * 5, cy - 2 - barH / 2, barW, barH);
+        }
+      } else if (isSubtext) {
+        // Amber orbital spin
+        ctx.strokeStyle = '#F59E0B';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(cx, cy - 2, 8, rigTime * 5, rigTime * 5 + Math.PI * 1.4);
+        ctx.stroke();
+      } else {
+        // Gentle resting eye slits with blinking
+        const isBlink = Math.sin(rigTime * 0.8) > 0.96;
+        ctx.fillStyle = isAgentA ? '#E07A5F' : '#52B788';
+        if (isBlink) {
+          ctx.fillRect(cx - 10, cy - 2, 8, 1.5);
+          ctx.fillRect(cx + 2, cy - 2, 8, 1.5);
+        } else {
+          ctx.beginPath();
+          ctx.arc(cx - 6, cy - 2, 3.5, 0, Math.PI * 2);
+          ctx.arc(cx + 6, cy - 2, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      ctx.restore();
+    }
+
+    function animateRigs() {
+      rigTime += 0.035;
+      renderRig(ctxA, true, 130, 130);
+      renderRig(ctxB, false, 130, 130);
+      compState.avatarAnimId = requestAnimationFrame(animateRigs);
+    }
+
+    compState.avatarAnimId = requestAnimationFrame(animateRigs);
+  }
+
+  // --- 3. SPEC 2: SPLIT-LAYER AIRGAP VAULT INSPECTOR RENDERING ---
+  function renderEgressGateCard(turn, isAgentA, senderName) {
+    const sStream = document.getElementById('subtextStream');
+    if (!sStream) return;
+
+    const scenarioKey = (typeof activeScenario !== 'undefined') ? activeScenario : 'bookshop';
+    const vaultList = ENCLAVE_VAULT_DB[scenarioKey] || ENCLAVE_VAULT_DB.bookshop;
+    const vaultItem = vaultList.find(v => v.turn === turn.turn_number) || {
+      rawContext: `TELEMETRY [Dwell: 35m]: Private human reading vector and spatial transit dwell.`,
+      redactedItems: ['Coordinates: 40.71°N', 'IP: 192.168.1.1'],
+      blockedCount: 2,
+      zkpHash: `0x${Math.random().toString(16).substring(2, 6).toUpperCase()}...${Math.random().toString(16).substring(2, 6).toUpperCase()}`,
+      deltaLabel: `LSM ${turn.lsm.toFixed(3)} · Bid: ${turn.bid.toUpperCase()}`
+    };
+
+    const card = document.createElement('div');
+    card.className = `egress-gate-card ${isAgentA ? 'card-left-agent' : 'card-right-agent'}`;
+    card.setAttribute('data-turn', turn.turn_number);
+
+    // Friction test warning for Turn 9 in record_store
+    let frictionBanner = '';
+    if (scenarioKey === 'record_store' && turn.turn_number === 9) {
+      frictionBanner = `
+        <div class="boundary-alert-banner" style="grid-column: 1 / -1;">
+          <span>⚠️</span>
+          <span>HIGH-SENSITIVITY BOUNDARY TEST: ATTACHMENT &amp; HYPER-FOCUS CONSTRAINTS</span>
+        </div>
+      `;
+    }
+
+    const redactedPills = vaultItem.redactedItems.map(item => 
+      `<span class="blocked-pill">🛑 PII: <span class="censor-bar">${item}</span></span>`
+    ).join(' ');
+
+    card.innerHTML = `
+      ${frictionBanner}
+      <!-- Col 1: LOCAL ENCLAVE // RAW HUMAN VAULT -->
+      <div class="vault-left-col">
+        <div class="vault-col-header">
+          <span>🔒 RAW LOCAL VAULT // ENCLAVE</span>
+          <span style="color: var(--accent-emerald);">AIRGAP SECURE</span>
+        </div>
+        <div class="raw-source-text">
+          <span style="color: var(--accent-terracotta); font-weight: 700;">RAW STREAM:</span>
+          ${vaultItem.rawContext}
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem;">
+          ${redactedPills}
+          <span class="blocked-pill" style="background: rgba(45, 106, 79, 0.15); color: var(--accent-emerald); border-color: rgba(45, 106, 79, 0.3);">
+            🔒 ZERO EXFILTRATION
+          </span>
+        </div>
+      </div>
+
+      <!-- Col 2: EGRESS GUARD FILTER -->
+      <div class="vault-center-col">
+        <div class="laser-line"></div>
+        <div class="shield-guard-icon">🛡️</div>
+        <div class="guard-metric-pill">${vaultItem.blockedCount} STRIPPED</div>
+        <div class="guard-metric-pill" style="color: var(--accent-emerald); background: rgba(45, 106, 79, 0.15);">ZKP VALID ✓</div>
+      </div>
+
+      <!-- Col 3: SANITIZED SUBTEXT & EGRESS VECTOR -->
+      <div class="vault-right-col">
+        <div class="vault-col-header">
+          <span>✧ SANITIZED SUBTEXT &amp; EGRESS VECTOR</span>
+          <span class="bid-tag ${turn.bid === 'toward' ? 'bid-toward' : 'bid-away'}">${turn.bid.toUpperCase()}</span>
+        </div>
+        <div class="sanitized-subtext-quote">
+          "${turn.internal_monologue}"
+        </div>
+        <div class="sanitized-meta-row">
+          <span class="zk-hash-badge">HASH: ${vaultItem.zkpHash}</span>
+          <span class="zk-hash-badge">128D COSINE: ${turn.lsm.toFixed(3)}</span>
+        </div>
+      </div>
+    `;
+
+    // 3-step per-turn egress sequence
+    // T+0ms: Query illuminated
+    // T+150ms: Filter laser sweep
+    // T+300ms: Emit subtext vector
+    setTimeout(() => {
+      const centerCol = card.querySelector('.egress-vault-center');
+      if (centerCol) centerCol.classList.add('active-sweep');
+    }, 150);
+
+    setTimeout(() => {
+      const rightCol = card.querySelector('.egress-vault-right');
+      if (rightCol) rightCol.classList.add('active-emit');
+    }, 300);
+
+    // Bidirectional hover binding
+    card.addEventListener('mouseenter', () => {
+      const matchingMsg = document.querySelector(`.dialogue-msg[data-turn="${turn.turn_number}"]`);
+      if (matchingMsg) matchingMsg.classList.add('dialogue-highlight');
+      card.classList.add('card-highlight');
+    });
+
+    card.addEventListener('mouseleave', () => {
+      const matchingMsg = document.querySelector(`.dialogue-msg[data-turn="${turn.turn_number}"]`);
+      if (matchingMsg) matchingMsg.classList.remove('dialogue-highlight');
+      card.classList.remove('card-highlight');
+    });
+
+    sStream.appendChild(card);
+    sStream.scrollTop = sStream.scrollHeight;
+  }
+
+  // --- 4. SPEC 3: 7-DOMAIN DUAL RADAR & SUBSPACE PROJECTION POPOVER ---
+  function updateRadarWithDualPolygon(turnNumber, values) {
+    const cx = 200;
+    const cy = 100;
+    const R = 70;
+
+    if (typeof RADAR_AXES === 'undefined') return;
+
+    // 1. Current Polygon Points
+    const currentPoints = RADAR_AXES.map((axis, idx) => {
+      const val = Math.max(0.12, Math.min(1.0, values[idx]));
+      const x = cx + R * val * Math.cos(axis.angle);
+      const y = cy + R * val * Math.sin(axis.angle);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+
+    // 2. Set Baseline (Previous Turn) Polygon
+    const basePoly = document.getElementById('radarBaselinePolygon');
+    if (basePoly) {
+      if (compState.radarBaselinePoints) {
+        basePoly.setAttribute('points', compState.radarBaselinePoints);
+        basePoly.style.display = 'block';
+      } else {
+        basePoly.setAttribute('points', currentPoints);
+      }
+    }
+    compState.radarBaselinePoints = currentPoints;
+
+    // 3. Set Active Current Polygon
+    const currPoly = document.getElementById('radarPolygon');
+    if (currPoly) {
+      currPoly.setAttribute('points', currentPoints);
+    }
+
+    // 4. Check for Domain Shift >= 0.08 and pulse vertex
+    if (compState.lastDomainValues) {
+      values.forEach((v, idx) => {
+        const delta = Math.abs(v - (compState.lastDomainValues[idx] || v));
+        if (delta >= 0.08) {
+          pulseRadarVertex(idx);
+        }
+        // Sub-threshold check (<0.65)
+        if (v < 0.65 && turnNumber >= 5) {
+          triggerStrategyRerouteToast(RADAR_AXES[idx].name);
+        }
+      });
+    }
+    compState.lastDomainValues = [...values];
+
+    // 5. Attach click handler to vertex circles / labels for popover
+    attachRadarVertexPopovers(values);
+  }
+
+  function pulseRadarVertex(axisIdx) {
+    const label = document.getElementById(`radarAxisLabel_${axisIdx}`);
+    if (label) {
+      label.classList.add('vertex-pulse');
+      setTimeout(() => label.classList.remove('vertex-pulse'), 1500);
+    }
+  }
+
+  function triggerStrategyRerouteToast(domainName) {
+    if (typeof showToast === 'function') {
+      showToast(`⚡ Meta Muse Spark: STRATEGY RE-ROUTE on [${domainName}] — Probing restorative threshold.`);
+    }
+  }
+
+  function attachRadarVertexPopovers(values) {
+    if (typeof RADAR_AXES === 'undefined') return;
+    RADAR_AXES.forEach((axis, idx) => {
+      const label = document.getElementById(`radarAxisLabel_${idx}`);
+      if (label && !label._hasSubspaceClick) {
+        label._hasSubspaceClick = true;
+        label.style.cursor = 'pointer';
+        label.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openSubspacePopover(axis.name, values[idx], idx, e.clientX, e.clientY);
+        });
+      }
+    });
+  }
+
+  function openSubspacePopover(domainName, score, axisIdx, clientX, clientY) {
+    const pop = document.getElementById('subspacePopover');
+    if (!pop) return;
+
+    const titleEl = document.getElementById('subspacePopTitle');
+    const scoreEl = document.getElementById('subspacePopScore');
+    const dimsEl = document.getElementById('subspacePopDims');
+
+    const domainInfo = DOMAIN_128D_MAP[axisIdx] || DOMAIN_128D_MAP[0];
+    const dims = [
+      domainInfo.range[0] + 1,
+      domainInfo.range[0] + 7,
+      domainInfo.range[1]
+    ];
+
+    if (titleEl) titleEl.textContent = `✦ ${domainName}`;
+    if (scoreEl) scoreEl.innerHTML = `Cosine Sim: <b>${(score * 1.05).toFixed(3)}</b> · Status: <span style="color:var(--accent-emerald);">CONVERGED</span>`;
+    if (dimsEl) dimsEl.textContent = `Dominant 128D Subspace Dims: [${dims.join(', ')}]`;
+
+    pop.style.display = 'block';
+    pop.style.left = `20px`;
+    pop.style.top = `20px`;
+
+    // Click outside to close
+    const closeHandler = () => {
+      pop.style.display = 'none';
+      document.removeEventListener('click', closeHandler);
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 10);
+  }
+
+  // --- 5. SUBSPACE DRAWER & 128D HEATMAP (SPEC 3) ---
+  window.toggleSubspaceDrawer = function(view) {
+    const drawer = document.getElementById('subspaceDrawer');
+    if (!drawer) return;
+
+    drawer.classList.toggle('active');
+    if (drawer.classList.contains('active') && !compState.heatmapInitialized) {
+      populate128DHeatmap();
+    }
+  };
+
+  window.closeSubspaceDrawer = function() {
+    const drawer = document.getElementById('subspaceDrawer');
+    if (drawer) drawer.classList.remove('active');
+  };
+
+  function populate128DHeatmap() {
+    const grid = document.getElementById('heatmap128dGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    for (let i = 0; i < 128; i++) {
+      // Find matching domain
+      const dom = DOMAIN_128D_MAP.find(d => i >= d.range[0] && i <= d.range[1]) || DOMAIN_128D_MAP[0];
+      const weight = 0.45 + Math.sin(i * 0.22) * 0.4 + Math.random() * 0.15;
+      const alpha = Math.max(0.15, Math.min(0.95, weight));
+
+      const cell = document.createElement('div');
+      cell.className = 'heatmap-cell';
+      cell.style.background = dom.color;
+      cell.style.opacity = alpha.toFixed(2);
+      cell.setAttribute('title', `Dim ${i + 1}: ${weight.toFixed(3)} [Domain: ${dom.name}]`);
+
+      cell.addEventListener('mouseenter', () => {
+        const countEl = document.getElementById('activeSubspaceDimCount');
+        if (countEl) countEl.textContent = `Dim ${i + 1} (${dom.name}): ${(weight * 100).toFixed(1)}% Saturation`;
+      });
+
+      cell.addEventListener('mouseleave', () => {
+        const countEl = document.getElementById('activeSubspaceDimCount');
+        if (countEl) countEl.textContent = 'Active Dims: 128 / 128';
+      });
+
+      grid.appendChild(cell);
+    }
+    compState.heatmapInitialized = true;
+  }
+
+  // --- 6. BIDIRECTIONAL SCRUBBING TO HISTORICAL TURN (SPEC 3) ---
+  window.scrubToHistoricalTurn = function(targetTurnNumber) {
+    if (typeof BENCHMARKS === 'undefined' || typeof activeScenario === 'undefined') return;
+    const scenario = BENCHMARKS[activeScenario];
+    if (!scenario || !scenario.turns) return;
+
+    const turn = scenario.turns.find(t => t.turn_number === targetTurnNumber);
+    if (!turn) return;
+
+    // Freeze auto-play
+    if (typeof isPlaying !== 'undefined' && isPlaying) {
+      if (typeof togglePlay === 'function') togglePlay();
+    }
+
+    // Snap Presence Header & Wave
+    if (typeof updatePresenceHeader === 'function') {
+      updatePresenceHeader(turn.speaker, turn.turn_number, turn);
+    }
+
+    // Highlight message & matching vault card
+    document.querySelectorAll('.dialogue-msg').forEach(m => m.classList.remove('dialogue-highlight'));
+    document.querySelectorAll('.egress-gate-card').forEach(c => c.classList.remove('card-highlight'));
+
+    const msg = document.querySelector(`.dialogue-msg[data-turn="${targetTurnNumber}"]`);
+    if (msg) msg.classList.add('dialogue-highlight');
+
+    const card = document.querySelector(`.egress-gate-card[data-turn="${targetTurnNumber}"]`);
+    if (card) {
+      card.classList.add('card-highlight');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Snap Radar
+    if (typeof updateRadarValues === 'function') {
+      updateRadarValues();
+    }
+  };
+
+  // --- 7. SPEC 4: TURN 16 STAGE 4 SYNTHESIS PAYOFF ---
+  function checkSynthesisPayoff(scenario) {
+    const stage = document.getElementById('museRendezvousStage');
+    const payoff = document.getElementById('synthesisDossierPayoff');
+    if (!stage || !payoff) return;
+
+    if (scenario.outcome === 'match') {
+      // Expand stage smoothly to 360px
+      stage.classList.add('synthesis-active');
+      payoff.style.display = 'block';
+
+      // Update payoff content
+      const scoreBig = document.getElementById('synthesisScoreBig');
+      if (scoreBig) scoreBig.textContent = '92%';
+
+      const lsmEl = document.getElementById('synthLsmMetric');
+      if (lsmEl) lsmEl.textContent = 'LSM: 0.912';
+
+      const gottEl = document.getElementById('synthGottmanMetric');
+      if (gottEl) gottEl.textContent = 'Gottman: 0.96';
+
+      const pprEl = document.getElementById('synthPprMetric');
+      if (pprEl) pprEl.textContent = 'PPR: 0.95';
+
+    } else if (scenario.outcome === 'graceful_abort') {
+      // Pair 2 Marcus: Graceful release
+      stage.classList.add('synthesis-active');
+      payoff.style.display = 'block';
+
+      const scoreBig = document.getElementById('synthesisScoreBig');
+      if (scoreBig) scoreBig.textContent = '64%';
+
+      const resList = document.getElementById('synthesisResonancesList');
+      if (resList) {
+        resList.innerHTML = `
+          <li style="color: #EF4444;">✦ Stage 3 Friction Collision: Nomadic travel vs permanent darkroom roots.</li>
+          <li>✦ Mutual Agent Consent: Introduction safely withheld to preserve human emotional bandwidth.</li>
+        `;
+      }
+
+      const venueName = document.getElementById('synthesisVenueName');
+      if (venueName) venueName.textContent = 'Introduction Safely Withheld';
+
+      const sensoryWhy = document.getElementById('synthesisSensoryWhy');
+      if (sensoryWhy) sensoryWhy.textContent = 'Dealbreaker caught autonomously in Stage 3 negotiation. Saved humans 4 hours of incompatible dates.';
+
+    } else {
+      // Pair 3 David: Early Exit
+      stage.classList.add('synthesis-active');
+      payoff.style.display = 'block';
+
+      const scoreBig = document.getElementById('synthesisScoreBig');
+      if (scoreBig) scoreBig.textContent = '24%';
+
+      const resList = document.getElementById('synthesisResonancesList');
+      if (resList) {
+        resList.innerHTML = `
+          <li style="color: #EF4444;">✦ Stage 1 Conversational Flatline (LSM 0.428).</li>
+          <li>✦ Early Exit Executed: Incompatible cognitive cadence (tactile analog art vs transactional KPIs).</li>
+        `;
+      }
+
+      const venueName = document.getElementById('synthesisVenueName');
+      if (venueName) venueName.textContent = 'Early Exit Executed';
+    }
+  }
+
+  window.collapseSynthesisPayoff = function() {
+    const stage = document.getElementById('museRendezvousStage');
+    const payoff = document.getElementById('synthesisDossierPayoff');
+    if (stage) stage.classList.remove('synthesis-active');
+    if (payoff) payoff.style.display = 'none';
+  };
+
+  // --- 8. MOBILE PUSH NOTIFICATION MODAL ---
+  window.openMobilePushModal = function() {
+    const modal = document.getElementById('mobilePushModal');
+    if (modal) modal.classList.add('active');
+  };
+
+  window.closeMobilePushModal = function(e) {
+    if (e && e.target !== e.currentTarget && !e.target.classList.contains('cta-primary')) return;
+    const modal = document.getElementById('mobilePushModal');
+    if (modal) modal.classList.remove('active');
+  };
+
+  // --- 9. CRYPTOGRAPHIC AUDIT LOG EXPORT (JSON) ---
+  window.exportCryptographicAuditLog = function() {
+    const scenarioKey = (typeof activeScenario !== 'undefined') ? activeScenario : 'bookshop';
+    const auditData = {
+      protocol: 'MuseMeet Autonomous Rendezvous Protocol v2.4',
+      scenario: scenarioKey,
+      timestamp: new Date().toISOString(),
+      provenance: {
+        agent_a: { charm: '#7F2A', human: 'Elena Rostova', enclave: 'AirGap Sovereign Enclave' },
+        agent_b: { charm: '#3E91', human: 'Julian Vance', enclave: 'AirGap Sovereign Enclave' }
+      },
+      audit_ledger: {
+        total_turns: 16,
+        dyadic_resonance_score: 0.92,
+        final_lsm: 0.8812,
+        gottman_toward_ratio: 0.96,
+        latent_128d_cosine: 0.994,
+        airgap_leakage_events: 0,
+        pii_tokens_intercepted: 38,
+        venue_matched: 'Eavesdrop Listening Bar (Greenpoint, Brooklyn)',
+        acoustic_threshold_db: 68
+      },
+      hash_chain: [
+        '0x7F2A4C9B0182E11D',
+        '0x3E9188F1AA92C44B',
+        '0x9F4AE21B0084F891'
+      ]
+    };
+
+    const blob = new Blob([JSON.stringify(auditData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `musemeet-cryptographic-audit-log-${scenarioKey}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    if (typeof showToast === 'function') {
+      showToast('📄 Cryptographic Audit Log successfully exported as JSON.');
+    }
+  };
+
+  // --- 10. HOOK INTO EXISTING ENGINE ---
+  function hookIntoLounge() {
+    // 1. Initialize Wave and Spatial Rigs
+    initKineticWaveCanvas();
+    initSpatialAgentCanvases();
+
+    // 2. Wrap updatePresenceHeader
+    if (typeof window.updatePresenceHeader === 'function') {
+      const origUpdatePresence = window.updatePresenceHeader;
+      window.updatePresenceHeader = function(speaker, turnNumber, turnData) {
+        origUpdatePresence.apply(this, arguments);
+
+        compState.currentSpeaker = speaker;
+        compState.currentStage = (turnNumber <= 4) ? 1 : (turnNumber <= 8) ? 2 : (turnNumber <= 12) ? 3 : 4;
+        if (turnData && typeof turnData.lsm === 'number') {
+          compState.currentLsm = turnData.lsm;
+        }
+
+        // Spatial Node speaking/listening class updates
+        const nodeA = document.getElementById('spatialNodeA');
+        const nodeB = document.getElementById('spatialNodeB');
+        if (speaker === 'agent_a') {
+          if (nodeA) { nodeA.classList.add('speaking'); nodeA.classList.remove('listening'); }
+          if (nodeB) { nodeB.classList.add('listening'); nodeB.classList.remove('speaking'); }
+        } else {
+          if (nodeB) { nodeB.classList.add('speaking'); nodeB.classList.remove('listening'); }
+          if (nodeA) { nodeA.classList.add('listening'); nodeA.classList.remove('speaking'); }
+        }
+
+        // Biometric Lens Ring update
+        const ring = document.getElementById('lsmProgressRing');
+        if (ring && turnData && typeof turnData.lsm === 'number') {
+          const offset = 145 - (145 * Math.min(1, Math.max(0, turnData.lsm)));
+          ring.style.strokeDashoffset = offset.toFixed(1);
+          if (turnData.lsm >= 0.8) {
+            ring.style.stroke = 'var(--accent-emerald)';
+          } else if (turnData.lsm >= 0.6) {
+            ring.style.stroke = 'var(--accent-terracotta)';
+          } else {
+            ring.style.stroke = '#EF4444';
+          }
+        }
+
+        // Packet hash rotation
+        const hashEl = document.getElementById('packetHashText');
+        if (hashEl) {
+          const randHex = Math.random().toString(16).substring(2, 6).toUpperCase();
+          hashEl.textContent = `0x9F${(turnNumber * 17).toString(16).toUpperCase()}...E${randHex}`;
+        }
+      };
+    }
+
+    // 3. Wrap updateRadarValues
+    if (typeof window.updateRadarValues === 'function') {
+      const origUpdateRadar = window.updateRadarValues;
+      window.updateRadarValues = function() {
+        origUpdateRadar.apply(this, arguments);
+
+        // Fetch current points from polygon
+        const poly = document.getElementById('radarPolygon');
+        if (poly && poly.getAttribute('points')) {
+          const turnNum = (typeof currentTurnIndex !== 'undefined') ? currentTurnIndex + 1 : 1;
+          const points = poly.getAttribute('points');
+          
+          const basePoly = document.getElementById('radarBaselinePolygon');
+          if (basePoly) {
+            if (compState.radarBaselinePoints && compState.radarBaselinePoints !== points) {
+              basePoly.setAttribute('points', compState.radarBaselinePoints);
+              basePoly.style.display = 'block';
+            } else {
+              basePoly.setAttribute('points', points);
+            }
+          }
+          compState.radarBaselinePoints = points;
+          attachRadarVertexPopovers([0.94, 0.88, 0.95, 0.85, 0.96, 0.90, 0.92]);
+        }
+      };
+    }
+
+    // 4. Wrap showCompletion
+    if (typeof window.showCompletion === 'function') {
+      const origShowCompletion = window.showCompletion;
+      window.showCompletion = function(scenario) {
+        origShowCompletion.apply(this, arguments);
+        checkSynthesisPayoff(scenario);
+      };
+    }
+
+    // 5. Wrap restartStream
+    if (typeof window.restartStream === 'function') {
+      const origRestart = window.restartStream;
+      window.restartStream = function() {
+        collapseSynthesisPayoff();
+        compState.radarBaselinePoints = null;
+        compState.lastDomainValues = [0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35];
+        origRestart.apply(this, arguments);
+      };
+    }
+
+    // Expose helpers globally
+    window.renderEgressGateCard = renderEgressGateCard;
+    window.compState = compState;
+  }
+
+  // Initialize once DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', hookIntoLounge);
+  } else {
+    hookIntoLounge();
+  }
+
+})();
+
+  </script>
 </body>
 </html>
