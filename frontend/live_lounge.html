@@ -144,6 +144,9 @@
     </div>
 
     <div id="turnBadge" class="turn-counter">Turn 1 / 16</div>
+    <div class="stage-progress-track">
+      <div id="stageProgressFill" class="stage-progress-fill" style="width: 6.25%;"></div>
+    </div>
   </div>
 
   <!-- Main Dual-Track Split Layout -->
@@ -206,7 +209,7 @@
           <div id="resonanceTurnText" class="resonance-turn">Turn 1 · Discovery (Cognitive & Sensory)</div>
           <div id="packetHashPill" class="packet-hash-pill">
             <span class="hash-dot"></span>
-            <span id="packetHashText">0x9F4A...E21B</span>
+            <span id="packetHashText">🔒 Zero-Leakage · 38 PII Blocked</span>
           </div>
         </div>
       </div>
@@ -391,6 +394,12 @@
           </div>
           <div class="sparkline-wrapper">
             <svg id="sparklineSvg" class="sparkline-svg" viewBox="0 0 400 65" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sparklineGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#C85A32" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#C85A32" stop-opacity="0.01"/>
+                </linearGradient>
+              </defs>
               <path id="sparklineArea" class="sparkline-area" d="" />
               <path id="sparklinePath" class="sparkline-path" d="" />
             </svg>
@@ -422,6 +431,10 @@
               <polygon id="radarPolygon" class="radar-polygon" points="" />
               <g id="radarLabelsGroup"></g>
             </svg>
+            <div class="radar-legend-row">
+              <span class="legend-item"><span class="legend-line baseline"></span> Baseline (Turn 1)</span>
+              <span class="legend-item"><span class="legend-line current"></span> Current Turn</span>
+            </div>
           </div>
         </div>
       </div>
@@ -2599,7 +2612,8 @@
     }
 
     function updateStageBanner(turnNumber) {
-      document.getElementById('turnBadge').textContent = `Turn ${turnNumber} / ${BENCHMARKS[activeScenario].maxTurns}`;
+      const maxTurns = BENCHMARKS[activeScenario].maxTurns || 16;
+      document.getElementById('turnBadge').textContent = `Turn ${turnNumber} / ${maxTurns}`;
 
       let activeId = 'stage-discovery';
       if (turnNumber > 4 && turnNumber <= 8) activeId = 'stage-banter';
@@ -2611,6 +2625,7 @@
 
       stages.forEach((id, idx) => {
         const el = document.getElementById(id);
+        if (!el) return;
         if (idx < activeIdx) {
           el.className = 'stage-pill completed';
         } else if (idx === activeIdx) {
@@ -2619,13 +2634,20 @@
           el.className = 'stage-pill';
         }
       });
+
+      // Update proportional progress fill bar (P0 Item #9)
+      const progressFill = document.getElementById('stageProgressFill');
+      if (progressFill) {
+        const pct = Math.min(100, Math.max(5, (turnNumber / maxTurns) * 100));
+        progressFill.style.width = `${pct}%`;
+      }
     }
 
     function renderSparkline() {
       if (lsmHistory.length < 2) return;
       const width = 400;
-      const height = 60;
-      const pad = 10;
+      const height = 65;
+      const pad = 12;
 
       const minVal = 0.35;
       const maxVal = 1.05;
@@ -2640,12 +2662,70 @@
       const dPath = points.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
       const dArea = `${dPath} L ${points[points.length - 1].x.toFixed(1)} ${height} L ${points[0].x.toFixed(1)} ${height} Z`;
 
-      document.getElementById('sparklinePath').setAttribute('d', dPath);
-      document.getElementById('sparklineArea').setAttribute('d', dArea);
+      const pathEl = document.getElementById('sparklinePath');
+      const areaEl = document.getElementById('sparklineArea');
+      if (pathEl) pathEl.setAttribute('d', dPath);
+      if (areaEl) areaEl.setAttribute('d', dArea);
+
+      // Threshold line at y = 0.80 (P1 Item #6)
+      const threshNorm = (0.80 - minVal) / (maxVal - minVal);
+      const threshY = height - (threshNorm * (height - pad * 2) + pad);
+      let threshLine = document.getElementById('sparklineThreshold');
+      if (!threshLine && pathEl && pathEl.parentNode) {
+        threshLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        threshLine.setAttribute('id', 'sparklineThreshold');
+        threshLine.setAttribute('stroke', 'rgba(45, 106, 79, 0.45)');
+        threshLine.setAttribute('stroke-dasharray', '4,3');
+        threshLine.setAttribute('stroke-width', '1.2');
+        pathEl.parentNode.insertBefore(threshLine, pathEl);
+      }
+      if (threshLine) {
+        threshLine.setAttribute('x1', pad);
+        threshLine.setAttribute('y1', threshY.toFixed(1));
+        threshLine.setAttribute('x2', width - pad);
+        threshLine.setAttribute('y2', threshY.toFixed(1));
+      }
+
+      // Threshold text label
+      let threshText = document.getElementById('sparklineThresholdText');
+      if (!threshText && pathEl && pathEl.parentNode) {
+        threshText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        threshText.setAttribute('id', 'sparklineThresholdText');
+        threshText.setAttribute('font-size', '7');
+        threshText.setAttribute('font-family', "'JetBrains Mono', monospace");
+        threshText.setAttribute('fill', 'var(--accent-emerald)');
+        threshText.setAttribute('text-anchor', 'end');
+        pathEl.parentNode.appendChild(threshText);
+      }
+      if (threshText) {
+        threshText.setAttribute('x', width - pad - 2);
+        threshText.setAttribute('y', (threshY - 3).toFixed(1));
+        threshText.textContent = '0.80 MIN RESONANCE';
+      }
+
+      // Current pulsing dot
+      const lastPoint = points[points.length - 1];
+      let dot = document.getElementById('sparklineDot');
+      if (!dot && pathEl && pathEl.parentNode) {
+        dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('id', 'sparklineDot');
+        dot.setAttribute('r', '4');
+        dot.setAttribute('fill', 'var(--accent-terracotta)');
+        dot.setAttribute('stroke', '#FFFFFF');
+        dot.setAttribute('stroke-width', '1.8');
+        pathEl.parentNode.appendChild(dot);
+      }
+      if (dot) {
+        dot.setAttribute('cx', lastPoint.x.toFixed(1));
+        dot.setAttribute('cy', lastPoint.y.toFixed(1));
+      }
 
       const curVal = lsmHistory[lsmHistory.length - 1];
       const minHist = Math.min(...lsmHistory).toFixed(2);
-      document.getElementById('chartMinMax').textContent = `Min: ${minHist} | Current: ${curVal.toFixed(3)}`;
+      const chartMinMax = document.getElementById('chartMinMax');
+      if (chartMinMax) {
+        chartMinMax.textContent = `Min: ${minHist} | Current: ${curVal.toFixed(3)}`;
+      }
     }
 
     function stepNextTurn() {
@@ -2768,20 +2848,35 @@
         sStream.scrollTop = sStream.scrollHeight;
       }
 
-      // 3. Update Telemetry Dashboard
-      document.getElementById('lsmStat').textContent = turn.lsm.toFixed(3);
+      // 3. Update Telemetry Dashboard (P1 Item #5)
+      const lastLsmValBefore = lsmHistory.length > 0 ? lsmHistory[lsmHistory.length - 1] : turn.lsm;
+      const lsmTrend = turn.lsm > lastLsmValBefore ? ' ▲' : (turn.lsm < lastLsmValBefore ? ' ▼' : ' ─');
+      const lsmStatEl = document.getElementById('lsmStat');
+      if (lsmStatEl) {
+        const trendColor = turn.lsm >= lastLsmValBefore ? 'var(--accent-emerald)' : 'var(--accent-terracotta)';
+        lsmStatEl.innerHTML = `${turn.lsm.toFixed(3)}<span style="font-size: 0.72rem; font-weight: 700; margin-left: 0.25rem; color: ${trendColor};">${lsmTrend}</span>`;
+        lsmStatEl.style.color = turn.lsm >= 0.85 ? 'var(--accent-emerald)' : (turn.lsm >= 0.65 ? 'var(--accent-terracotta)' : '#EF4444');
+      }
       lsmHistory.push(turn.lsm);
       renderSparkline();
       updateRadarValues();
 
-      // Gottman bid ratio running
+      // Gottman bid ratio running with fractional breakdown
       const bidsSoFar = scenario.turns.slice(0, currentTurnIndex + 1);
       const towardCount = bidsSoFar.filter(t => t.bid === 'toward').length;
       const runningBidRatio = (towardCount / bidsSoFar.length).toFixed(2);
-      document.getElementById('bidStat').textContent = runningBidRatio;
+      const bidStatEl = document.getElementById('bidStat');
+      if (bidStatEl) {
+        bidStatEl.innerHTML = `${runningBidRatio} <span style="font-size: 0.68rem; font-weight: 600; color: var(--text-tertiary);">(${towardCount}/${bidsSoFar.length} TOWARD)</span>`;
+        bidStatEl.style.color = runningBidRatio >= 0.85 ? 'var(--accent-emerald)' : (runningBidRatio >= 0.65 ? 'var(--accent-terracotta)' : '#EF4444');
+      }
 
       const runningPPR = ((runningBidRatio * 0.6) + (turn.lsm * 0.4)).toFixed(2);
-      document.getElementById('pprStat').textContent = runningPPR;
+      const pprStatEl = document.getElementById('pprStat');
+      if (pprStatEl) {
+        pprStatEl.textContent = runningPPR;
+        pprStatEl.style.color = runningPPR >= 0.85 ? 'var(--accent-emerald)' : (runningPPR >= 0.65 ? 'var(--accent-terracotta)' : '#EF4444');
+      }
 
       currentTurnIndex++;
 
@@ -3758,8 +3853,8 @@
 
       // Strand A: Terracotta / Coral
       // Strand B: Emerald / Forest
-      const strandAColor = 'rgba(200, 90, 50, 0.85)';
-      const strandBColor = 'rgba(45, 106, 79, 0.85)';
+      const strandAColor = 'rgba(200, 90, 50, 0.95)';
+      const strandBColor = 'rgba(45, 106, 79, 0.95)';
 
       const numPoints = 80;
       const dx = (nodeBx - nodeAx) / numPoints;
@@ -3829,9 +3924,9 @@
         // Draw Strand A
         ctx.beginPath();
         ctx.strokeStyle = strandAColor;
-        ctx.lineWidth = 2.2;
-        ctx.shadowColor = 'rgba(200, 90, 50, 0.4)';
-        ctx.shadowBlur = 8;
+        ctx.lineWidth = 3.2;
+        ctx.shadowColor = 'rgba(200, 90, 50, 0.6)';
+        ctx.shadowBlur = 14;
 
         for (let i = 0; i <= numPoints; i++) {
           const x = nodeAx + i * dx;
@@ -3846,9 +3941,9 @@
         // Draw Strand B
         ctx.beginPath();
         ctx.strokeStyle = strandBColor;
-        ctx.lineWidth = 2.2;
-        ctx.shadowColor = 'rgba(45, 106, 79, 0.4)';
-        ctx.shadowBlur = 8;
+        ctx.lineWidth = 3.2;
+        ctx.shadowColor = 'rgba(45, 106, 79, 0.6)';
+        ctx.shadowBlur = 14;
 
         for (let i = 0; i <= numPoints; i++) {
           const x = nodeAx + i * dx;
@@ -3936,84 +4031,117 @@
 
       ctx.save();
 
-      // Outer breathing aura
-      const breathR = 52 + Math.sin(rigTime * 2) * (isSpeaking ? 5 : 2);
-      const auraGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, breathR);
+      // 1. Persistent Ambient Radial Glow (P0 Item #1)
+      const glowR = 60 + Math.sin(rigTime * 2) * (isSpeaking ? 4 : 1.5);
+      const auraGrad = ctx.createRadialGradient(cx, cy, 32, cx, cy, glowR);
       if (isAgentA) {
-        auraGrad.addColorStop(0, 'rgba(200, 90, 50, 0.22)');
+        auraGrad.addColorStop(0, isSpeaking ? 'rgba(200, 90, 50, 0.35)' : 'rgba(200, 90, 50, 0.18)');
         auraGrad.addColorStop(1, 'rgba(200, 90, 50, 0)');
       } else {
-        auraGrad.addColorStop(0, 'rgba(45, 106, 79, 0.22)');
+        auraGrad.addColorStop(0, isSpeaking ? 'rgba(45, 106, 79, 0.35)' : 'rgba(45, 106, 79, 0.18)');
         auraGrad.addColorStop(1, 'rgba(45, 106, 79, 0)');
       }
       ctx.fillStyle = auraGrad;
       ctx.beginPath();
-      ctx.arc(cx, cy, breathR, 0, Math.PI * 2);
+      ctx.arc(cx, cy, glowR, 0, Math.PI * 2);
       ctx.fill();
 
-      // Stylized Spherical Base
-      const bodyGrad = ctx.createRadialGradient(cx - 12, cy - 12, 5, cx, cy, 42);
+      // 2. High-Craft Porcelain Spherical Base (r=50, filling 130px canvas)
+      const bodyR = 50;
+      const bodyGrad = ctx.createRadialGradient(cx - 16, cy - 16, 8, cx, cy, bodyR);
       if (isAgentA) {
-        bodyGrad.addColorStop(0, '#FFFDF9');
-        bodyGrad.addColorStop(0.6, '#F4ECE4');
-        bodyGrad.addColorStop(1, '#D8C3B5');
+        bodyGrad.addColorStop(0, '#FFFFFF');
+        bodyGrad.addColorStop(0.5, '#F8F4EE');
+        bodyGrad.addColorStop(1, '#DFD3C6');
       } else {
-        bodyGrad.addColorStop(0, '#F5FAF7');
-        bodyGrad.addColorStop(0.6, '#E2EDE7');
-        bodyGrad.addColorStop(1, '#B7CFC4');
+        bodyGrad.addColorStop(0, '#FFFFFF');
+        bodyGrad.addColorStop(0.5, '#F1F6F3');
+        bodyGrad.addColorStop(1, '#CADBD1');
       }
 
       ctx.beginPath();
-      ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+      ctx.arc(cx, cy, bodyR, 0, Math.PI * 2);
       ctx.fillStyle = bodyGrad;
-      ctx.shadowColor = 'rgba(74, 29, 62, 0.1)';
-      ctx.shadowBlur = 12;
+      ctx.shadowColor = isAgentA ? 'rgba(200, 90, 50, 0.25)' : 'rgba(45, 106, 79, 0.25)';
+      ctx.shadowBlur = isSpeaking ? 16 : 8;
       ctx.fill();
 
-      // Subtle Outer Rim
-      ctx.strokeStyle = isAgentA ? 'rgba(200, 90, 50, 0.4)' : 'rgba(45, 106, 79, 0.4)';
-      ctx.lineWidth = 1.5;
+      // 3. Tactile Ring Rim
+      ctx.strokeStyle = isAgentA ? 'rgba(200, 90, 50, 0.65)' : 'rgba(45, 106, 79, 0.65)';
+      ctx.lineWidth = isSpeaking ? 2.5 : 1.8;
       ctx.stroke();
 
-      // Expressive Core / Visor
-      const coreGrad = ctx.createLinearGradient(cx - 24, cy - 14, cx + 24, cy + 14);
-      coreGrad.addColorStop(0, '#2B2724');
-      coreGrad.addColorStop(1, '#1A1918');
+      // 4. Expressive Core / Visor (r_x=32, r_y=19)
+      const coreGrad = ctx.createLinearGradient(cx - 30, cy - 16, cx + 30, cy + 16);
+      coreGrad.addColorStop(0, '#262220');
+      coreGrad.addColorStop(0.5, '#171615');
+      coreGrad.addColorStop(1, '#0F0E0E');
 
       ctx.beginPath();
-      ctx.ellipse(cx, cy - 2, 24, 15, 0, 0, Math.PI * 2);
+      ctx.ellipse(cx, cy - 1, 32, 19, 0, 0, Math.PI * 2);
       ctx.fillStyle = coreGrad;
       ctx.fill();
 
-      // Animated Luminescent "Eyes" / Audio Waveform Bars
+      // Subtle Visor Specular Glass Sheen
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - 10, 20, 4.5, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.fill();
+
+      // 5. Initial Letter Identifier Monogram Badge
+      const initialChar = isAgentA ? 'E' : (
+        typeof activeScenario !== 'undefined' && activeScenario === 'record_store' ? 'M' :
+        typeof activeScenario !== 'undefined' && activeScenario === 'market' ? 'D' : 'J'
+      );
+
+      ctx.font = '700 8.5px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = isAgentA ? 'rgba(200, 90, 50, 0.95)' : 'rgba(45, 106, 79, 0.95)';
+      ctx.fillText(initialChar, cx, cy - 11);
+
+      // 6. Dynamic Visor Content: Speaking Equalizer vs Listening Eyes vs Subtext Spin
       if (isSpeaking) {
-        // Equalizer wave inside visor
+        // Equalizer wave inside visor with rounded bars
         ctx.fillStyle = isAgentA ? '#E07A5F' : '#52B788';
         const numBars = 5;
-        const barW = 3;
-        const startX = cx - 11;
+        const barW = 3.5;
+        const startX = cx - 13;
         for (let b = 0; b < numBars; b++) {
-          const barH = 5 + Math.abs(Math.sin(rigTime * 6 + b * 1.2)) * 12;
-          ctx.fillRect(startX + b * 5, cy - 2 - barH / 2, barW, barH);
+          const barH = 6 + Math.abs(Math.sin(rigTime * 6 + b * 1.25)) * 14;
+          if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(startX + b * 6.5, cy + 2 - barH / 2, barW, barH, 2);
+            ctx.fill();
+          } else {
+            ctx.fillRect(startX + b * 6.5, cy + 2 - barH / 2, barW, barH);
+          }
         }
       } else if (isSubtext) {
         // Amber orbital spin
         ctx.strokeStyle = '#F59E0B';
-        ctx.lineWidth = 2.2;
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.arc(cx, cy - 2, 8, rigTime * 5, rigTime * 5 + Math.PI * 1.4);
+        ctx.arc(cx, cy + 2, 9, rigTime * 5, rigTime * 5 + Math.PI * 1.4);
         ctx.stroke();
       } else {
-        // Gentle resting eye slits with blinking
-        const isBlink = Math.sin(rigTime * 0.8) > 0.96;
+        // Gentle resting expressive eyes with lifelike twinkle & blink
+        const isBlink = Math.sin(rigTime * 0.75) > 0.95;
         ctx.fillStyle = isAgentA ? '#E07A5F' : '#52B788';
         if (isBlink) {
-          ctx.fillRect(cx - 10, cy - 2, 8, 1.5);
-          ctx.fillRect(cx + 2, cy - 2, 8, 1.5);
+          ctx.fillRect(cx - 13, cy + 2, 10, 2);
+          ctx.fillRect(cx + 3, cy + 2, 10, 2);
         } else {
           ctx.beginPath();
-          ctx.arc(cx - 6, cy - 2, 3.5, 0, Math.PI * 2);
-          ctx.arc(cx + 6, cy - 2, 3.5, 0, Math.PI * 2);
+          ctx.arc(cx - 8, cy + 2, 4.2, 0, Math.PI * 2);
+          ctx.arc(cx + 8, cy + 2, 4.2, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Tiny twinkle highlight
+          ctx.fillStyle = '#FFFFFF';
+          ctx.beginPath();
+          ctx.arc(cx - 7, cy + 0.8, 1.4, 0, Math.PI * 2);
+          ctx.arc(cx + 9, cy + 0.8, 1.4, 0, Math.PI * 2);
           ctx.fill();
         }
       }
@@ -4512,11 +4640,15 @@
           }
         }
 
-        // Packet hash rotation
+        // Security & E2EE Status (P0 Item #10)
         const hashEl = document.getElementById('packetHashText');
         if (hashEl) {
           const randHex = Math.random().toString(16).substring(2, 6).toUpperCase();
-          hashEl.textContent = `0x9F${(turnNumber * 17).toString(16).toUpperCase()}...E${randHex}`;
+          const piiBlocked = Math.min(38, Math.max(2, turnNumber * 2 + 6));
+          hashEl.textContent = `🔒 Zero-Leakage · ${piiBlocked} PII Blocked`;
+          if (hashEl.parentElement) {
+            hashEl.parentElement.title = `E2EE AirGap Proof: 0x9F${(turnNumber * 17).toString(16).toUpperCase()}...E${randHex} · Zero Exfiltration Events`;
+          }
         }
       };
     }

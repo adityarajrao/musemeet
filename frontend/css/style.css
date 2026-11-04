@@ -1137,19 +1137,39 @@ body {
 }
 
 .msg-agent-a .msg-bubble {
-  background: var(--bg-surface);
-  border: 1px solid rgba(229, 115, 83, 0.28);
-  border-top: 1px solid rgba(240, 179, 67, 0.35);
+  background: #FFFDFB;
+  border: 1px solid rgba(200, 90, 50, 0.2);
+  border-left: 3.5px solid var(--accent-terracotta);
   border-bottom-left-radius: 4px;
-  color: var(--text-main);
+  color: var(--text-primary);
+  box-shadow: 0 2px 10px rgba(200, 90, 50, 0.05);
+}
+
+.msg-agent-a .msg-sender .sender-name {
+  color: var(--accent-terracotta);
+  font-weight: 700;
+}
+
+.msg-agent-a .msg-sender .sender-sparkle {
+  color: var(--accent-terracotta);
 }
 
 .msg-agent-b .msg-bubble {
-  background: var(--accent-emerald-soft);
-  border: 1px solid rgba(69, 196, 139, 0.25);
-  border-top: 1px solid rgba(69, 196, 139, 0.35);
+  background: #F8FAF8;
+  border: 1px solid rgba(45, 106, 79, 0.2);
+  border-left: 3.5px solid var(--accent-emerald);
   border-bottom-right-radius: 4px;
-  color: var(--text-main);
+  color: var(--text-primary);
+  box-shadow: 0 2px 10px rgba(45, 106, 79, 0.05);
+}
+
+.msg-agent-b .msg-sender .sender-name {
+  color: var(--accent-emerald);
+  font-weight: 700;
+}
+
+.msg-agent-b .msg-sender .sender-sparkle {
+  color: var(--accent-emerald);
 }
 
 /* AirGap Shield Dynamic Security Banner */
@@ -3277,4 +3297,134 @@ body {
 .radar-axis-label.vertex-pulse {
   fill: var(--accent-terracotta) !important;
   font-weight: 800 !important;
+}
+
+
+/* --- Stage Progression Banner Upgrades (P0 Item #9) --- */
+.stage-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 1.4rem 0.65rem 1.4rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stage-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: rgba(232, 226, 216, 0.55);
+}
+
+.stage-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-terracotta), var(--accent-emerald));
+  transition: width 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.stage-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  letter-spacing: 0.04em;
+}
+
+.stage-pill.active {
+  background: var(--accent-terracotta);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(200, 90, 50, 0.28);
+  transform: scale(1.05);
+}
+
+.stage-pill.active .stage-dot {
+  background: #FFFFFF !important;
+  box-shadow: 0 0 6px #FFFFFF;
+}
+
+.stage-pill.completed {
+  color: var(--accent-emerald);
+  background: rgba(45, 106, 79, 0.08);
+  border-color: rgba(45, 106, 79, 0.22);
+  font-weight: 600;
+}
+
+.stage-pill.completed .stage-dot {
+  background: var(--accent-emerald) !important;
+}
+
+/* --- Node stage padding fix (P1 Item #2) --- */
+.spatial-node.node-left {
+  align-items: flex-start;
+  padding-left: 1.1rem;
+}
+
+.spatial-node.node-right {
+  align-items: flex-end;
+  padding-right: 1.1rem;
+}
+
+.pedestal-pill .muse-subtitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 210px;
+}
+
+/* --- Telemetry Stat Values & Radar Legend (P1 Items #5, #7) --- */
+.stat-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  transition: color 0.3s ease;
+}
+
+.radar-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-line {
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+}
+
+.legend-line.baseline {
+  border-top: 1.5px dashed var(--text-tertiary);
+  height: 0;
+}
+
+.legend-line.current {
+  background: var(--accent-terracotta);
+  border-radius: 1px;
+}
+
+/* --- Sparkline Area Gradient & Threshold (P1 Item #6) --- */
+.sparkline-area {
+  fill: url(#sparklineGrad);
 }
