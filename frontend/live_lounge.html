@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    *::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    html, body { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+  </style>
 
 </head>
 <body>
@@ -93,17 +97,17 @@
       <svg id="vibeBridgeSvg" class="vibe-bridge-svg" viewBox="0 0 1000 80" preserveAspectRatio="none">
         <defs>
           <linearGradient id="vibeGradPositive" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.85" />
-            <stop offset="50%" stop-color="#D97706" stop-opacity="0.95" />
-            <stop offset="100%" stop-color="#2D6A4F" stop-opacity="0.85" />
+            <stop offset="0%" stop-color="#C85A32" stop-opacity="0.4" />
+            <stop offset="50%" stop-color="#D97706" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#2D6A4F" stop-opacity="0.4" />
           </linearGradient>
           <linearGradient id="vibeGradWarning" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#E11D48" stop-opacity="0.85" />
-            <stop offset="50%" stop-color="#DC2626" stop-opacity="1" />
-            <stop offset="100%" stop-color="#991B1B" stop-opacity="0.85" />
+            <stop offset="0%" stop-color="#E11D48" stop-opacity="0.4" />
+            <stop offset="50%" stop-color="#DC2626" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#991B1B" stop-opacity="0.4" />
           </linearGradient>
           <filter id="vibeGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3.5" result="blur" />
+            <feGaussianBlur stdDeviation="1.2" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
@@ -909,25 +913,25 @@
       if (step === 0) {
         poolVal.textContent = '250';
         ratioVal.textContent = '100%';
-        latencyVal.textContent = '0.00ms';
+        latencyVal.textContent = 'Baseline Pool';
         scanRippleActive = false;
       } else if (step === 1) {
         // Step 1: 15-mile transit radius circle. 188 dots fade to gray (leaving 62 candidates).
         poolVal.textContent = '62';
         ratioVal.textContent = '24.8%';
-        latencyVal.textContent = '0.10ms';
+        latencyVal.textContent = 'Geospatial Filter';
         scanRippleActive = false;
       } else if (step === 2) {
         // Step 2: Meta FAISS coarse vector scan ripples across remaining dots, highlighting Top 12 in amber.
         poolVal.textContent = '12';
         ratioVal.textContent = '4.8%';
-        latencyVal.textContent = '0.18ms';
+        latencyVal.textContent = '128D Topology';
         triggerFaissScanRipple();
       } else {
         // Step 3: Pareto router selects Top 3 finalists (Julian in emerald, Marcus in amber, David in blue).
         poolVal.textContent = '3';
         ratioVal.textContent = '1.2%';
-        latencyVal.textContent = '0.27ms';
+        latencyVal.textContent = 'Top 3 Verified';
         scanRippleActive = false;
       }
 
@@ -1724,7 +1728,7 @@
       currentTurnIndex++;
 
       if (isPlaying) {
-        const delay = Math.max(150, 1000 / playbackSpeed);
+        const delay = Math.max(300, 2400 / playbackSpeed);
         timerId = setTimeout(stepNextTurn, delay);
       }
     }
@@ -1809,8 +1813,8 @@
             <span id="activePoolVal" class="telemetry-mini-val">250</span>
           </div>
           <div class="telemetry-mini-item">
-            <span class="telemetry-mini-label">Funnel Latency</span>
-            <span id="funnelLatencyVal" class="telemetry-mini-val" style="color: var(--accent-emerald);">0.27ms</span>
+            <span class="telemetry-mini-label">Filter Status</span>
+            <span id="funnelLatencyVal" class="telemetry-mini-val" style="color: var(--accent-emerald);">Top 3 Verified</span>
           </div>
           <div class="telemetry-mini-item">
             <span class="telemetry-mini-label">Filter Ratio</span>
@@ -2127,7 +2131,7 @@
           <p style="margin: 0.2rem 0 0 0; color: var(--text-muted); font-size: 0.75rem; font-family: 'JetBrains Mono', monospace;">Eliminating O(N²) Pairwise Explosions via Hierarchical Approximate Nearest Neighbor Indexing</p>
         </div>
         <button class="action-btn" onclick="runLiveMoatBenchmark()" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.5); font-weight: 600;">
-          <span>⚡</span> <span>Run 2,500 In-Browser Benchmark</span>
+          <span>⚡</span> <span>Run 2,500 Candidate Semantic Filtering</span>
         </button>
       </div>
 
@@ -2140,7 +2144,7 @@
               <p>H3 Hexagonal transit radius ≤15 mi commute + Age window + Smoking/Dealbreaker exclusions</p>
             </div>
           </div>
-          <div class="scale-step-metric">3,000,000 → 5,000 (&lt;0.8ms)</div>
+          <div class="scale-step-metric">3,000,000 → 5,000 (Geospatial & Hard Barriers)</div>
         </div>
 
         <div class="scale-step-card">
@@ -2148,10 +2152,10 @@
             <div class="scale-step-num">1</div>
             <div class="scale-step-text">
               <h4>Stage 1: Meta FAISS Vector ANN Search (128-Dim)</h4>
-              <p>Sub-millisecond cosine retrieval over dense continuous psychological manifold</p>
+              <p>Continuous psychological manifold retrieval over latent personality, values, and cognitive style</p>
             </div>
           </div>
-          <div class="scale-step-metric">5,000 → 100 (&lt;3.5ms)</div>
+          <div class="scale-step-metric">5,000 → 100 (128D Vector Topology)</div>
         </div>
 
         <div class="scale-step-card">
@@ -2162,7 +2166,7 @@
               <p>Dyrenforth Big Five Harmony + Gottman Attachment Security + Dew Financial Parity</p>
             </div>
           </div>
-          <div class="scale-step-metric">100 → 15 (&lt;4.2ms)</div>
+          <div class="scale-step-metric">100 → 15 (Pareto Multi-Criteria Match)</div>
         </div>
 
         <div class="scale-step-card">
@@ -2173,7 +2177,7 @@
               <p>Hunt, Eastwick & Finkel (2015) non-linear threshold check: Sim(VPT, APV) ≥ 0.58</p>
             </div>
           </div>
-          <div class="scale-step-metric">15 → Top 3 Finalists (&lt;5.8ms)</div>
+          <div class="scale-step-metric">15 → Top 3 Finalists (Bilateral Aesthetic Gate)</div>
         </div>
 
         <div class="scale-step-card" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.05);">
@@ -2213,6 +2217,26 @@
 
     // Auto-open guide modal on first visit in session
     window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const state = params.get('state');
+      if (state === 'guide') {
+        openGuideModal();
+        return;
+      } else if (state === 'moat') {
+        openMoatModal();
+        switchMoatTab('scaling');
+        runLiveMoatBenchmark();
+        return;
+      } else if (state === 'airgap') {
+        sessionStorage.setItem('musemeet_guide_dismissed', '1');
+        setTimeout(triggerAdversarialProbe, 200);
+        return;
+      } else if (state === 'rendezvous') {
+        sessionStorage.setItem('musemeet_guide_dismissed', '1');
+        closeGuideModal(true);
+        return;
+      }
+
       if (!sessionStorage.getItem('musemeet_guide_dismissed')) {
         setTimeout(openGuideModal, 350);
       }
@@ -2265,7 +2289,7 @@
           }
         }
         const totalMs = (performance.now() - t0).toFixed(2);
-        resultBox.innerHTML = `✅ <b>LIVE CLIENT BENCHMARK PASSED:</b> 2,500 128-dimensional candidate vectors filtered and scored in <b>${totalMs}ms</b>.<br>Latent ANN Throughput: <b>${Math.round(2500 / (totalMs / 1000))} candidates/sec</b>. Sub-25ms latency target achieved.`;
+        resultBox.innerHTML = `🎯 <b>MULTI-STAGE SEMANTIC FILTERING:</b> 2,500 candidates evaluated across 128 latent dimensions.<br><b>Result:</b> Top 3 high-affinity matches isolated with 92% compatibility (processed in ${totalMs}ms). 99.88% of low-affinity candidates filtered out before conversational rendezvous.`;
       }, 50);
     }
 
@@ -2320,15 +2344,15 @@
 
           <div class="guide-step-card">
             <span class="step-badge">4. 128D DIMENSIONAL MOAT</span>
-            <div class="step-card-title">5-Stage Metropolitan Funnel</div>
+            <div class="step-card-title">5-Stage Multi-Criteria Funnel</div>
             <div class="step-card-desc">
-              Click <strong>"[🧬 Inspect Dimensional Moat]"</strong> to benchmark our 128D latent topology filtering 2,500 candidates down to top 3 in <strong>8.77ms</strong>.
+              Click <strong>"[🧬 Inspect Dimensional Moat]"</strong> to explore how our 128D latent topology filters 2,500 candidates across attachment, lifestyle, and values into top 3 high-affinity matches.
             </div>
           </div>
         </div>
 
-        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.78rem; color: #a7f3d0; line-height: 1.45;">
-          <strong>🎯 Suggested 60-Second Evaluation Path:</strong>
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 0.85rem 1.1rem; font-size: 0.82rem; color: #065F46; line-height: 1.5; font-weight: 500;">
+          <strong style="color: #044E39; font-weight: 700; display: block; margin-bottom: 0.25rem; font-size: 0.85rem;">🎯 Suggested 60-Second Evaluation Path:</strong>
           Click <em>"🚀 Begin Live Rendezvous"</em> below to watch Pair 1 complete a 92% match, or switch to Pair 2 (Marcus) to see a graceful Stage 3 abort, or Pair 3 (David) for an early conversational flatline exit.
         </div>
       </div>

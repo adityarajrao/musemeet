@@ -357,26 +357,29 @@ body {
 
 .vibe-track-path {
   fill: none;
-  stroke: rgba(200, 90, 50, 0.15);
-  stroke-width: 2.5;
-  stroke-dasharray: 4 6;
+  stroke: rgba(200, 90, 50, 0.08);
+  stroke-width: 1.0;
+  stroke-dasharray: 2 4;
 }
 
 .vibe-beam-path {
   fill: none;
   stroke: url(#vibeGradPositive);
-  stroke-width: 3.5;
+  stroke-width: 1.4;
   stroke-linecap: round;
+  opacity: 0.35;
   filter: url(#vibeGlow);
   transition: stroke 0.4s ease, opacity 0.4s ease;
-  stroke-dasharray: 10 14;
-  animation: beamFlow 3s linear infinite;
+  stroke-dasharray: 5 8;
+  animation: beamFlow 6s linear infinite;
 }
 
 .vibe-beam-path.mismatch {
   stroke: url(#vibeGradWarning);
-  stroke-dasharray: 6 6;
-  animation: beamFlowFast 0.8s linear infinite;
+  stroke-width: 1.6;
+  opacity: 0.45;
+  stroke-dasharray: 4 6;
+  animation: beamFlowFast 2.2s linear infinite;
 }
 
 @keyframes beamFlow {
@@ -500,32 +503,32 @@ body {
 
 @keyframes museSpeakA {
   0% { transform: scale(1) rotate(0deg) translateY(0); }
-  25% { transform: scale(1.07) rotate(-3deg) translateY(-4px); }
-  50% { transform: scale(1.02) rotate(-1deg) translateY(-1.5px); }
-  75% { transform: scale(1.06) rotate(-2.5deg) translateY(-3px); }
+  25% { transform: scale(1.02) rotate(-1.2deg) translateY(-2px); }
+  50% { transform: scale(1.01) rotate(-0.5deg) translateY(-1px); }
+  75% { transform: scale(1.025) rotate(-1.5deg) translateY(-2.5px); }
   100% { transform: scale(1) rotate(0deg) translateY(0); }
 }
 
 @keyframes museSpeakB {
   0% { transform: scale(1) rotate(0deg) translateY(0); }
-  25% { transform: scale(1.07) rotate(3deg) translateY(-4px); }
-  50% { transform: scale(1.02) rotate(1deg) translateY(-1.5px); }
-  75% { transform: scale(1.06) rotate(2.5deg) translateY(-3px); }
+  25% { transform: scale(1.02) rotate(1.2deg) translateY(-2px); }
+  50% { transform: scale(1.01) rotate(0.5deg) translateY(-1px); }
+  75% { transform: scale(1.025) rotate(1.5deg) translateY(-2.5px); }
   100% { transform: scale(1) rotate(0deg) translateY(0); }
 }
 
 @keyframes museNodA {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  35% { transform: translateX(6px) rotate(1.2deg); }
-  55% { transform: translateX(6px) rotate(-0.8deg); }
-  75% { transform: translateX(5px) rotate(0.8deg); }
+  0%, 100% { transform: translateX(4px) rotate(0deg); }
+  45% { transform: translateX(5px) rotate(0.8deg); }
+  60% { transform: translateX(5px) rotate(-0.5deg); }
+  75% { transform: translateX(4px) rotate(0.5deg); }
 }
 
 @keyframes museNodB {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  35% { transform: translateX(-6px) rotate(-1.2deg); }
-  55% { transform: translateX(-6px) rotate(0.8deg); }
-  75% { transform: translateX(-5px) rotate(-0.8deg); }
+  0%, 100% { transform: translateX(-4px) rotate(0deg); }
+  45% { transform: translateX(-5px) rotate(-0.8deg); }
+  60% { transform: translateX(-5px) rotate(0.5deg); }
+  75% { transform: translateX(-4px) rotate(-0.5deg); }
 }
 
 @keyframes museCelebrateJump {
@@ -571,19 +574,19 @@ body {
 
 /* Kinetic Classes */
 .muse-avatar-card.card-a.muse-speaking {
-  animation: museSpeakA 1.8s ease-in-out infinite;
+  animation: museSpeakA 2.6s ease-in-out infinite;
 }
 
 .muse-avatar-card.card-b.muse-speaking {
-  animation: museSpeakB 1.8s ease-in-out infinite;
+  animation: museSpeakB 2.6s ease-in-out infinite;
 }
 
 .muse-avatar-card.card-a.muse-listening {
-  animation: museNodA 2.8s ease-in-out infinite;
+  animation: museNodA 3.6s ease-in-out infinite;
 }
 
 .muse-avatar-card.card-b.muse-listening {
-  animation: museNodB 2.8s ease-in-out infinite;
+  animation: museNodB 3.6s ease-in-out infinite;
 }
 
 .muse-avatar-card.muse-celebrating {
@@ -714,12 +717,12 @@ body {
 }
 
 .muse-speaking .muse-avatar-img {
-  animation: avatarBounce 0.8s ease-in-out infinite alternate;
+  animation: avatarBounce 1.8s ease-in-out infinite alternate;
 }
 
 @keyframes avatarBounce {
-  0% { transform: scale(1.02); }
-  100% { transform: scale(1.08) rotate(1.5deg); }
+  0% { transform: scale(1.01); }
+  100% { transform: scale(1.04) rotate(0.8deg); }
 }
 
 .muse-pulse-ring {
@@ -732,7 +735,7 @@ body {
   inset: -5px;
   border-radius: 18px;
   border: 1.5px solid var(--accent-amber);
-  animation: pulseRingA 1.6s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  animation: pulseRingA 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
   pointer-events: none;
 }
 
@@ -817,7 +820,7 @@ body {
   height: 100%;
   background: currentColor;
   border-radius: 1px;
-  animation: waveBounce 0.8s ease-in-out infinite alternate;
+  animation: waveBounce 1.2s ease-in-out infinite alternate;
 }
 
 .audio-wave-bars span:nth-child(2) { animation-delay: 0.2s; height: 70%; }

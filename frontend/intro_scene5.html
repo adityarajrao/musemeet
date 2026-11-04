@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MuseMeet — Vision & Call to Action (Scene 5)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 40%, #170B14 0%, #0C070F 60%, #050307 100%);
+      color: #FAF7F2;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1100px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(200, 90, 50, 0.20) 0%, rgba(74, 29, 62, 0.15) 45%, transparent 70%);
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(90deg, rgba(200, 90, 50, 0.25) 0%, rgba(245, 158, 11, 0.20) 100%);
+      border: 1px solid rgba(200, 90, 50, 0.55);
+      color: #FF8F6B;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 26px;
+      border-radius: 9999px;
+      margin-bottom: 28px;
+      box-shadow: 0 0 25px rgba(200, 90, 50, 0.3);
+    }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 82px;
+      font-weight: 400;
+      line-height: 1.1;
+      max-width: 1500px;
+      margin-bottom: 24px;
+      letter-spacing: -0.015em;
+    }
+
+    h1 .text-gradient {
+      background: linear-gradient(135deg, #FF6B81 0%, #FFA502 50%, #2ED573 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-style: italic;
+      filter: drop-shadow(0 0 30px rgba(255, 107, 129, 0.4));
+    }
+
+    p.subtitle {
+      font-size: 24px;
+      color: #E2E8F0;
+      max-width: 1200px;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .grid-summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      max-width: 1500px;
+      margin-bottom: 50px;
+    }
+
+    .card {
+      background: rgba(22, 17, 28, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 24px 28px;
+      text-align: left;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+
+    .card:nth-child(1) { border-top: 3px solid #FF4757; }
+    .card:nth-child(2) { border-top: 3px solid #FFA502; }
+    .card:nth-child(3) { border-top: 3px solid #2ED573; }
+    .card:nth-child(4) { border-top: 3px solid #00D2D3; }
+
+    .card .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .card:nth-child(1) .tag { color: #FF6B81; }
+    .card:nth-child(2) .tag { color: #FFA502; }
+    .card:nth-child(3) .tag { color: #2ED573; }
+    .card:nth-child(4) .tag { color: #00D2D3; }
+
+    .card .title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #FAF7F2;
+      margin-bottom: 6px;
+    }
+
+    .card .desc {
+      font-size: 13.5px;
+      color: #CBD5E1;
+      line-height: 1.45;
+    }
+
+    .footer-bar {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 14px 36px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      color: #FAF7F2;
+    }
+
+    .footer-bar strong {
+      color: #FFA502;
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <div class="badge-pill">&#10024; Meta Global AI Developer Hackathon 2026 &bull; Theme 1: Build for Your World</div>
+  <h1>Protecting Human Emotional Agency with<br><span class="text-gradient">Sovereign AI Companions</span></h1>
+  <p class="subtitle">When pairs don't align, Meta Muse companion agents execute a polite, graceful abort—saving humans weeks of foreseeable heartbreak and shallow small-talk exhaustion.</p>
+
+  <div class="grid-summary">
+    <div class="card">
+      <div class="tag">INTELLIGENCE</div>
+      <div class="title">Meta Muse Spark 1.3</div>
+      <div class="desc">Autonomous multi-turn dyadic dialogue &amp; relational synthesis via Meta Model API</div>
+    </div>
+    <div class="card">
+      <div class="tag">IMAGERY</div>
+      <div class="title">Meta Muse Image 1.0</div>
+      <div class="desc">9 native 1024x1024 WebP date moodboards grounded in tactile reality</div>
+    </div>
+    <div class="card">
+      <div class="tag">PRIVACY</div>
+      <div class="title">AirGap Zero-Leakage</div>
+      <div class="desc">Perimeter kernel defense intercepts rogue prompt injections with 0 egress</div>
+    </div>
+    <div class="card">
+      <div class="tag">FILTERING</div>
+      <div class="title">128D Semantic Filter</div>
+      <div class="desc">5-stage topological funnel evaluates 2,500 candidates across attachment, humor, and lifestyle</div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>Live Demo: <strong>adityarajrao.github.io/musemeet</strong></span>
+    <span>&bull;</span>
+    <span>Open Source: <strong>github.com/adityarajrao/musemeet</strong></span>
+  </div>
+</body>
+</html>
+
