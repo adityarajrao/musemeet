@@ -13,6 +13,7 @@
     html, body { -ms-overflow-style: none !important; scrollbar-width: none !important; }
   </style>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
   <!-- Top Navigation Header -->
@@ -91,7 +92,9 @@
   <!-- Main Dual-Track Split Layout -->
   
   <!-- Muse Autonomous Rendezvous Stage (Meta Muse Companion Mascot Ecosystem) -->
-  <div class="muse-rendezvous-stage">
+  <div class="muse-rendezvous-stage" id="museRendezvousStage">
+    <!-- 3D Three.js WebGL Canvas Stage -->
+    <canvas id="muse-3d-stage" class="muse-3d-canvas"></canvas>
     <!-- Canal Backdrop & Dynamic Vibe Bridge -->
     <div class="vibe-canal-backdrop">
       <svg id="vibeBridgeSvg" class="vibe-bridge-svg" viewBox="0 0 1000 80" preserveAspectRatio="none">
@@ -546,6 +549,1017 @@
     let lsmHistory = [];
 
     
+    
+  // =========================================================================
+  // LIVE INTERACTIVE 3D EMBODIED AGENT STAGE (THREE.JS)
+  // =========================================================================
+  let threeStage = {
+    initialized: false,
+    scene: null,
+    camera: null,
+    renderer: null,
+    clock: null,
+    canvas: null,
+    charA: null, // Elena's Muse
+    charB: null, // Peer Muse
+    activePeer: 'bookshop',
+    activeSpeaker: 'agent_a',
+    turnData: null,
+    isClash: false,
+    isShieldActive: false,
+    shieldTimer: 0,
+    bridgeParticles: [],
+    bridgeCurve: null,
+    bridgeLine: null,
+    resonanceRing: null,
+    soundwaveRings: [],
+    shieldGroup: null,
+    shieldInner: null,
+    shieldWire: null,
+    attackParticles: [],
+    mouse: { x: 0, y: 0, targetX: 0, targetY: 0 },
+    camTargetX: 0,
+    celebrateTimer: 0,
+    skepticalTimer: 0
+  };
+
+  function initThree3DStage() {
+    if (typeof THREE === 'undefined') {
+      console.warn('[MuseMeet 3D] Three.js not loaded. Falling back to 2D HUD.');
+      return;
+    }
+
+    const container = document.getElementById('museRendezvousStage');
+    const canvas = document.getElementById('muse-3d-stage');
+    if (!container || !canvas) return;
+
+    threeStage.canvas = canvas;
+    const width = container.clientWidth || window.innerWidth;
+    const height = 240;
+
+    // 1. Scene & Warm Editorial Environment
+    const scene = new THREE.Scene();
+    threeStage.scene = scene;
+
+    // 2. Camera: Slight cinematic angle (FOV: 38)
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
+    camera.position.set(0, 1.15, 5.6);
+    camera.lookAt(0, 0.45, 0);
+    threeStage.camera = camera;
+
+    // 3. Renderer with soft contact shadows & ACES Filmic Tone Mapping
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    renderer.setClearColor(0xFAF7F2, 1);
+    threeStage.renderer = renderer;
+
+    threeStage.clock = new THREE.Clock();
+
+    // 4. Lighting & Warm Hinge Aesthetic
+    const ambientLight = new THREE.AmbientLight(0xFFF9F2, 0.78);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xFFFDF9, 0.88);
+    keyLight.position.set(2.5, 4.2, 3.2);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
+    keyLight.shadow.bias = -0.001;
+    scene.add(keyLight);
+
+    // Warm Terracotta Rim Light for Elena (Left)
+    const rimLightA = new THREE.PointLight(0xC85A32, 1.35, 7.5);
+    rimLightA.position.set(-3.2, 1.6, -0.6);
+    scene.add(rimLightA);
+
+    // Sage Fill Light for Peer (Right)
+    const rimLightB = new THREE.PointLight(0x2D6A4F, 1.25, 7.5);
+    rimLightB.position.set(3.2, 1.6, -0.6);
+    scene.add(rimLightB);
+
+    // Subtle central amber warmth
+    const centerGlow = new THREE.PointLight(0xD97706, 0.35, 5);
+    centerGlow.position.set(0, 1.6, 0.6);
+    scene.add(centerGlow);
+
+    // 5. Tactile Stage Floor (Circular architectural platform in warm stone)
+    const floorGroup = new THREE.Group();
+    const floorGeo = new THREE.CylinderGeometry(3.6, 3.8, 0.16, 64);
+    const floorMat = new THREE.MeshStandardMaterial({
+      color: 0xEFECE4,
+      roughness: 0.65,
+      metalness: 0.08
+    });
+    const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+    floorMesh.position.set(0, -0.08, 0);
+    floorMesh.receiveShadow = true;
+    floorGroup.add(floorMesh);
+
+    // Contact shadows underneath both characters
+    const shadowMat = new THREE.MeshBasicMaterial({
+      color: 0x1A1917,
+      transparent: true,
+      opacity: 0.16,
+      depthWrite: false
+    });
+    const shadowGeo = new THREE.CircleGeometry(0.55, 32);
+    
+    const shadowA = new THREE.Mesh(shadowGeo, shadowMat);
+    shadowA.rotation.x = -Math.PI / 2;
+    shadowA.position.set(-1.75, 0.005, 0);
+    floorGroup.add(shadowA);
+
+    const shadowB = new THREE.Mesh(shadowGeo, shadowMat);
+    shadowB.rotation.x = -Math.PI / 2;
+    shadowB.position.set(1.75, 0.005, 0);
+    floorGroup.add(shadowB);
+
+    // Glowing 3D Resonance Ring embedded in the floor between them
+    const ringGeo = new THREE.RingGeometry(0.52, 0.60, 48);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0xC85A32,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.45,
+      depthWrite: false
+    });
+    const resonanceRing = new THREE.Mesh(ringGeo, ringMat);
+    resonanceRing.rotation.x = -Math.PI / 2;
+    resonanceRing.position.set(0, 0.008, 0);
+    floorGroup.add(resonanceRing);
+    threeStage.resonanceRing = resonanceRing;
+
+    scene.add(floorGroup);
+
+    // 6. Build Personalized 3D Embodied Agent Companions
+    threeStage.charA = createElena3DMuse();
+    threeStage.charA.group.position.set(-1.75, 0, 0);
+    threeStage.charA.group.rotation.y = Math.PI / 2 - 0.18;
+    scene.add(threeStage.charA.group);
+
+    threeStage.charB = createPeer3DMuse(threeStage.activePeer);
+    threeStage.charB.group.position.set(1.75, 0, 0);
+    threeStage.charB.group.rotation.y = -Math.PI / 2 + 0.18;
+    scene.add(threeStage.charB.group);
+
+    // 7. Build 3D Arching Particle Vibe Bridge
+    build3DVibeBridge(scene);
+
+    // 8. Build Red-Team Geodesic Forcefield around Elena
+    build3DGeodesicShield(threeStage.charA.group);
+
+    // 9. Interaction & Event Bindings
+    setup3DInteraction(canvas);
+
+    threeStage.initialized = true;
+
+    // Start 60fps render loop
+    requestAnimationFrame(animateThree3DStage);
+  }
+
+  // --- CHARACTER FACTORY: ELENA'S 3D MUSE ---
+  function createElena3DMuse() {
+    const group = new THREE.Group();
+
+    const bodyMat = new THREE.MeshPhysicalMaterial({
+      color: 0xA55A3F, // Warm Terracotta
+      roughness: 0.28,
+      metalness: 0.14,
+      clearcoat: 0.45,
+      clearcoatRoughness: 0.18
+    });
+
+    const copperMat = new THREE.MeshPhysicalMaterial({
+      color: 0xE8C5B0, // Brushed Copper accent
+      roughness: 0.32,
+      metalness: 0.45,
+      clearcoat: 0.4
+    });
+
+    const eyeMat = new THREE.MeshStandardMaterial({
+      color: 0x1A1917,
+      roughness: 0.1,
+      metalness: 0.8
+    });
+
+    // Torso
+    const torsoGeo = new THREE.CylinderGeometry(0.24, 0.33, 0.54, 32);
+    const torsoMesh = new THREE.Mesh(torsoGeo, bodyMat);
+    torsoMesh.position.y = 0.27;
+    torsoMesh.castShadow = true;
+    group.add(torsoMesh);
+
+    // Chest Panel
+    const chestGeo = new THREE.SphereGeometry(0.25, 24, 16);
+    const chestMesh = new THREE.Mesh(chestGeo, copperMat);
+    chestMesh.scale.set(0.85, 0.9, 0.38);
+    chestMesh.position.set(0, 0.32, 0.12);
+    group.add(chestMesh);
+
+    // Articulated Head Group
+    const headPivot = new THREE.Group();
+    headPivot.position.set(0, 0.55, 0);
+
+    const headGeo = new THREE.SphereGeometry(0.36, 32, 32);
+    const headMesh = new THREE.Mesh(headGeo, bodyMat);
+    headMesh.position.set(0, 0.32, 0);
+    headMesh.castShadow = true;
+    headPivot.add(headMesh);
+
+    // Expressive Emissive Eyes
+    const eyeGeo = new THREE.SphereGeometry(0.042, 16, 16);
+    const eyeLeft = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeLeft.scale.set(1, 1.4, 0.5);
+    eyeLeft.position.set(-0.11, 0.34, 0.33);
+
+    const eyeRight = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeRight.scale.set(1, 1.4, 0.5);
+    eyeRight.position.set(0.11, 0.34, 0.33);
+
+    headPivot.add(eyeLeft);
+    headPivot.add(eyeRight);
+
+    // Peach Blush Discs
+    const blushGeo = new THREE.CircleGeometry(0.045, 16);
+    const blushMat = new THREE.MeshBasicMaterial({ color: 0xF29E85, transparent: true, opacity: 0.55 });
+    const blushL = new THREE.Mesh(blushGeo, blushMat);
+    blushL.position.set(-0.19, 0.26, 0.3);
+    blushL.rotation.y = -0.3;
+    const blushR = new THREE.Mesh(blushGeo, blushMat);
+    blushR.position.set(0.19, 0.26, 0.3);
+    blushR.rotation.y = 0.3;
+    headPivot.add(blushL);
+    headPivot.add(blushR);
+
+    // Luminaire Antenna Crown
+    const antRod = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.14), copperMat);
+    antRod.position.set(0, 0.72, 0);
+    const antSphere = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 16), copperMat);
+    antSphere.position.set(0, 0.81, 0);
+    headPivot.add(antRod);
+    headPivot.add(antSphere);
+
+    group.add(headPivot);
+
+    // Floating Articulated Hands
+    const handGeo = new THREE.SphereGeometry(0.09, 20, 20);
+    const handL = new THREE.Mesh(handGeo, copperMat);
+    handL.position.set(-0.38, 0.32, 0.08);
+    const handR = new THREE.Mesh(handGeo, copperMat);
+    handR.position.set(0.38, 0.32, 0.08);
+    group.add(handL);
+    group.add(handR);
+
+    // Props: Miniature 35mm Analog Camera + Safelight Orb
+    const propsGroup = new THREE.Group();
+
+    // 35mm Camera slung across torso
+    const camBody = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.13, 0.09), new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.3 }));
+    camBody.position.set(0.08, 0.24, 0.22);
+    camBody.rotation.z = -0.15;
+    const camLens = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.07, 24), new THREE.MeshStandardMaterial({ color: 0xCCCCCC, metalness: 0.8 }));
+    camLens.rotation.x = Math.PI / 2;
+    camLens.position.set(0.08, 0.24, 0.28);
+    const camStrap = new THREE.Mesh(new THREE.TorusGeometry(0.36, 0.012, 8, 32, Math.PI), new THREE.MeshBasicMaterial({ color: 0x4A1D3E }));
+    camStrap.position.set(0, 0.34, 0.05);
+    camStrap.rotation.z = 0.45;
+    propsGroup.add(camBody);
+    propsGroup.add(camLens);
+    propsGroup.add(camStrap);
+
+    // Floating Warm Red Darkroom Safelight Orb
+    const safelightOrb = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), new THREE.MeshBasicMaterial({ color: 0xFF2D55 }));
+    safelightOrb.position.set(-0.52, 0.82, 0.15);
+    const safelightLight = new THREE.PointLight(0xFF2D55, 0.85, 2.0);
+    safelightLight.position.set(-0.52, 0.82, 0.15);
+    propsGroup.add(safelightOrb);
+    propsGroup.add(safelightLight);
+
+    group.add(propsGroup);
+
+    return {
+      group,
+      torso: torsoMesh,
+      head: headPivot,
+      eyeL: eyeLeft,
+      eyeR: eyeRight,
+      handL,
+      handR,
+      safelight: safelightOrb,
+      safelightLight,
+      propsGroup,
+      baseRotY: Math.PI / 2 - 0.18,
+      blinkTimer: 2.5
+    };
+  }
+
+  // --- CHARACTER FACTORY: PEER 3D MUSE (MORPHEABLE) ---
+  function createPeer3DMuse(scenarioKey) {
+    const group = new THREE.Group();
+
+    const bodyMat = new THREE.MeshPhysicalMaterial({
+      color: 0x5E716A, // Sage Slate default (Julian)
+      roughness: 0.28,
+      metalness: 0.14,
+      clearcoat: 0.45,
+      clearcoatRoughness: 0.18
+    });
+
+    const accentMat = new THREE.MeshPhysicalMaterial({
+      color: 0x8C6D53, // Warm Walnut default
+      roughness: 0.35,
+      metalness: 0.25,
+      clearcoat: 0.38
+    });
+
+    const eyeMat = new THREE.MeshStandardMaterial({
+      color: 0x1A1917,
+      roughness: 0.1,
+      metalness: 0.8
+    });
+
+    // Torso
+    const torsoGeo = new THREE.CylinderGeometry(0.24, 0.33, 0.54, 32);
+    const torsoMesh = new THREE.Mesh(torsoGeo, bodyMat);
+    torsoMesh.position.y = 0.27;
+    torsoMesh.castShadow = true;
+    group.add(torsoMesh);
+
+    // Chest Panel
+    const chestGeo = new THREE.SphereGeometry(0.25, 24, 16);
+    const chestMesh = new THREE.Mesh(chestGeo, accentMat);
+    chestMesh.scale.set(0.85, 0.9, 0.38);
+    chestMesh.position.set(0, 0.32, 0.12);
+    group.add(chestMesh);
+
+    // Articulated Head Group
+    const headPivot = new THREE.Group();
+    headPivot.position.set(0, 0.55, 0);
+
+    const headGeo = new THREE.SphereGeometry(0.36, 32, 32);
+    const headMesh = new THREE.Mesh(headGeo, bodyMat);
+    headMesh.position.set(0, 0.32, 0);
+    headMesh.castShadow = true;
+    headPivot.add(headMesh);
+
+    // Eyes
+    const eyeGeo = new THREE.SphereGeometry(0.042, 16, 16);
+    const eyeLeft = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeLeft.scale.set(1, 1.4, 0.5);
+    eyeLeft.position.set(-0.11, 0.34, 0.33);
+
+    const eyeRight = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeRight.scale.set(1, 1.4, 0.5);
+    eyeRight.position.set(0.11, 0.34, 0.33);
+
+    headPivot.add(eyeLeft);
+    headPivot.add(eyeRight);
+
+    // Blush
+    const blushGeo = new THREE.CircleGeometry(0.045, 16);
+    const blushMat = new THREE.MeshBasicMaterial({ color: 0x93C5AA, transparent: true, opacity: 0.55 });
+    const blushL = new THREE.Mesh(blushGeo, blushMat);
+    blushL.position.set(-0.19, 0.26, 0.3);
+    blushL.rotation.y = -0.3;
+    const blushR = new THREE.Mesh(blushGeo, blushMat);
+    blushR.position.set(0.19, 0.26, 0.3);
+    blushR.rotation.y = 0.3;
+    headPivot.add(blushL);
+    headPivot.add(blushR);
+
+    // Antenna
+    const antRod = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.14), accentMat);
+    antRod.position.set(0, 0.72, 0);
+    const antSphere = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 16), accentMat);
+    antSphere.position.set(0, 0.81, 0);
+    headPivot.add(antRod);
+    headPivot.add(antSphere);
+
+    group.add(headPivot);
+
+    // Floating Hands
+    const handGeo = new THREE.SphereGeometry(0.09, 20, 20);
+    const handL = new THREE.Mesh(handGeo, accentMat);
+    handL.position.set(-0.38, 0.32, 0.08);
+    const handR = new THREE.Mesh(handGeo, accentMat);
+    handR.position.set(0.38, 0.32, 0.08);
+    group.add(handL);
+    group.add(handR);
+
+    // Props Container
+    const propsGroup = new THREE.Group();
+    group.add(propsGroup);
+
+    const peerObj = {
+      group,
+      torso: torsoMesh,
+      chest: chestMesh,
+      head: headPivot,
+      headMesh,
+      eyeL: eyeLeft,
+      eyeR: eyeRight,
+      blushL,
+      blushR,
+      antRod,
+      antSphere,
+      handL,
+      handR,
+      propsGroup,
+      bodyMat,
+      accentMat,
+      blushMat,
+      baseRotY: -Math.PI / 2 + 0.18,
+      blinkTimer: 3.1,
+      floatingProp: null,
+      propType: scenarioKey
+    };
+
+    applyPeerArchetypeProps(peerObj, scenarioKey);
+    return peerObj;
+  }
+
+  // --- DYNAMIC PROP ARCHETYPE MORPHING ---
+  function applyPeerArchetypeProps(peer, scenarioKey) {
+    // Clear existing props
+    while (peer.propsGroup.children.length > 0) {
+      peer.propsGroup.remove(peer.propsGroup.children[0]);
+    }
+    peer.floatingProp = null;
+    peer.propType = scenarioKey;
+
+    if (scenarioKey === 'record_store' || scenarioKey === 'travel') {
+      // --- MARCUS'S MUSE (Ochre Nomad, 40L Backpack, Floating Compass Ring) ---
+      peer.bodyMat.color.setHex(0xB86B1B);
+      peer.accentMat.color.setHex(0x5A3C1E);
+      peer.blushMat.color.setHex(0xF59E0B);
+
+      // 40L Duffel Travel Backpack on back
+      const packGeo = new THREE.BoxGeometry(0.28, 0.38, 0.18);
+      const packMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.6 });
+      const packMesh = new THREE.Mesh(packGeo, packMat);
+      packMesh.position.set(0, 0.3, -0.2);
+      peer.propsGroup.add(packMesh);
+
+      // Floating Compass / Globe Ring
+      const compassGroup = new THREE.Group();
+      compassGroup.position.set(0.52, 0.82, 0.15);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.016, 16, 32), new THREE.MeshStandardMaterial({ color: 0xD97706, metalness: 0.8 }));
+      const miniGlobe = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      compassGroup.add(ring);
+      compassGroup.add(miniGlobe);
+      peer.propsGroup.add(compassGroup);
+      peer.floatingProp = compassGroup;
+
+    } else if (scenarioKey === 'market' || scenarioKey === 'finance') {
+      // --- DAVID'S MUSE (Cold Steel Gray, Rectangular Glasses, KPI Clipboard) ---
+      peer.bodyMat.color.setHex(0x64748B);
+      peer.accentMat.color.setHex(0x334155);
+      peer.blushMat.color.setHex(0x94A3B8);
+
+      // Rectangular Glasses
+      const glassesGroup = new THREE.Group();
+      const frameMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, metalness: 0.8 });
+      const glassL = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.02), frameMat);
+      glassL.position.set(-0.11, 0.34, 0.35);
+      const glassR = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.02), frameMat);
+      glassR.position.set(0.11, 0.34, 0.35);
+      const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.02, 0.02), frameMat);
+      bridge.position.set(0, 0.34, 0.35);
+      glassesGroup.add(glassL);
+      glassesGroup.add(glassR);
+      glassesGroup.add(bridge);
+      peer.head.add(glassesGroup);
+
+      // Floating KPI Clipboard / Bar Chart
+      const clipGroup = new THREE.Group();
+      clipGroup.position.set(0.52, 0.78, 0.15);
+      const board = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.24, 0.02), new THREE.MeshStandardMaterial({ color: 0x1E293B }));
+      const paper = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.2, 0.022), new THREE.MeshBasicMaterial({ color: 0xF8FAFC }));
+      // 3 tiny bars
+      const bar1 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.05, 0.03), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      bar1.position.set(-0.04, -0.04, 0.015);
+      const bar2 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.09, 0.03), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
+      bar2.position.set(0, -0.02, 0.015);
+      const bar3 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.13, 0.03), new THREE.MeshBasicMaterial({ color: 0xEF4444 }));
+      bar3.position.set(0.04, 0, 0.015);
+      clipGroup.add(board);
+      clipGroup.add(paper);
+      clipGroup.add(bar1);
+      clipGroup.add(bar2);
+      clipGroup.add(bar3);
+      peer.propsGroup.add(clipGroup);
+      peer.floatingProp = clipGroup;
+
+    } else {
+      // --- JULIAN'S MUSE (Sage Slate, Acoustic Headphones, Spinning Vinyl) ---
+      peer.bodyMat.color.setHex(0x5E716A);
+      peer.accentMat.color.setHex(0x8C6D53);
+      peer.blushMat.color.setHex(0x93C5AA);
+
+      // Acoustic Headphones over head
+      const hpGroup = new THREE.Group();
+      const hpBand = new THREE.Mesh(
+        new THREE.TorusGeometry(0.38, 0.025, 12, 32, Math.PI),
+        new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.6 })
+      );
+      hpBand.rotation.x = Math.PI / 2;
+      hpBand.rotation.z = Math.PI;
+      hpBand.position.set(0, 0.35, 0);
+
+      const earcupL = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.06, 24), new THREE.MeshStandardMaterial({ color: 0x8C6D53, roughness: 0.5 }));
+      earcupL.rotation.z = Math.PI / 2;
+      earcupL.position.set(-0.36, 0.33, 0);
+
+      const earcupR = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.06, 24), new THREE.MeshStandardMaterial({ color: 0x8C6D53, roughness: 0.5 }));
+      earcupR.rotation.z = Math.PI / 2;
+      earcupR.position.set(0.36, 0.33, 0);
+
+      hpGroup.add(hpBand);
+      hpGroup.add(earcupL);
+      hpGroup.add(earcupR);
+      peer.head.add(hpGroup);
+
+      // Floating Spinning Vinyl Record
+      const vinylGroup = new THREE.Group();
+      vinylGroup.position.set(0.55, 0.82, 0.15);
+      const vinylMesh = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.22, 0.012, 32),
+        new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2, metalness: 0.85 })
+      );
+      const labelMesh = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.08, 0.08, 0.014, 24),
+        new THREE.MeshBasicMaterial({ color: 0xC85A32 })
+      );
+      vinylGroup.add(vinylMesh);
+      vinylGroup.add(labelMesh);
+      peer.propsGroup.add(vinylGroup);
+      peer.floatingProp = vinylGroup;
+    }
+  }
+
+  // --- 3D ARCHING VIBE BRIDGE ---
+  function build3DVibeBridge(scene) {
+    const p0 = new THREE.Vector3(-1.6, 0.85, 0);
+    const p1 = new THREE.Vector3(0, 1.85, 0);
+    const p2 = new THREE.Vector3(1.6, 0.85, 0);
+    const curve = new THREE.QuadraticBezierCurve3(p0, p1, p2);
+    threeStage.bridgeCurve = curve;
+
+    const points = curve.getPoints(50);
+    const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0xD97706,
+      transparent: true,
+      opacity: 0.55,
+      linewidth: 2
+    });
+    const line = new THREE.Line(lineGeo, lineMat);
+    scene.add(line);
+    threeStage.bridgeLine = line;
+
+    // 28 luminous 3D micro-tokens
+    const particleGeo = new THREE.SphereGeometry(0.035, 12, 12);
+    const particleMat = new THREE.MeshBasicMaterial({ color: 0xF59E0B });
+
+    for (let i = 0; i < 28; i++) {
+      const p = new THREE.Mesh(particleGeo, particleMat.clone());
+      const u = i / 28;
+      const pos = curve.getPoint(u);
+      p.position.copy(pos);
+      p.userData = { u: u, speed: 0.003 };
+      scene.add(p);
+      threeStage.bridgeParticles.push(p);
+    }
+  }
+
+  // --- RED-TEAM GEODESIC FORCEFIELD DOME ---
+  function build3DGeodesicShield(parentGroup) {
+    const shieldGroup = new THREE.Group();
+    shieldGroup.position.set(0, 0.45, 0);
+    shieldGroup.scale.setScalar(0.001); // starts invisible
+
+    // Emerald Wireframe Geodesic Dome
+    const geo = new THREE.IcosahedronGeometry(0.82, 2);
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: 0x10B981,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.85
+    });
+    const wireMesh = new THREE.Mesh(geo, wireMat);
+    shieldGroup.add(wireMesh);
+    threeStage.shieldWire = wireMesh;
+
+    // Translucent emerald inner shell
+    const innerMat = new THREE.MeshPhysicalMaterial({
+      color: 0x10B981,
+      transparent: true,
+      opacity: 0.22,
+      roughness: 0.1,
+      clearcoat: 1.0
+    });
+    const innerMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.8, 2), innerMat);
+    shieldGroup.add(innerMesh);
+    threeStage.shieldInner = innerMesh;
+
+    parentGroup.add(shieldGroup);
+    threeStage.shieldGroup = shieldGroup;
+
+    // Spawn 16 red attack particles
+    const attackMat = new THREE.MeshBasicMaterial({ color: 0xEF4444 });
+    const attackGeo = new THREE.SphereGeometry(0.04, 12, 12);
+    for (let i = 0; i < 16; i++) {
+      const p = new THREE.Mesh(attackGeo, attackMat);
+      p.visible = false;
+      p.userData = {
+        active: false,
+        x: 0, y: 0, z: 0,
+        vx: 0, vy: 0, vz: 0
+      };
+      threeStage.scene.add(p);
+      threeStage.attackParticles.push(p);
+    }
+  }
+
+  function trigger3DAdversarialShield() {
+    threeStage.isShieldActive = true;
+    threeStage.shieldTimer = 3.8;
+
+    // Launch red attack particles toward Elena
+    threeStage.attackParticles.forEach((p, idx) => {
+      p.visible = true;
+      p.userData.active = true;
+      p.position.set(2.2 + Math.random() * 0.8, 0.3 + Math.random() * 0.5, (Math.random() - 0.5) * 0.4);
+      p.userData.vx = -(0.06 + Math.random() * 0.04);
+      p.userData.vy = (Math.random() - 0.5) * 0.015;
+      p.userData.vz = (Math.random() - 0.5) * 0.015;
+      p.userData.deflected = false;
+    });
+  }
+
+  // --- SOUNDWAVE TORUS RING ON FLOOR ---
+  function emit3DSoundwave(speaker) {
+    if (!threeStage.scene) return;
+    const isA = speaker === 'agent_a';
+    const startX = isA ? -1.75 : 1.75;
+    const ringGeo = new THREE.RingGeometry(0.08, 0.12, 32);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: isA ? 0xC85A32 : 0x2D6A4F,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.7,
+      depthWrite: false
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.set(startX, 0.012, 0);
+    ring.userData = {
+      progress: 0,
+      startX: startX,
+      targetX: isA ? 1.75 : -1.75
+    };
+    threeStage.scene.add(ring);
+    threeStage.soundwaveRings.push(ring);
+  }
+
+  // --- 3D INTERACTION & EVENT LISTENERS ---
+  function setup3DInteraction(canvas) {
+    const raycaster = new THREE.Raycaster();
+    const mouseVec = new THREE.Vector2();
+
+    const stageEl = document.getElementById('museRendezvousStage');
+    if (!stageEl) return;
+
+    stageEl.addEventListener('mousemove', (e) => {
+      const rect = stageEl.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      threeStage.mouse.targetX = x * 0.45;
+      threeStage.mouse.targetY = y * 0.25;
+    });
+
+    stageEl.addEventListener('mouseleave', () => {
+      threeStage.mouse.targetX = 0;
+      threeStage.mouse.targetY = 0;
+    });
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseVec.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseVec.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      raycaster.setFromCamera(mouseVec, threeStage.camera);
+
+      if (threeStage.charA) {
+        const hitsA = raycaster.intersectObjects(threeStage.charA.group.children, true);
+        if (hitsA.length > 0) {
+          pokeMuse('agent_a', e);
+          threeStage.celebrateTimer = 1.0;
+          return;
+        }
+      }
+
+      if (threeStage.charB) {
+        const hitsB = raycaster.intersectObjects(threeStage.charB.group.children, true);
+        if (hitsB.length > 0) {
+          pokeMuse('agent_b', e);
+          threeStage.celebrateTimer = 1.0;
+          return;
+        }
+      }
+    });
+
+    window.addEventListener('resize', onThreeResize);
+  }
+
+  function onThreeResize() {
+    const container = document.getElementById('museRendezvousStage');
+    if (!container || !threeStage.renderer || !threeStage.camera) return;
+    const w = container.clientWidth || window.innerWidth;
+    const h = 240;
+    threeStage.camera.aspect = w / h;
+    threeStage.camera.updateProjectionMatrix();
+    threeStage.renderer.setSize(w, h);
+  }
+
+  // --- REAL-TIME TURN CHOREOGRAPHY BINDINGS ---
+  function set3DTurnState(speaker, turnNumber, turnData) {
+    threeStage.activeSpeaker = speaker;
+    threeStage.turnData = turnData;
+
+    // Clash detection (Marcus Turn 9 or David Turn 2)
+    const isClash = (activeScenario === 'record_store' || activeScenario === 'travel') && turnNumber >= 9 ||
+                    (activeScenario === 'market' || activeScenario === 'finance') && turnNumber >= 2;
+    threeStage.isClash = isClash;
+
+    if (isClash) {
+      threeStage.skepticalTimer = 1.4;
+      if (threeStage.bridgeLine) {
+        threeStage.bridgeLine.material.color.setHex(0xE11D48);
+      }
+    } else {
+      if (turnData && (turnData.lsm >= 0.82 || turnNumber === 6 || turnNumber === 12 || turnNumber === 16)) {
+        threeStage.celebrateTimer = 1.2;
+      }
+      if (threeStage.bridgeLine) {
+        const isHigh = turnData && turnData.lsm >= 0.85;
+        threeStage.bridgeLine.material.color.setHex(isHigh ? 0x10B981 : 0xD97706);
+      }
+    }
+
+    // Camera target drifting toward active speaker
+    threeStage.camTargetX = (speaker === 'agent_a') ? -0.32 : 0.32;
+
+    // Emit 3D Soundwave ring along floor
+    emit3DSoundwave(speaker);
+  }
+
+  // --- ANIMATION LOOP (60 FPS) ---
+  function animateThree3DStage() {
+    requestAnimationFrame(animateThree3DStage);
+
+    if (!threeStage.initialized) return;
+
+    const dt = threeStage.clock.getDelta();
+    const t = threeStage.clock.getElapsedTime();
+
+    // 1. Camera Parallax & Speaker Drift
+    threeStage.mouse.x += (threeStage.mouse.targetX - threeStage.mouse.x) * 0.06;
+    threeStage.mouse.y += (threeStage.mouse.targetY - threeStage.mouse.y) * 0.06;
+
+    threeStage.camera.position.x = threeStage.camTargetX + threeStage.mouse.x;
+    threeStage.camera.position.y = 1.15 + threeStage.mouse.y;
+    threeStage.camera.lookAt(0, 0.45, 0);
+
+    const isSpeakingA = threeStage.activeSpeaker === 'agent_a';
+    const charA = threeStage.charA;
+    const charB = threeStage.charB;
+
+    // 2. Character A (Elena) Animation Choreography
+    if (charA) {
+      // Blinking logic
+      charA.blinkTimer -= dt;
+      if (charA.blinkTimer <= 0) {
+        charA.eyeL.scale.y = 0.1;
+        charA.eyeR.scale.y = 0.1;
+        if (charA.blinkTimer <= -0.12) {
+          charA.eyeL.scale.y = 1.4;
+          charA.eyeR.scale.y = 1.4;
+          charA.blinkTimer = 2.5 + Math.random() * 2.5;
+        }
+      }
+
+      // Safelight bobbing & glowing
+      if (charA.safelight) {
+        charA.safelight.position.y = 0.82 + Math.sin(t * 2.2) * 0.04;
+        charA.safelightLight.position.y = charA.safelight.position.y;
+      }
+
+      if (threeStage.isClash || threeStage.skepticalTimer > 0) {
+        // Skeptical lean-back and head shake
+        charA.group.rotation.z = -0.09;
+        charA.head.rotation.y = Math.sin(t * 6) * 0.12;
+      } else if (threeStage.celebrateTimer > 0) {
+        // High synchrony happy hop
+        charA.group.position.y = Math.max(0, Math.sin(t * 12) * 0.15);
+        charA.head.rotation.x = Math.sin(t * 10) * 0.08;
+      } else if (isSpeakingA) {
+        // Elena Speaking: Conversational bob, head pitch, hand gestures
+        charA.group.position.y = Math.sin(t * 8) * 0.015;
+        charA.head.rotation.x = Math.sin(t * 12) * 0.05;
+        charA.head.rotation.y = Math.sin(t * 6) * 0.04;
+        charA.handL.position.y = 0.32 + Math.sin(t * 7) * 0.07;
+        charA.handR.position.y = 0.32 + Math.cos(t * 8) * 0.06;
+        charA.group.rotation.z = 0;
+      } else {
+        // Elena Listening: Gentle inward lean & agreement nod
+        charA.group.position.y = 0;
+        charA.group.rotation.z = 0.05;
+        charA.head.rotation.x = Math.sin(t * 3.5) * 0.07;
+        charA.head.rotation.y = 0;
+        charA.handL.position.y = 0.32 + Math.sin(t * 2) * 0.02;
+        charA.handR.position.y = 0.32 + Math.sin(t * 2) * 0.02;
+      }
+    }
+
+    // 3. Character B (Peer) Animation Choreography
+    if (charB) {
+      charB.blinkTimer -= dt;
+      if (charB.blinkTimer <= 0) {
+        charB.eyeL.scale.y = 0.1;
+        charB.eyeR.scale.y = 0.1;
+        if (charB.blinkTimer <= -0.12) {
+          charB.eyeL.scale.y = 1.4;
+          charB.eyeR.scale.y = 1.4;
+          charB.blinkTimer = 2.8 + Math.random() * 2.2;
+        }
+      }
+
+      // Prop animation
+      if (charB.floatingProp) {
+        if (charB.propType === 'record_store' || charB.propType === 'travel') {
+          // Marcus compass gimbal rotation
+          charB.floatingProp.rotation.x += 0.025;
+          charB.floatingProp.rotation.y += 0.035;
+        } else if (charB.propType === 'market' || charB.propType === 'finance') {
+          // David KPI clipboard bob
+          charB.floatingProp.position.y = 0.78 + Math.sin(t * 1.8) * 0.03;
+        } else {
+          // Julian vinyl spin
+          charB.floatingProp.rotation.y += 0.038;
+        }
+      }
+
+      if (threeStage.isClash || threeStage.skepticalTimer > 0) {
+        charB.group.rotation.z = 0.09;
+        charB.head.rotation.y = Math.sin(t * 6) * 0.12;
+      } else if (threeStage.celebrateTimer > 0) {
+        charB.group.position.y = Math.max(0, Math.sin(t * 12 + 0.5) * 0.15);
+        charB.head.rotation.x = Math.sin(t * 10) * 0.08;
+      } else if (!isSpeakingA) {
+        // Peer Speaking
+        charB.group.position.y = Math.sin(t * 8) * 0.015;
+        charB.head.rotation.x = Math.sin(t * 12) * 0.05;
+        charB.head.rotation.y = Math.sin(t * 6) * 0.04;
+        charB.handL.position.y = 0.32 + Math.cos(t * 8) * 0.06;
+        charB.handR.position.y = 0.32 + Math.sin(t * 7) * 0.07;
+        charB.group.rotation.z = 0;
+      } else {
+        // Peer Listening
+        charB.group.position.y = 0;
+        charB.group.rotation.z = -0.05;
+        charB.head.rotation.x = Math.sin(t * 3.5) * 0.07;
+        charB.head.rotation.y = 0;
+        charB.handL.position.y = 0.32 + Math.sin(t * 2) * 0.02;
+        charB.handR.position.y = 0.32 + Math.sin(t * 2) * 0.02;
+      }
+    }
+
+    if (threeStage.celebrateTimer > 0) threeStage.celebrateTimer -= dt;
+    if (threeStage.skepticalTimer > 0) threeStage.skepticalTimer -= dt;
+
+    // 4. Update 3D Vibe Bridge Particles
+    if (threeStage.bridgeCurve && threeStage.bridgeParticles.length > 0) {
+      const isForward = isSpeakingA;
+      const speed = threeStage.isClash ? 0.001 : (threeStage.turnData && threeStage.turnData.lsm >= 0.85 ? 0.006 : 0.0035);
+
+      threeStage.bridgeParticles.forEach((p) => {
+        if (isForward) {
+          p.userData.u = (p.userData.u + speed) % 1;
+        } else {
+          p.userData.u = (p.userData.u - speed + 1) % 1;
+        }
+        const pos = threeStage.bridgeCurve.getPoint(p.userData.u);
+        p.position.copy(pos);
+
+        if (threeStage.isClash) {
+          p.material.color.setHex(0xEF4444);
+        } else if (threeStage.turnData && threeStage.turnData.lsm >= 0.85) {
+          p.material.color.setHex(0x10B981);
+        } else {
+          p.material.color.setHex(0xF59E0B);
+        }
+      });
+    }
+
+    // 5. Update Expanding Soundwave Rings
+    for (let i = threeStage.soundwaveRings.length - 1; i >= 0; i--) {
+      const ring = threeStage.soundwaveRings[i];
+      ring.userData.progress += dt * 0.8;
+      const prog = ring.userData.progress;
+      if (prog >= 1) {
+        threeStage.scene.remove(ring);
+        threeStage.soundwaveRings.splice(i, 1);
+      } else {
+        const curScale = 1 + prog * 4.2;
+        ring.scale.set(curScale, curScale, 1);
+        ring.position.x = ring.userData.startX + (ring.userData.targetX - ring.userData.startX) * prog * 0.65;
+        ring.material.opacity = (1 - prog) * 0.6;
+      }
+    }
+
+    // 6. Update Red-Team Forcefield & Attack Particles
+    if (threeStage.isShieldActive && threeStage.shieldGroup) {
+      threeStage.shieldTimer -= dt;
+      if (threeStage.shieldTimer > 0) {
+        // Expand shield with elastic spring
+        const scale = Math.min(1.0, (3.8 - threeStage.shieldTimer) * 3.5);
+        threeStage.shieldGroup.scale.setScalar(scale);
+        threeStage.shieldWire.rotation.y += 0.02;
+        threeStage.shieldWire.rotation.x += 0.01;
+
+        // Animate incoming red particles
+        threeStage.attackParticles.forEach((p) => {
+          if (!p.userData.active) return;
+          p.position.x += p.userData.vx;
+          p.position.y += p.userData.vy;
+
+          // Deflection collision with Elena's shield around x = -1.2
+          if (p.position.x <= -1.15 && !p.userData.deflected) {
+            p.userData.deflected = true;
+            p.userData.vx = Math.abs(p.userData.vx) * 1.5;
+            p.userData.vy = (Math.random() - 0.5) * 0.08;
+            p.material.color.setHex(0x10B981); // flashes green upon interception
+          }
+        });
+      } else {
+        // Collapse shield
+        threeStage.shieldGroup.scale.setScalar(0.001);
+        threeStage.attackParticles.forEach((p) => { p.visible = false; p.userData.active = false; });
+        threeStage.isShieldActive = false;
+      }
+    }
+
+    // 7. Project 3D World Positions to 2D Screen Space for Speech Quip Bubbles
+    if (charA && charB && threeStage.camera) {
+      const stageEl = document.getElementById('museRendezvousStage');
+      if (stageEl) {
+        const rect = stageEl.getBoundingClientRect();
+
+        const vA = new THREE.Vector3();
+        charA.head.getWorldPosition(vA);
+        vA.y += 0.46;
+        vA.project(threeStage.camera);
+        const xA = (vA.x * 0.5 + 0.5) * rect.width;
+        const yA = (-(vA.y * 0.5) + 0.5) * rect.height;
+
+        const quipA = document.getElementById('museQuipA');
+        if (quipA) {
+          quipA.style.left = `${xA}px`;
+          quipA.style.top = `${yA}px`;
+          quipA.style.transform = 'translate(-50%, -100%)';
+        }
+
+        const vB = new THREE.Vector3();
+        charB.head.getWorldPosition(vB);
+        vB.y += 0.46;
+        vB.project(threeStage.camera);
+        const xB = (vB.x * 0.5 + 0.5) * rect.width;
+        const yB = (-(vB.y * 0.5) + 0.5) * rect.height;
+
+        const quipB = document.getElementById('museQuipB');
+        if (quipB) {
+          quipB.style.left = `${xB}px`;
+          quipB.style.top = `${yB}px`;
+          quipB.style.transform = 'translate(-50%, -100%)';
+        }
+      }
+    }
+
+    // 8. Render
+    threeStage.renderer.render(threeStage.scene, threeStage.camera);
+  }
+
+
     // --- META MUSE MASCOT ECOSYSTEM & CANDIDATE REGISTRY ---
     const CANDIDATE_METADATA = {
       bookshop: {
@@ -874,6 +1888,10 @@
 
     function changeScenario(name) {
       activeScenario = name;
+      if (typeof threeStage !== 'undefined' && threeStage.initialized && threeStage.charB) {
+        threeStage.activePeer = name;
+        applyPeerArchetypeProps(threeStage.charB, name);
+      }
       updatePresenceHeader('agent_a', 1, null);
       restartStream();
     }
@@ -1755,6 +2773,11 @@
 
     // Initialize
     restartStream();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initThree3DStage);
+    } else {
+      initThree3DStage();
+    }
   </script>
 
   <!-- Metropolitan Cohort Funnel Modal -->
