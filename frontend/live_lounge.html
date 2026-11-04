@@ -24,6 +24,11 @@
         <h1>MuseMeet Live Lounge</h1>
         <p>Dual-Track Autonomous Negotiation</p>
       </div>
+      <!-- Meta Muse API LIVE Telemetry Badge -->
+      <div class="api-live-badge">
+        <span class="api-live-dot"></span>
+        <span>Meta Muse Spark 1.3 API: LIVE (240ms)</span>
+      </div>
     </div>
 
     <div class="controls-group">
@@ -564,8 +569,10 @@
 
     
     
+  
   // =========================================================================
-  // LIVE INTERACTIVE 3D EMBODIED AGENT STAGE (THREE.JS)
+  // AUTHENTIC 3D META JOLLY COMPANION STAGE (THREE.JS)
+  // Left Stage (x = -3.6) · Right Stage (x = +3.6) · Glowing Iridescent Orbs
   // =========================================================================
   let threeStage = {
     initialized: false,
@@ -574,19 +581,19 @@
     renderer: null,
     clock: null,
     canvas: null,
-    charA: null, // Elena's Muse
-    charB: null, // Peer Muse
+    jollyA: null, // Elena's 3D Meta Jolly
+    jollyB: null, // Peer's 3D Meta Jolly (Julian / Marcus / David)
+    fleeceTexture: null,
     activePeer: 'bookshop',
     activeSpeaker: 'agent_a',
     turnData: null,
     isClash: false,
     isShieldActive: false,
     shieldTimer: 0,
-    bridgeParticles: [],
-    bridgeCurve: null,
-    bridgeLine: null,
+    streamParticles: [],
+    streamCurve: null,
+    streamLine: null,
     resonanceRing: null,
-    soundwaveRings: [],
     shieldGroup: null,
     shieldInner: null,
     shieldWire: null,
@@ -594,9 +601,46 @@
     mouse: { x: 0, y: 0, targetX: 0, targetY: 0 },
     camTargetX: 0,
     celebrateTimer: 0,
-    skepticalTimer: 0
+    skepticalTimer: 0,
+    orbLightA: null,
+    orbLightB: null
   };
 
+  // --- PROCEDURAL PLUSH FLEECE TEXTURE GENERATOR ---
+  function createPlushFleeceTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#808080';
+    ctx.fillRect(0, 0, 256, 256);
+    // Dense noise for soft fleece wool grain
+    for (let i = 0; i < 35000; i++) {
+      const x = Math.random() * 256;
+      const y = Math.random() * 256;
+      const gray = Math.floor(128 + (Math.random() - 0.5) * 50);
+      ctx.fillStyle = 'rgb(' + gray + ',' + gray + ',' + gray + ')';
+      ctx.fillRect(x, y, 1.5, 1.5);
+    }
+    // Soft curved fiber curls
+    ctx.strokeStyle = 'rgba(160, 160, 160, 0.22)';
+    ctx.lineWidth = 1;
+    for (let j = 0; j < 500; j++) {
+      const cx = Math.random() * 256;
+      const cy = Math.random() * 256;
+      const r = 2 + Math.random() * 3.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 1.5);
+      ctx.stroke();
+    }
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(4, 4);
+    return texture;
+  }
+
+  // --- INITIALIZE 3D META JOLLY STAGE ---
   function initThree3DStage() {
     if (typeof THREE === 'undefined') {
       console.warn('[MuseMeet 3D] Three.js not loaded. Falling back to 2D HUD.');
@@ -609,19 +653,19 @@
 
     threeStage.canvas = canvas;
     const width = container.clientWidth || window.innerWidth;
-    const height = container.clientHeight || 155;
+    const height = 290;
 
     // 1. Scene & Warm Editorial Environment
     const scene = new THREE.Scene();
     threeStage.scene = scene;
 
-    // 2. Camera: Slight cinematic angle (FOV: 36)
-    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 50);
-    camera.position.set(0, 1.05, 5.2);
-    camera.lookAt(0, 0.38, 0);
+    // 2. Camera: Wide cinematic angle capturing both stages (FOV: 38)
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
+    camera.position.set(0, 0.9, 7.8);
+    camera.lookAt(0, 0.35, 0);
     threeStage.camera = camera;
 
-    // 3. Renderer with soft contact shadows & ACES Filmic Tone Mapping
+    // 3. Renderer with ACES Filmic Tone Mapping & Soft Contact Shadows
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       alpha: true,
@@ -638,68 +682,69 @@
     threeStage.renderer = renderer;
 
     threeStage.clock = new THREE.Clock();
+    threeStage.fleeceTexture = createPlushFleeceTexture();
 
     // 4. Lighting & Warm Hinge Aesthetic
-    const ambientLight = new THREE.AmbientLight(0xFFF9F2, 0.78);
+    const ambientLight = new THREE.AmbientLight(0xFFF9F2, 0.85);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xFFFDF9, 0.88);
-    keyLight.position.set(2.5, 4.2, 3.2);
+    const keyLight = new THREE.DirectionalLight(0xFFFDF9, 0.95);
+    keyLight.position.set(3.0, 5.0, 4.0);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.width = 1024;
     keyLight.shadow.mapSize.height = 1024;
     keyLight.shadow.bias = -0.001;
     scene.add(keyLight);
 
-    // Warm Terracotta Rim Light for Elena (Left)
-    const rimLightA = new THREE.PointLight(0xC85A32, 1.35, 7.5);
-    rimLightA.position.set(-3.2, 1.6, -0.6);
+    // Terracotta Rim Light for Elena (Left Stage)
+    const rimLightA = new THREE.PointLight(0xC85A32, 1.4, 9.0);
+    rimLightA.position.set(-4.8, 2.0, -0.5);
     scene.add(rimLightA);
 
-    // Sage Fill Light for Peer (Right)
-    const rimLightB = new THREE.PointLight(0x2D6A4F, 1.25, 7.5);
-    rimLightB.position.set(3.2, 1.6, -0.6);
+    // Sage Fill Light for Julian (Right Stage)
+    const rimLightB = new THREE.PointLight(0x2D6A4F, 1.35, 9.0);
+    rimLightB.position.set(4.8, 2.0, -0.5);
     scene.add(rimLightB);
 
-    // Subtle central amber warmth
-    const centerGlow = new THREE.PointLight(0xD97706, 0.35, 5);
-    centerGlow.position.set(0, 1.6, 0.6);
+    // Central ambient warmth
+    const centerGlow = new THREE.PointLight(0xD97706, 0.35, 6.0);
+    centerGlow.position.set(0, 1.8, 0.5);
     scene.add(centerGlow);
 
     // 5. Tactile Stage Floor (Circular architectural platform in warm stone)
     const floorGroup = new THREE.Group();
-    const floorGeo = new THREE.CylinderGeometry(3.6, 3.8, 0.16, 64);
+    const floorGeo = new THREE.CylinderGeometry(5.2, 5.5, 0.18, 64);
     const floorMat = new THREE.MeshStandardMaterial({
       color: 0xEFECE4,
       roughness: 0.65,
       metalness: 0.08
     });
     const floorMesh = new THREE.Mesh(floorGeo, floorMat);
-    floorMesh.position.set(0, -0.08, 0);
+    floorMesh.position.set(0, -0.79, 0);
     floorMesh.receiveShadow = true;
     floorGroup.add(floorMesh);
 
-    // Contact shadows underneath both characters
+    // Contact shadows underneath both Meta Jollies
     const shadowMat = new THREE.MeshBasicMaterial({
       color: 0x1A1917,
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.18,
       depthWrite: false
     });
-    const shadowGeo = new THREE.CircleGeometry(0.55, 32);
-    
+    const shadowGeo = new THREE.CircleGeometry(0.85, 32);
+
     const shadowA = new THREE.Mesh(shadowGeo, shadowMat);
     shadowA.rotation.x = -Math.PI / 2;
-    shadowA.position.set(-1.75, 0.005, 0);
+    shadowA.position.set(-3.6, -0.69, 0);
     floorGroup.add(shadowA);
 
     const shadowB = new THREE.Mesh(shadowGeo, shadowMat);
     shadowB.rotation.x = -Math.PI / 2;
-    shadowB.position.set(1.75, 0.005, 0);
+    shadowB.position.set(3.6, -0.69, 0);
     floorGroup.add(shadowB);
 
-    // Glowing 3D Resonance Ring embedded in the floor between them
-    const ringGeo = new THREE.RingGeometry(0.52, 0.60, 48);
+    // Central glowing resonance ring
+    const ringGeo = new THREE.RingGeometry(0.65, 0.74, 48);
     const ringMat = new THREE.MeshBasicMaterial({
       color: 0xC85A32,
       side: THREE.DoubleSide,
@@ -709,30 +754,47 @@
     });
     const resonanceRing = new THREE.Mesh(ringGeo, ringMat);
     resonanceRing.rotation.x = -Math.PI / 2;
-    resonanceRing.position.set(0, 0.008, 0);
+    resonanceRing.position.set(0, -0.69, 0);
     floorGroup.add(resonanceRing);
     threeStage.resonanceRing = resonanceRing;
 
     scene.add(floorGroup);
 
-    // 6. Build Personalized 3D Embodied Agent Companions
-    threeStage.charA = createElena3DMuse();
-    threeStage.charA.group.position.set(-1.75, 0, 0);
-    threeStage.charA.group.rotation.y = Math.PI / 2 - 0.18;
-    scene.add(threeStage.charA.group);
+    // 6. Build Elena's 3D Meta Jolly (Left Stage: x = -3.6, rotated +0.45 rad inward)
+    threeStage.jollyA = buildMetaJolly({
+      id: 'elena',
+      x: -3.6,
+      rotY: 0.45,
+      plushColor: 0xEAE0D5, // Warm Oatmeal Cream
+      hoodTrimColor: 0xC86D51, // Terracotta Hood Trim
+      orbCoreColor: 0xFB923C, // Warm Amber / Terracotta
+      orbRingColor: 0xF43F5E,
+      fleeceTexture: threeStage.fleeceTexture
+    });
+    scene.add(threeStage.jollyA.group);
+    threeStage.orbLightA = threeStage.jollyA.orbLight;
 
-    threeStage.charB = createPeer3DMuse(threeStage.activePeer);
-    threeStage.charB.group.position.set(1.75, 0, 0);
-    threeStage.charB.group.rotation.y = -Math.PI / 2 + 0.18;
-    scene.add(threeStage.charB.group);
+    // 7. Build Peer's 3D Meta Jolly (Right Stage: x = +3.6, rotated -0.45 rad inward)
+    threeStage.jollyB = buildMetaJolly({
+      id: 'peer',
+      x: 3.6,
+      rotY: -0.45,
+      plushColor: 0xDCE3DD, // Warm Sage-Oatmeal
+      hoodTrimColor: 0x4A6B5D, // Forest Sage Hood Trim
+      orbCoreColor: 0x38BDF8, // Iridescent Cyan
+      orbRingColor: 0x818CF8,
+      fleeceTexture: threeStage.fleeceTexture
+    });
+    scene.add(threeStage.jollyB.group);
+    threeStage.orbLightB = threeStage.jollyB.orbLight;
 
-    // 7. Build 3D Arching Particle Vibe Bridge
-    build3DVibeBridge(scene);
+    // 8. Build Orb-to-Orb Energy Stream (Curved Bezier between the two glowing orbs)
+    buildOrbEnergyStream(scene);
 
-    // 8. Build Red-Team Geodesic Forcefield around Elena
-    build3DGeodesicShield(threeStage.charA.group);
+    // 9. Build Red-Team Geodesic Bubble Shield around Elena
+    buildRedTeamBubbleShield(threeStage.jollyA.group);
 
-    // 9. Interaction & Event Bindings
+    // 10. Interaction & Raycast Listeners
     setup3DInteraction(canvas);
 
     threeStage.initialized = true;
@@ -741,393 +803,255 @@
     requestAnimationFrame(animateThree3DStage);
   }
 
-  // --- CHARACTER FACTORY: ELENA'S 3D MUSE ---
-  function createElena3DMuse() {
+  // --- STUDIO-GRADE META JOLLY MESH FACTORY ---
+  function buildMetaJolly(config) {
     const group = new THREE.Group();
+    group.position.set(config.x, -0.7, 0);
+    group.rotation.y = config.rotY;
 
-    const bodyMat = new THREE.MeshPhysicalMaterial({
-      color: 0xA55A3F, // Warm Terracotta
-      roughness: 0.28,
-      metalness: 0.14,
-      clearcoat: 0.45,
-      clearcoatRoughness: 0.18
-    });
+    // 1. Pear-Shaped Plush Body & Hood (THREE.LatheGeometry)
+    const pts = [];
+    pts.push(new THREE.Vector2(0.00, 0.00));
+    pts.push(new THREE.Vector2(0.38, 0.02));
+    pts.push(new THREE.Vector2(0.68, 0.14));
+    pts.push(new THREE.Vector2(0.85, 0.35));
+    pts.push(new THREE.Vector2(0.88, 0.62));
+    pts.push(new THREE.Vector2(0.85, 0.90));
+    pts.push(new THREE.Vector2(0.74, 1.18));
+    pts.push(new THREE.Vector2(0.62, 1.42));
+    pts.push(new THREE.Vector2(0.60, 1.58));
+    pts.push(new THREE.Vector2(0.68, 1.80));
+    pts.push(new THREE.Vector2(0.70, 2.05));
+    pts.push(new THREE.Vector2(0.64, 2.30));
+    pts.push(new THREE.Vector2(0.48, 2.52));
+    pts.push(new THREE.Vector2(0.24, 2.65));
+    pts.push(new THREE.Vector2(0.00, 2.68));
 
-    const copperMat = new THREE.MeshPhysicalMaterial({
-      color: 0xE8C5B0, // Brushed Copper accent
-      roughness: 0.32,
-      metalness: 0.45,
-      clearcoat: 0.4
+    const bodyGeo = new THREE.LatheGeometry(pts, 36);
+    const plushMat = new THREE.MeshPhysicalMaterial({
+      color: config.plushColor,
+      roughness: 0.82,
+      bumpMap: config.fleeceTexture,
+      bumpScale: 0.035,
+      sheen: 1.0,
+      sheenRoughness: 0.75,
+      sheenColor: new THREE.Color(0xFFFDF9)
     });
+    const bodyMesh = new THREE.Mesh(bodyGeo, plushMat);
+    bodyMesh.castShadow = true;
+    bodyMesh.receiveShadow = true;
+    group.add(bodyMesh);
+
+    // 2. Stubby Plush Feet
+    const footGeo = new THREE.CylinderGeometry(0.16, 0.20, 0.25, 24);
+    const footL = new THREE.Mesh(footGeo, plushMat);
+    footL.position.set(-0.35, 0.1, 0.1);
+    footL.rotation.x = 0.25;
+    const footR = new THREE.Mesh(footGeo, plushMat);
+    footR.position.set(0.35, 0.1, 0.1);
+    footR.rotation.x = 0.25;
+    group.add(footL);
+    group.add(footR);
+
+    // 3. Hood Rim Trim
+    const rimGeo = new THREE.TorusGeometry(0.48, 0.07, 16, 32);
+    const rimMat = new THREE.MeshPhysicalMaterial({
+      color: config.hoodTrimColor,
+      roughness: 0.82,
+      bumpMap: config.fleeceTexture,
+      bumpScale: 0.025,
+      sheen: 0.8
+    });
+    const rimMesh = new THREE.Mesh(rimGeo, rimMat);
+    rimMesh.position.set(0, 1.95, 0.42);
+    rimMesh.rotation.x = -0.15;
+    group.add(rimMesh);
+
+    // 4. Inset Kawaii Faceplate
+    const faceGeo = new THREE.SphereGeometry(0.46, 32, 24);
+    const faceMat = new THREE.MeshPhysicalMaterial({
+      color: 0xF7E6D7,
+      roughness: 0.35,
+      clearcoat: 0.15
+    });
+    const faceMesh = new THREE.Mesh(faceGeo, faceMat);
+    faceMesh.scale.set(0.95, 0.9, 0.42);
+    faceMesh.position.set(0, 1.95, 0.38);
+    faceMesh.rotation.x = -0.15;
+    group.add(faceMesh);
+
+    // 5. Soulful Obsidian Eyes with Catchlights
+    const eyePivot = new THREE.Group();
+    eyePivot.position.set(0, 2.02, 0.54);
 
     const eyeMat = new THREE.MeshStandardMaterial({
-      color: 0x1A1917,
-      roughness: 0.1,
-      metalness: 0.8
+      color: 0x141413,
+      roughness: 0.05,
+      metalness: 0.85
     });
+    const eyeGeo = new THREE.SphereGeometry(0.062, 20, 20);
 
-    // Torso
-    const torsoGeo = new THREE.CylinderGeometry(0.24, 0.33, 0.54, 32);
-    const torsoMesh = new THREE.Mesh(torsoGeo, bodyMat);
-    torsoMesh.position.y = 0.27;
-    torsoMesh.castShadow = true;
-    group.add(torsoMesh);
+    const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeL.position.set(-0.16, 0, 0);
+    const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeR.position.set(0.16, 0, 0);
 
-    // Chest Panel
-    const chestGeo = new THREE.SphereGeometry(0.25, 24, 16);
-    const chestMesh = new THREE.Mesh(chestGeo, copperMat);
-    chestMesh.scale.set(0.85, 0.9, 0.38);
-    chestMesh.position.set(0, 0.32, 0.12);
-    group.add(chestMesh);
+    const catchMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+    const catchGeo = new THREE.SphereGeometry(0.02, 12, 12);
+    const catchL = new THREE.Mesh(catchGeo, catchMat);
+    catchL.position.set(-0.145, 0.025, 0.05);
+    const catchR = new THREE.Mesh(catchGeo, catchMat);
+    catchR.position.set(0.175, 0.025, 0.05);
 
-    // Articulated Head Group
-    const headPivot = new THREE.Group();
-    headPivot.position.set(0, 0.55, 0);
+    eyePivot.add(eyeL);
+    eyePivot.add(eyeR);
+    eyePivot.add(catchL);
+    eyePivot.add(catchR);
+    group.add(eyePivot);
 
-    const headGeo = new THREE.SphereGeometry(0.36, 32, 32);
-    const headMesh = new THREE.Mesh(headGeo, bodyMat);
-    headMesh.position.set(0, 0.32, 0);
-    headMesh.castShadow = true;
-    headPivot.add(headMesh);
-
-    // Expressive Emissive Eyes
-    const eyeGeo = new THREE.SphereGeometry(0.042, 16, 16);
-    const eyeLeft = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeLeft.scale.set(1, 1.4, 0.5);
-    eyeLeft.position.set(-0.11, 0.34, 0.33);
-
-    const eyeRight = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeRight.scale.set(1, 1.4, 0.5);
-    eyeRight.position.set(0.11, 0.34, 0.33);
-
-    headPivot.add(eyeLeft);
-    headPivot.add(eyeRight);
-
-    // Peach Blush Discs
-    const blushGeo = new THREE.CircleGeometry(0.045, 16);
-    const blushMat = new THREE.MeshBasicMaterial({ color: 0xF29E85, transparent: true, opacity: 0.55 });
+    // 6. Rosy Blush Cheeks
+    const blushGeo = new THREE.CircleGeometry(0.075, 24);
+    const blushMat = new THREE.MeshBasicMaterial({ color: 0xF4A298, transparent: true, opacity: 0.5 });
     const blushL = new THREE.Mesh(blushGeo, blushMat);
-    blushL.position.set(-0.19, 0.26, 0.3);
+    blushL.position.set(-0.25, 1.88, 0.51);
     blushL.rotation.y = -0.3;
+    blushL.rotation.x = -0.15;
     const blushR = new THREE.Mesh(blushGeo, blushMat);
-    blushR.position.set(0.19, 0.26, 0.3);
+    blushR.position.set(0.25, 1.88, 0.51);
     blushR.rotation.y = 0.3;
-    headPivot.add(blushL);
-    headPivot.add(blushR);
+    blushR.rotation.x = -0.15;
+    group.add(blushL);
+    group.add(blushR);
 
-    // Luminaire Antenna Crown
-    const antRod = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.14), copperMat);
-    antRod.position.set(0, 0.72, 0);
-    const antSphere = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 16), copperMat);
-    antSphere.position.set(0, 0.81, 0);
-    headPivot.add(antRod);
-    headPivot.add(antSphere);
+    // 7. Animated Smile Tube Arc
+    const mouthGeo = new THREE.TorusGeometry(0.07, 0.015, 12, 24, Math.PI);
+    const mouthMat = new THREE.MeshBasicMaterial({ color: 0x6E3E34 });
+    const mouthMesh = new THREE.Mesh(mouthGeo, mouthMat);
+    mouthMesh.rotation.x = Math.PI - 0.15;
+    mouthMesh.rotation.z = Math.PI;
+    mouthMesh.position.set(0, 1.84, 0.54);
+    group.add(mouthMesh);
 
-    group.add(headPivot);
+    // 8. Chubby Plush Arms & Cradling Paws
+    const armGeo = new THREE.CylinderGeometry(0.12, 0.15, 0.65, 20);
+    const armL = new THREE.Mesh(armGeo, plushMat);
+    armL.position.set(-0.52, 1.25, 0.28);
+    armL.rotation.set(0.65, -0.35, -0.65);
 
-    // Floating Articulated Hands
-    const handGeo = new THREE.SphereGeometry(0.09, 20, 20);
-    const handL = new THREE.Mesh(handGeo, copperMat);
-    handL.position.set(-0.38, 0.32, 0.08);
-    const handR = new THREE.Mesh(handGeo, copperMat);
-    handR.position.set(0.38, 0.32, 0.08);
-    group.add(handL);
-    group.add(handR);
+    const armR = new THREE.Mesh(armGeo, plushMat);
+    armR.position.set(0.52, 1.25, 0.28);
+    armR.rotation.set(0.65, 0.35, 0.65);
 
-    // Props: Miniature 35mm Analog Camera + Safelight Orb
-    const propsGroup = new THREE.Group();
+    const pawGeo = new THREE.SphereGeometry(0.14, 16, 16);
+    const pawL = new THREE.Mesh(pawGeo, plushMat);
+    pawL.position.set(-0.26, 1.05, 0.55);
+    const pawR = new THREE.Mesh(pawGeo, plushMat);
+    pawR.position.set(0.26, 1.05, 0.55);
 
-    // 35mm Camera slung across torso
-    const camBody = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.13, 0.09), new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.3 }));
-    camBody.position.set(0.08, 0.24, 0.22);
-    camBody.rotation.z = -0.15;
-    const camLens = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.07, 24), new THREE.MeshStandardMaterial({ color: 0xCCCCCC, metalness: 0.8 }));
-    camLens.rotation.x = Math.PI / 2;
-    camLens.position.set(0.08, 0.24, 0.28);
-    const camStrap = new THREE.Mesh(new THREE.TorusGeometry(0.36, 0.012, 8, 32, Math.PI), new THREE.MeshBasicMaterial({ color: 0x4A1D3E }));
-    camStrap.position.set(0, 0.34, 0.05);
-    camStrap.rotation.z = 0.45;
-    propsGroup.add(camBody);
-    propsGroup.add(camLens);
-    propsGroup.add(camStrap);
+    group.add(armL);
+    group.add(armR);
+    group.add(pawL);
+    group.add(pawR);
 
-    // Floating Warm Red Darkroom Safelight Orb
-    const safelightOrb = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), new THREE.MeshBasicMaterial({ color: 0xFF2D55 }));
-    safelightOrb.position.set(-0.52, 0.82, 0.15);
-    const safelightLight = new THREE.PointLight(0xFF2D55, 0.85, 2.0);
-    safelightLight.position.set(-0.52, 0.82, 0.15);
-    propsGroup.add(safelightOrb);
-    propsGroup.add(safelightLight);
+    // 9. Signature Meta Muse Iridescent Glass Orb (Cradled by Paws)
+    const orbGroup = new THREE.Group();
+    orbGroup.position.set(0, 1.08, 0.54);
 
-    group.add(propsGroup);
+    const orbGlassGeo = new THREE.SphereGeometry(0.38, 36, 36);
+    const orbGlassMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      transmission: 0.94,
+      opacity: 1,
+      transparent: true,
+      roughness: 0.04,
+      ior: 1.45,
+      iridescence: 1.0,
+      iridescenceIOR: 1.35,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1
+    });
+    const orbGlass = new THREE.Mesh(orbGlassGeo, orbGlassMat);
+    orbGroup.add(orbGlass);
+
+    // Inner Glowing Core Sphere
+    const coreGeo = new THREE.SphereGeometry(0.14, 20, 20);
+    const coreMat = new THREE.MeshBasicMaterial({ color: config.orbCoreColor });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    orbGroup.add(coreMesh);
+
+    // Swirling Saturn Core Ring
+    const swirlGeo = new THREE.TorusGeometry(0.24, 0.022, 16, 36);
+    const swirlMat = new THREE.MeshBasicMaterial({ color: config.orbRingColor || config.orbCoreColor });
+    const swirlMesh = new THREE.Mesh(swirlGeo, swirlMat);
+    swirlMesh.rotation.x = Math.PI / 3;
+    orbGroup.add(swirlMesh);
+
+    // Local PointLight casting colored illumination onto hands and face
+    const orbLight = new THREE.PointLight(config.orbCoreColor, 1.6, 3.8);
+    orbGroup.add(orbLight);
+
+    group.add(orbGroup);
 
     return {
       group,
-      torso: torsoMesh,
-      head: headPivot,
-      eyeL: eyeLeft,
-      eyeR: eyeRight,
-      handL,
-      handR,
-      safelight: safelightOrb,
-      safelightLight,
-      propsGroup,
-      baseRotY: Math.PI / 2 - 0.18,
-      blinkTimer: 2.5
-    };
-  }
-
-  // --- CHARACTER FACTORY: PEER 3D MUSE (MORPHEABLE) ---
-  function createPeer3DMuse(scenarioKey) {
-    const group = new THREE.Group();
-
-    const bodyMat = new THREE.MeshPhysicalMaterial({
-      color: 0x5E716A, // Sage Slate default (Julian)
-      roughness: 0.28,
-      metalness: 0.14,
-      clearcoat: 0.45,
-      clearcoatRoughness: 0.18
-    });
-
-    const accentMat = new THREE.MeshPhysicalMaterial({
-      color: 0x8C6D53, // Warm Walnut default
-      roughness: 0.35,
-      metalness: 0.25,
-      clearcoat: 0.38
-    });
-
-    const eyeMat = new THREE.MeshStandardMaterial({
-      color: 0x1A1917,
-      roughness: 0.1,
-      metalness: 0.8
-    });
-
-    // Torso
-    const torsoGeo = new THREE.CylinderGeometry(0.24, 0.33, 0.54, 32);
-    const torsoMesh = new THREE.Mesh(torsoGeo, bodyMat);
-    torsoMesh.position.y = 0.27;
-    torsoMesh.castShadow = true;
-    group.add(torsoMesh);
-
-    // Chest Panel
-    const chestGeo = new THREE.SphereGeometry(0.25, 24, 16);
-    const chestMesh = new THREE.Mesh(chestGeo, accentMat);
-    chestMesh.scale.set(0.85, 0.9, 0.38);
-    chestMesh.position.set(0, 0.32, 0.12);
-    group.add(chestMesh);
-
-    // Articulated Head Group
-    const headPivot = new THREE.Group();
-    headPivot.position.set(0, 0.55, 0);
-
-    const headGeo = new THREE.SphereGeometry(0.36, 32, 32);
-    const headMesh = new THREE.Mesh(headGeo, bodyMat);
-    headMesh.position.set(0, 0.32, 0);
-    headMesh.castShadow = true;
-    headPivot.add(headMesh);
-
-    // Eyes
-    const eyeGeo = new THREE.SphereGeometry(0.042, 16, 16);
-    const eyeLeft = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeLeft.scale.set(1, 1.4, 0.5);
-    eyeLeft.position.set(-0.11, 0.34, 0.33);
-
-    const eyeRight = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeRight.scale.set(1, 1.4, 0.5);
-    eyeRight.position.set(0.11, 0.34, 0.33);
-
-    headPivot.add(eyeLeft);
-    headPivot.add(eyeRight);
-
-    // Blush
-    const blushGeo = new THREE.CircleGeometry(0.045, 16);
-    const blushMat = new THREE.MeshBasicMaterial({ color: 0x93C5AA, transparent: true, opacity: 0.55 });
-    const blushL = new THREE.Mesh(blushGeo, blushMat);
-    blushL.position.set(-0.19, 0.26, 0.3);
-    blushL.rotation.y = -0.3;
-    const blushR = new THREE.Mesh(blushGeo, blushMat);
-    blushR.position.set(0.19, 0.26, 0.3);
-    blushR.rotation.y = 0.3;
-    headPivot.add(blushL);
-    headPivot.add(blushR);
-
-    // Antenna
-    const antRod = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.14), accentMat);
-    antRod.position.set(0, 0.72, 0);
-    const antSphere = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 16), accentMat);
-    antSphere.position.set(0, 0.81, 0);
-    headPivot.add(antRod);
-    headPivot.add(antSphere);
-
-    group.add(headPivot);
-
-    // Floating Hands
-    const handGeo = new THREE.SphereGeometry(0.09, 20, 20);
-    const handL = new THREE.Mesh(handGeo, accentMat);
-    handL.position.set(-0.38, 0.32, 0.08);
-    const handR = new THREE.Mesh(handGeo, accentMat);
-    handR.position.set(0.38, 0.32, 0.08);
-    group.add(handL);
-    group.add(handR);
-
-    // Props Container
-    const propsGroup = new THREE.Group();
-    group.add(propsGroup);
-
-    const peerObj = {
-      group,
-      torso: torsoMesh,
-      chest: chestMesh,
-      head: headPivot,
-      headMesh,
-      eyeL: eyeLeft,
-      eyeR: eyeRight,
-      blushL,
-      blushR,
-      antRod,
-      antSphere,
-      handL,
-      handR,
-      propsGroup,
       bodyMat,
-      accentMat,
-      blushMat,
-      baseRotY: -Math.PI / 2 + 0.18,
-      blinkTimer: 3.1,
-      floatingProp: null,
-      propType: scenarioKey
+      rimMat,
+      eyePivot,
+      mouthMesh,
+      orbGroup,
+      orbGlass,
+      orbCore: coreMesh,
+      orbRing: swirlMesh,
+      orbLight,
+      armL,
+      armR,
+      pawL,
+      pawR,
+      baseX: config.x,
+      baseY: -0.7,
+      baseRotY: config.rotY,
+      blinkTimer: 3.2 + Math.random() * 2,
+      id: config.id
     };
-
-    applyPeerArchetypeProps(peerObj, scenarioKey);
-    return peerObj;
   }
 
-  // --- DYNAMIC PROP ARCHETYPE MORPHING ---
-  function applyPeerArchetypeProps(peer, scenarioKey) {
-    // Clear existing props
-    while (peer.propsGroup.children.length > 0) {
-      peer.propsGroup.remove(peer.propsGroup.children[0]);
-    }
-    peer.floatingProp = null;
-    peer.propType = scenarioKey;
+  // --- DYNAMIC PEER ARCHETYPE MORPHING ---
+  function morphPeerMetaJolly(scenarioKey) {
+    if (!threeStage.jollyB) return;
+    const peer = threeStage.jollyB;
 
     if (scenarioKey === 'record_store' || scenarioKey === 'travel') {
-      // --- MARCUS'S MUSE (Ochre Nomad, 40L Backpack, Floating Compass Ring) ---
-      peer.bodyMat.color.setHex(0xB86B1B);
-      peer.accentMat.color.setHex(0x5A3C1E);
-      peer.blushMat.color.setHex(0xF59E0B);
-
-      // 40L Duffel Travel Backpack on back
-      const packGeo = new THREE.BoxGeometry(0.28, 0.38, 0.18);
-      const packMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.6 });
-      const packMesh = new THREE.Mesh(packGeo, packMat);
-      packMesh.position.set(0, 0.3, -0.2);
-      peer.propsGroup.add(packMesh);
-
-      // Floating Compass / Globe Ring
-      const compassGroup = new THREE.Group();
-      compassGroup.position.set(0.52, 0.82, 0.15);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.016, 16, 32), new THREE.MeshStandardMaterial({ color: 0xD97706, metalness: 0.8 }));
-      const miniGlobe = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
-      compassGroup.add(ring);
-      compassGroup.add(miniGlobe);
-      peer.propsGroup.add(compassGroup);
-      peer.floatingProp = compassGroup;
-
+      // Marcus (Golden Sand Plush, Amber Orb)
+      peer.bodyMat.color.setHex(0xE8DEC8);
+      peer.rimMat.color.setHex(0xB86B1B);
+      peer.orbCore.material.color.setHex(0xF59E0B);
+      peer.orbRing.material.color.setHex(0xFB7185);
+      peer.orbLight.color.setHex(0xF59E0B);
     } else if (scenarioKey === 'market' || scenarioKey === 'finance') {
-      // --- DAVID'S MUSE (Cold Steel Gray, Rectangular Glasses, KPI Clipboard) ---
-      peer.bodyMat.color.setHex(0x64748B);
-      peer.accentMat.color.setHex(0x334155);
-      peer.blushMat.color.setHex(0x94A3B8);
-
-      // Rectangular Glasses
-      const glassesGroup = new THREE.Group();
-      const frameMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, metalness: 0.8 });
-      const glassL = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.02), frameMat);
-      glassL.position.set(-0.11, 0.34, 0.35);
-      const glassR = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.02), frameMat);
-      glassR.position.set(0.11, 0.34, 0.35);
-      const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.02, 0.02), frameMat);
-      bridge.position.set(0, 0.34, 0.35);
-      glassesGroup.add(glassL);
-      glassesGroup.add(glassR);
-      glassesGroup.add(bridge);
-      peer.head.add(glassesGroup);
-
-      // Floating KPI Clipboard / Bar Chart
-      const clipGroup = new THREE.Group();
-      clipGroup.position.set(0.52, 0.78, 0.15);
-      const board = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.24, 0.02), new THREE.MeshStandardMaterial({ color: 0x1E293B }));
-      const paper = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.2, 0.022), new THREE.MeshBasicMaterial({ color: 0xF8FAFC }));
-      // 3 tiny bars
-      const bar1 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.05, 0.03), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
-      bar1.position.set(-0.04, -0.04, 0.015);
-      const bar2 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.09, 0.03), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
-      bar2.position.set(0, -0.02, 0.015);
-      const bar3 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.13, 0.03), new THREE.MeshBasicMaterial({ color: 0xEF4444 }));
-      bar3.position.set(0.04, 0, 0.015);
-      clipGroup.add(board);
-      clipGroup.add(paper);
-      clipGroup.add(bar1);
-      clipGroup.add(bar2);
-      clipGroup.add(bar3);
-      peer.propsGroup.add(clipGroup);
-      peer.floatingProp = clipGroup;
-
+      // David (Cool Mist Plush, Cyan-Steel Orb)
+      peer.bodyMat.color.setHex(0xE2E6EA);
+      peer.rimMat.color.setHex(0x64748B);
+      peer.orbCore.material.color.setHex(0x38BDF8);
+      peer.orbRing.material.color.setHex(0x60A5FA);
+      peer.orbLight.color.setHex(0x38BDF8);
     } else {
-      // --- JULIAN'S MUSE (Sage Slate, Acoustic Headphones, Spinning Vinyl) ---
-      peer.bodyMat.color.setHex(0x5E716A);
-      peer.accentMat.color.setHex(0x8C6D53);
-      peer.blushMat.color.setHex(0x93C5AA);
-
-      // Acoustic Headphones over head
-      const hpGroup = new THREE.Group();
-      const hpBand = new THREE.Mesh(
-        new THREE.TorusGeometry(0.38, 0.025, 12, 32, Math.PI),
-        new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.6 })
-      );
-      hpBand.rotation.x = Math.PI / 2;
-      hpBand.rotation.z = Math.PI;
-      hpBand.position.set(0, 0.35, 0);
-
-      const earcupL = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.06, 24), new THREE.MeshStandardMaterial({ color: 0x8C6D53, roughness: 0.5 }));
-      earcupL.rotation.z = Math.PI / 2;
-      earcupL.position.set(-0.36, 0.33, 0);
-
-      const earcupR = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.06, 24), new THREE.MeshStandardMaterial({ color: 0x8C6D53, roughness: 0.5 }));
-      earcupR.rotation.z = Math.PI / 2;
-      earcupR.position.set(0.36, 0.33, 0);
-
-      hpGroup.add(hpBand);
-      hpGroup.add(earcupL);
-      hpGroup.add(earcupR);
-      peer.head.add(hpGroup);
-
-      // Floating Spinning Vinyl Record
-      const vinylGroup = new THREE.Group();
-      vinylGroup.position.set(0.55, 0.82, 0.15);
-      const vinylMesh = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.22, 0.22, 0.012, 32),
-        new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2, metalness: 0.85 })
-      );
-      const labelMesh = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.08, 0.08, 0.014, 24),
-        new THREE.MeshBasicMaterial({ color: 0xC85A32 })
-      );
-      vinylGroup.add(vinylMesh);
-      vinylGroup.add(labelMesh);
-      peer.propsGroup.add(vinylGroup);
-      peer.floatingProp = vinylGroup;
+      // Julian (Warm Sage-Oatmeal, Iridescent Cyan/Violet Orb)
+      peer.bodyMat.color.setHex(0xDCE3DD);
+      peer.rimMat.color.setHex(0x4A6B5D);
+      peer.orbCore.material.color.setHex(0x38BDF8);
+      peer.orbRing.material.color.setHex(0x818CF8);
+      peer.orbLight.color.setHex(0x38BDF8);
     }
   }
 
-  // --- 3D ARCHING VIBE BRIDGE ---
-  function build3DVibeBridge(scene) {
-    const p0 = new THREE.Vector3(-1.6, 0.85, 0);
-    const p1 = new THREE.Vector3(0, 1.85, 0);
-    const p2 = new THREE.Vector3(1.6, 0.85, 0);
+  // --- ORB-TO-ORB 3D ENERGY STREAM ---
+  function buildOrbEnergyStream(scene) {
+    // Quadratic Bezier from Elena's Orb to Julian's Orb arching through center
+    const p0 = new THREE.Vector3(-3.6, 0.38, 0.54);
+    const p1 = new THREE.Vector3(0, 1.85, 0.35);
+    const p2 = new THREE.Vector3(3.6, 0.38, 0.54);
     const curve = new THREE.QuadraticBezierCurve3(p0, p1, p2);
-    threeStage.bridgeCurve = curve;
+    threeStage.streamCurve = curve;
 
     const points = curve.getPoints(50);
     const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
@@ -1139,31 +1063,31 @@
     });
     const line = new THREE.Line(lineGeo, lineMat);
     scene.add(line);
-    threeStage.bridgeLine = line;
+    threeStage.streamLine = line;
 
-    // 28 luminous 3D micro-tokens
-    const particleGeo = new THREE.SphereGeometry(0.035, 12, 12);
+    // 32 floating 3D micro-tokens
+    const particleGeo = new THREE.SphereGeometry(0.042, 12, 12);
     const particleMat = new THREE.MeshBasicMaterial({ color: 0xF59E0B });
 
-    for (let i = 0; i < 28; i++) {
+    for (let i = 0; i < 32; i++) {
       const p = new THREE.Mesh(particleGeo, particleMat.clone());
-      const u = i / 28;
+      const u = i / 32;
       const pos = curve.getPoint(u);
       p.position.copy(pos);
-      p.userData = { u: u, speed: 0.003 };
+      p.userData = { u: u, speed: 0.0035 };
       scene.add(p);
-      threeStage.bridgeParticles.push(p);
+      threeStage.streamParticles.push(p);
     }
   }
 
-  // --- RED-TEAM GEODESIC FORCEFIELD DOME ---
-  function build3DGeodesicShield(parentGroup) {
+  // --- RED-TEAM HOLOGRAPHIC BUBBLE SHIELD ---
+  function buildRedTeamBubbleShield(parentGroup) {
     const shieldGroup = new THREE.Group();
-    shieldGroup.position.set(0, 0.45, 0);
-    shieldGroup.scale.setScalar(0.001); // starts invisible
+    shieldGroup.position.set(0, 1.25, 0);
+    shieldGroup.scale.setScalar(0.001); // starts collapsed inside orb
 
     // Emerald Wireframe Geodesic Dome
-    const geo = new THREE.IcosahedronGeometry(0.82, 2);
+    const geo = new THREE.IcosahedronGeometry(1.65, 3);
     const wireMat = new THREE.MeshBasicMaterial({
       color: 0x10B981,
       wireframe: true,
@@ -1174,31 +1098,32 @@
     shieldGroup.add(wireMesh);
     threeStage.shieldWire = wireMesh;
 
-    // Translucent emerald inner shell
+    // Translucent emerald holographic shell
     const innerMat = new THREE.MeshPhysicalMaterial({
       color: 0x10B981,
       transparent: true,
-      opacity: 0.22,
-      roughness: 0.1,
-      clearcoat: 1.0
+      opacity: 0.25,
+      roughness: 0.08,
+      clearcoat: 1.0,
+      ior: 1.33
     });
-    const innerMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.8, 2), innerMat);
+    const innerMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.62, 3), innerMat);
     shieldGroup.add(innerMesh);
     threeStage.shieldInner = innerMesh;
 
     parentGroup.add(shieldGroup);
     threeStage.shieldGroup = shieldGroup;
 
-    // Spawn 16 red attack particles
+    // Spawn 20 red exploit particles
     const attackMat = new THREE.MeshBasicMaterial({ color: 0xEF4444 });
-    const attackGeo = new THREE.SphereGeometry(0.04, 12, 12);
-    for (let i = 0; i < 16; i++) {
+    const attackGeo = new THREE.SphereGeometry(0.045, 12, 12);
+    for (let i = 0; i < 20; i++) {
       const p = new THREE.Mesh(attackGeo, attackMat);
       p.visible = false;
       p.userData = {
         active: false,
-        x: 0, y: 0, z: 0,
-        vx: 0, vy: 0, vz: 0
+        vx: 0, vy: 0,
+        deflected: false
       };
       threeStage.scene.add(p);
       threeStage.attackParticles.push(p);
@@ -1209,72 +1134,52 @@
     threeStage.isShieldActive = true;
     threeStage.shieldTimer = 3.8;
 
+    // Flash Elena's Orb to emerald
+    if (threeStage.jollyA) {
+      threeStage.jollyA.orbLight.color.setHex(0x10B981);
+      threeStage.jollyA.orbLight.intensity = 3.5;
+    }
+
     // Launch red attack particles toward Elena
-    threeStage.attackParticles.forEach((p, idx) => {
+    threeStage.attackParticles.forEach(function(p) {
       p.visible = true;
       p.userData.active = true;
-      p.position.set(2.2 + Math.random() * 0.8, 0.3 + Math.random() * 0.5, (Math.random() - 0.5) * 0.4);
-      p.userData.vx = -(0.06 + Math.random() * 0.04);
-      p.userData.vy = (Math.random() - 0.5) * 0.015;
-      p.userData.vz = (Math.random() - 0.5) * 0.015;
+      p.position.set(4.0 + Math.random() * 1.0, 0.4 + Math.random() * 0.8, (Math.random() - 0.5) * 0.5);
+      p.userData.vx = -(0.08 + Math.random() * 0.05);
+      p.userData.vy = (Math.random() - 0.5) * 0.02;
       p.userData.deflected = false;
+      p.material.color.setHex(0xEF4444);
     });
   }
 
-  // --- SOUNDWAVE TORUS RING ON FLOOR ---
-  function emit3DSoundwave(speaker) {
-    if (!threeStage.scene) return;
-    const isA = speaker === 'agent_a';
-    const startX = isA ? -1.75 : 1.75;
-    const ringGeo = new THREE.RingGeometry(0.08, 0.12, 32);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: isA ? 0xC85A32 : 0x2D6A4F,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.7,
-      depthWrite: false
-    });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.set(startX, 0.012, 0);
-    ring.userData = {
-      progress: 0,
-      startX: startX,
-      targetX: isA ? 1.75 : -1.75
-    };
-    threeStage.scene.add(ring);
-    threeStage.soundwaveRings.push(ring);
-  }
-
-  // --- 3D INTERACTION & EVENT LISTENERS ---
+  // --- INTERACTION & CLICK RAYCASTING ---
   function setup3DInteraction(canvas) {
     const raycaster = new THREE.Raycaster();
     const mouseVec = new THREE.Vector2();
-
     const stageEl = document.getElementById('museRendezvousStage');
     if (!stageEl) return;
 
-    stageEl.addEventListener('mousemove', (e) => {
+    stageEl.addEventListener('mousemove', function(e) {
       const rect = stageEl.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      threeStage.mouse.targetX = x * 0.45;
-      threeStage.mouse.targetY = y * 0.25;
+      threeStage.mouse.targetX = x * 0.35;
+      threeStage.mouse.targetY = y * 0.2;
     });
 
-    stageEl.addEventListener('mouseleave', () => {
+    stageEl.addEventListener('mouseleave', function() {
       threeStage.mouse.targetX = 0;
       threeStage.mouse.targetY = 0;
     });
 
-    canvas.addEventListener('click', (e) => {
+    canvas.addEventListener('click', function(e) {
       const rect = canvas.getBoundingClientRect();
       mouseVec.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouseVec.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
       raycaster.setFromCamera(mouseVec, threeStage.camera);
 
-      if (threeStage.charA) {
-        const hitsA = raycaster.intersectObjects(threeStage.charA.group.children, true);
+      if (threeStage.jollyA) {
+        const hitsA = raycaster.intersectObjects(threeStage.jollyA.group.children, true);
         if (hitsA.length > 0) {
           pokeMuse('agent_a', e);
           threeStage.celebrateTimer = 1.0;
@@ -1282,8 +1187,8 @@
         }
       }
 
-      if (threeStage.charB) {
-        const hitsB = raycaster.intersectObjects(threeStage.charB.group.children, true);
+      if (threeStage.jollyB) {
+        const hitsB = raycaster.intersectObjects(threeStage.jollyB.group.children, true);
         if (hitsB.length > 0) {
           pokeMuse('agent_b', e);
           threeStage.celebrateTimer = 1.0;
@@ -1299,7 +1204,7 @@
     const container = document.getElementById('museRendezvousStage');
     if (!container || !threeStage.renderer || !threeStage.camera) return;
     const w = container.clientWidth || window.innerWidth;
-    const h = container.clientHeight || 155;
+    const h = 290;
     threeStage.camera.aspect = w / h;
     threeStage.camera.updateProjectionMatrix();
     threeStage.renderer.setSize(w, h);
@@ -1316,25 +1221,22 @@
     threeStage.isClash = isClash;
 
     if (isClash) {
-      threeStage.skepticalTimer = 1.4;
-      if (threeStage.bridgeLine) {
-        threeStage.bridgeLine.material.color.setHex(0xE11D48);
+      threeStage.skepticalTimer = 1.6;
+      if (threeStage.streamLine) {
+        threeStage.streamLine.material.color.setHex(0xE11D48);
       }
     } else {
       if (turnData && (turnData.lsm >= 0.82 || turnNumber === 6 || turnNumber === 12 || turnNumber === 16)) {
         threeStage.celebrateTimer = 1.2;
       }
-      if (threeStage.bridgeLine) {
+      if (threeStage.streamLine) {
         const isHigh = turnData && turnData.lsm >= 0.85;
-        threeStage.bridgeLine.material.color.setHex(isHigh ? 0x10B981 : 0xD97706);
+        threeStage.streamLine.material.color.setHex(isHigh ? 0x10B981 : 0xD97706);
       }
     }
 
     // Camera target drifting toward active speaker
-    threeStage.camTargetX = (speaker === 'agent_a') ? -0.32 : 0.32;
-
-    // Emit 3D Soundwave ring along floor
-    emit3DSoundwave(speaker);
+    threeStage.camTargetX = (speaker === 'agent_a') ? -0.45 : 0.45;
   }
 
   // --- ANIMATION LOOP (60 FPS) ---
@@ -1346,133 +1248,113 @@
     const dt = threeStage.clock.getDelta();
     const t = threeStage.clock.getElapsedTime();
 
-    // 1. Camera Parallax & Speaker Drift
+    // 1. Camera Parallax & Drift
     threeStage.mouse.x += (threeStage.mouse.targetX - threeStage.mouse.x) * 0.06;
     threeStage.mouse.y += (threeStage.mouse.targetY - threeStage.mouse.y) * 0.06;
 
     threeStage.camera.position.x = threeStage.camTargetX + threeStage.mouse.x;
-    threeStage.camera.position.y = 1.05 + threeStage.mouse.y;
-    threeStage.camera.lookAt(0, 0.38, 0);
+    threeStage.camera.position.y = 0.9 + threeStage.mouse.y;
+    threeStage.camera.lookAt(0, 0.35, 0);
 
     const isSpeakingA = threeStage.activeSpeaker === 'agent_a';
-    const charA = threeStage.charA;
-    const charB = threeStage.charB;
+    const jA = threeStage.jollyA;
+    const jB = threeStage.jollyB;
 
-    // 2. Character A (Elena) Animation Choreography
-    if (charA) {
-      // Blinking logic
-      charA.blinkTimer -= dt;
-      if (charA.blinkTimer <= 0) {
-        charA.eyeL.scale.y = 0.1;
-        charA.eyeR.scale.y = 0.1;
-        if (charA.blinkTimer <= -0.12) {
-          charA.eyeL.scale.y = 1.4;
-          charA.eyeR.scale.y = 1.4;
-          charA.blinkTimer = 2.5 + Math.random() * 2.5;
+    // 2. Animate Elena's Meta Jolly (Left Stage)
+    if (jA) {
+      // Blinking animation
+      jA.blinkTimer -= dt;
+      if (jA.blinkTimer <= 0) {
+        jA.eyePivot.scale.y = 0.08;
+        if (jA.blinkTimer <= -0.12) {
+          jA.eyePivot.scale.y = 1.0;
+          jA.blinkTimer = 3.0 + Math.random() * 2.5;
         }
       }
 
-      // Safelight bobbing & glowing
-      if (charA.safelight) {
-        charA.safelight.position.y = 0.82 + Math.sin(t * 2.2) * 0.04;
-        charA.safelightLight.position.y = charA.safelight.position.y;
-      }
+      // Swirling core inside iridescent orb
+      jA.orbRing.rotation.x += 0.035;
+      jA.orbRing.rotation.y += 0.045;
 
       if (threeStage.isClash || threeStage.skepticalTimer > 0) {
-        // Skeptical lean-back and head shake
-        charA.group.rotation.z = -0.09;
-        charA.head.rotation.y = Math.sin(t * 6) * 0.12;
+        // Skeptical lean-back & head shake
+        jA.group.rotation.x = -0.08;
+        jA.group.rotation.y = jA.baseRotY + Math.sin(t * 6) * 0.08;
+        jA.mouthMesh.scale.set(1, 1, 1);
       } else if (threeStage.celebrateTimer > 0) {
         // High synchrony happy hop
-        charA.group.position.y = Math.max(0, Math.sin(t * 12) * 0.15);
-        charA.head.rotation.x = Math.sin(t * 10) * 0.08;
+        jA.group.position.y = jA.baseY + Math.max(0, Math.sin(t * 12) * 0.22);
+        jA.mouthMesh.scale.set(1.4, 1.6, 1);
       } else if (isSpeakingA) {
-        // Elena Speaking: Conversational bob, head pitch, hand gestures
-        charA.group.position.y = Math.sin(t * 8) * 0.015;
-        charA.head.rotation.x = Math.sin(t * 12) * 0.05;
-        charA.head.rotation.y = Math.sin(t * 6) * 0.04;
-        charA.handL.position.y = 0.32 + Math.sin(t * 7) * 0.07;
-        charA.handR.position.y = 0.32 + Math.cos(t * 8) * 0.06;
-        charA.group.rotation.z = 0;
+        // Speaking: Rocks from foot to foot, hood bobs, mouth animates, orb pulses
+        jA.group.position.y = jA.baseY + Math.sin(t * 6) * 0.04;
+        jA.group.rotation.z = Math.sin(t * 6) * 0.04;
+        jA.group.rotation.x = Math.sin(t * 8) * 0.03;
+        jA.mouthMesh.scale.set(1 + Math.sin(t * 12) * 0.35, 1 + Math.sin(t * 12) * 0.55, 1);
+        jA.orbLight.intensity = 1.8 + Math.sin(t * 8) * 0.6;
       } else {
-        // Elena Listening: Gentle inward lean & agreement nod
-        charA.group.position.y = 0;
-        charA.group.rotation.z = 0.05;
-        charA.head.rotation.x = Math.sin(t * 3.5) * 0.07;
-        charA.head.rotation.y = 0;
-        charA.handL.position.y = 0.32 + Math.sin(t * 2) * 0.02;
-        charA.handR.position.y = 0.32 + Math.sin(t * 2) * 0.02;
+        // Listening: Leans forward, head tilts, nods on toward bids
+        jA.group.position.y = jA.baseY;
+        jA.group.rotation.z = 0.06;
+        jA.group.rotation.x = 0.07 + Math.sin(t * 3.5) * 0.05;
+        jA.mouthMesh.scale.set(1, 1, 1);
+        jA.orbLight.intensity = 1.3;
       }
     }
 
-    // 3. Character B (Peer) Animation Choreography
-    if (charB) {
-      charB.blinkTimer -= dt;
-      if (charB.blinkTimer <= 0) {
-        charB.eyeL.scale.y = 0.1;
-        charB.eyeR.scale.y = 0.1;
-        if (charB.blinkTimer <= -0.12) {
-          charB.eyeL.scale.y = 1.4;
-          charB.eyeR.scale.y = 1.4;
-          charB.blinkTimer = 2.8 + Math.random() * 2.2;
+    // 3. Animate Peer's Meta Jolly (Right Stage)
+    if (jB) {
+      jB.blinkTimer -= dt;
+      if (jB.blinkTimer <= 0) {
+        jB.eyePivot.scale.y = 0.08;
+        if (jB.blinkTimer <= -0.12) {
+          jB.eyePivot.scale.y = 1.0;
+          jB.blinkTimer = 3.2 + Math.random() * 2.2;
         }
       }
 
-      // Prop animation
-      if (charB.floatingProp) {
-        if (charB.propType === 'record_store' || charB.propType === 'travel') {
-          // Marcus compass gimbal rotation
-          charB.floatingProp.rotation.x += 0.025;
-          charB.floatingProp.rotation.y += 0.035;
-        } else if (charB.propType === 'market' || charB.propType === 'finance') {
-          // David KPI clipboard bob
-          charB.floatingProp.position.y = 0.78 + Math.sin(t * 1.8) * 0.03;
-        } else {
-          // Julian vinyl spin
-          charB.floatingProp.rotation.y += 0.038;
-        }
-      }
+      jB.orbRing.rotation.x += 0.035;
+      jB.orbRing.rotation.y += 0.045;
 
       if (threeStage.isClash || threeStage.skepticalTimer > 0) {
-        charB.group.rotation.z = 0.09;
-        charB.head.rotation.y = Math.sin(t * 6) * 0.12;
+        jB.group.rotation.x = -0.08;
+        jB.group.rotation.y = jB.baseRotY + Math.sin(t * 6) * 0.08;
+        jB.mouthMesh.scale.set(1, 1, 1);
       } else if (threeStage.celebrateTimer > 0) {
-        charB.group.position.y = Math.max(0, Math.sin(t * 12 + 0.5) * 0.15);
-        charB.head.rotation.x = Math.sin(t * 10) * 0.08;
+        jB.group.position.y = jB.baseY + Math.max(0, Math.sin(t * 12 + 0.4) * 0.22);
+        jB.mouthMesh.scale.set(1.4, 1.6, 1);
       } else if (!isSpeakingA) {
         // Peer Speaking
-        charB.group.position.y = Math.sin(t * 8) * 0.015;
-        charB.head.rotation.x = Math.sin(t * 12) * 0.05;
-        charB.head.rotation.y = Math.sin(t * 6) * 0.04;
-        charB.handL.position.y = 0.32 + Math.cos(t * 8) * 0.06;
-        charB.handR.position.y = 0.32 + Math.sin(t * 7) * 0.07;
-        charB.group.rotation.z = 0;
+        jB.group.position.y = jB.baseY + Math.sin(t * 6) * 0.04;
+        jB.group.rotation.z = -Math.sin(t * 6) * 0.04;
+        jB.group.rotation.x = Math.sin(t * 8) * 0.03;
+        jB.mouthMesh.scale.set(1 + Math.sin(t * 12) * 0.35, 1 + Math.sin(t * 12) * 0.55, 1);
+        jB.orbLight.intensity = 1.8 + Math.sin(t * 8) * 0.6;
       } else {
         // Peer Listening
-        charB.group.position.y = 0;
-        charB.group.rotation.z = -0.05;
-        charB.head.rotation.x = Math.sin(t * 3.5) * 0.07;
-        charB.head.rotation.y = 0;
-        charB.handL.position.y = 0.32 + Math.sin(t * 2) * 0.02;
-        charB.handR.position.y = 0.32 + Math.sin(t * 2) * 0.02;
+        jB.group.position.y = jB.baseY;
+        jB.group.rotation.z = -0.06;
+        jB.group.rotation.x = 0.07 + Math.sin(t * 3.5) * 0.05;
+        jB.mouthMesh.scale.set(1, 1, 1);
+        jB.orbLight.intensity = 1.3;
       }
     }
 
     if (threeStage.celebrateTimer > 0) threeStage.celebrateTimer -= dt;
     if (threeStage.skepticalTimer > 0) threeStage.skepticalTimer -= dt;
 
-    // 4. Update 3D Vibe Bridge Particles
-    if (threeStage.bridgeCurve && threeStage.bridgeParticles.length > 0) {
+    // 4. Update Orb-to-Orb Energy Stream Particles
+    if (threeStage.streamCurve && threeStage.streamParticles.length > 0) {
       const isForward = isSpeakingA;
-      const speed = threeStage.isClash ? 0.001 : (threeStage.turnData && threeStage.turnData.lsm >= 0.85 ? 0.006 : 0.0035);
+      const speed = threeStage.isClash ? 0.001 : (threeStage.turnData && threeStage.turnData.lsm >= 0.85 ? 0.0065 : 0.004);
 
-      threeStage.bridgeParticles.forEach((p) => {
+      threeStage.streamParticles.forEach(function(p) {
         if (isForward) {
           p.userData.u = (p.userData.u + speed) % 1;
         } else {
           p.userData.u = (p.userData.u - speed + 1) % 1;
         }
-        const pos = threeStage.bridgeCurve.getPoint(p.userData.u);
+        const pos = threeStage.streamCurve.getPoint(p.userData.u);
         p.position.copy(pos);
 
         if (threeStage.isClash) {
@@ -1485,91 +1367,69 @@
       });
     }
 
-    // 5. Update Expanding Soundwave Rings
-    for (let i = threeStage.soundwaveRings.length - 1; i >= 0; i--) {
-      const ring = threeStage.soundwaveRings[i];
-      ring.userData.progress += dt * 0.8;
-      const prog = ring.userData.progress;
-      if (prog >= 1) {
-        threeStage.scene.remove(ring);
-        threeStage.soundwaveRings.splice(i, 1);
-      } else {
-        const curScale = 1 + prog * 4.2;
-        ring.scale.set(curScale, curScale, 1);
-        ring.position.x = ring.userData.startX + (ring.userData.targetX - ring.userData.startX) * prog * 0.65;
-        ring.material.opacity = (1 - prog) * 0.6;
-      }
-    }
-
-    // 6. Update Red-Team Forcefield & Attack Particles
+    // 5. Update Red-Team Holographic Bubble Shield
     if (threeStage.isShieldActive && threeStage.shieldGroup) {
       threeStage.shieldTimer -= dt;
       if (threeStage.shieldTimer > 0) {
-        // Expand shield with elastic spring
-        const scale = Math.min(1.0, (3.8 - threeStage.shieldTimer) * 3.5);
+        const scale = Math.min(1.0, (3.8 - threeStage.shieldTimer) * 3.2);
         threeStage.shieldGroup.scale.setScalar(scale);
         threeStage.shieldWire.rotation.y += 0.02;
-        threeStage.shieldWire.rotation.x += 0.01;
+        threeStage.shieldWire.rotation.x += 0.015;
 
-        // Animate incoming red particles
-        threeStage.attackParticles.forEach((p) => {
+        threeStage.attackParticles.forEach(function(p) {
           if (!p.userData.active) return;
           p.position.x += p.userData.vx;
           p.position.y += p.userData.vy;
 
-          // Deflection collision with Elena's shield around x = -1.2
-          if (p.position.x <= -1.15 && !p.userData.deflected) {
+          // Deflection collision with Elena's bubble shield around x = -2.2
+          if (p.position.x <= -2.1 && !p.userData.deflected) {
             p.userData.deflected = true;
             p.userData.vx = Math.abs(p.userData.vx) * 1.5;
-            p.userData.vy = (Math.random() - 0.5) * 0.08;
-            p.material.color.setHex(0x10B981); // flashes green upon interception
+            p.userData.vy = (Math.random() - 0.5) * 0.1;
+            p.material.color.setHex(0x10B981); // flashes green on interception
           }
         });
       } else {
-        // Collapse shield
         threeStage.shieldGroup.scale.setScalar(0.001);
-        threeStage.attackParticles.forEach((p) => { p.visible = false; p.userData.active = false; });
+        threeStage.attackParticles.forEach(function(p) { p.visible = false; p.userData.active = false; });
         threeStage.isShieldActive = false;
+        if (jA) jA.orbLight.color.setHex(0xFB923C);
       }
     }
 
-    // 7. Project 3D World Positions to 2D Screen Space for Speech Quip Bubbles
-    if (charA && charB && threeStage.camera) {
+    // 6. Project 3D Hood Positions to 2D Screen Space for Speech Quip Bubbles
+    if (jA && jB && threeStage.camera) {
       const stageEl = document.getElementById('museRendezvousStage');
       if (stageEl) {
         const rect = stageEl.getBoundingClientRect();
 
-        const vA = new THREE.Vector3();
-        charA.head.getWorldPosition(vA);
-        vA.y += 0.46;
+        const vA = new THREE.Vector3(-3.6, -0.7 + 2.75, 0);
         vA.project(threeStage.camera);
         const xA = (vA.x * 0.5 + 0.5) * rect.width;
         const yA = (-(vA.y * 0.5) + 0.5) * rect.height;
 
         const quipA = document.getElementById('museQuipA');
         if (quipA) {
-          quipA.style.left = `${xA}px`;
-          quipA.style.top = `${yA}px`;
+          quipA.style.left = xA + 'px';
+          quipA.style.top = yA + 'px';
           quipA.style.transform = 'translate(-50%, -100%)';
         }
 
-        const vB = new THREE.Vector3();
-        charB.head.getWorldPosition(vB);
-        vB.y += 0.46;
+        const vB = new THREE.Vector3(3.6, -0.7 + 2.75, 0);
         vB.project(threeStage.camera);
         const xB = (vB.x * 0.5 + 0.5) * rect.width;
         const yB = (-(vB.y * 0.5) + 0.5) * rect.height;
 
         const quipB = document.getElementById('museQuipB');
         if (quipB) {
-          quipB.style.left = `${xB}px`;
-          quipB.style.top = `${yB}px`;
+          quipB.style.left = xB + 'px';
+          quipB.style.top = yB + 'px';
           quipB.style.transform = 'translate(-50%, -100%)';
         }
       }
     }
 
-    // 8. Render
+    // 7. Render 3D Scene
     threeStage.renderer.render(threeStage.scene, threeStage.camera);
   }
 
@@ -1902,9 +1762,9 @@
 
     function changeScenario(name) {
       activeScenario = name;
-      if (typeof threeStage !== 'undefined' && threeStage.initialized && threeStage.charB) {
+      if (typeof threeStage !== 'undefined' && threeStage.initialized && threeStage.jollyB) {
         threeStage.activePeer = name;
-        applyPeerArchetypeProps(threeStage.charB, name);
+        morphPeerMetaJolly(name);
       }
       updatePresenceHeader('agent_a', 1, null);
       restartStream();
