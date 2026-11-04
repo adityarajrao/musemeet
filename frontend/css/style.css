@@ -219,45 +219,108 @@ body {
   transform: translateY(-1px);
 }
 
-/* Distinct Semantic Accent Highlights for Special Top Bar Actions */
+/* ==========================================================================
+   Tactile & High-Affordance Evaluation Tools (Judge Guide, 128D Moat, Funnel, AirGap)
+   ========================================================================== */
+.action-btn.tool-btn {
+  padding: 0.38rem 0.72rem !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  gap: 0.4rem !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  transition: all 0.22s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+}
+
+.action-btn.tool-btn span:first-child {
+  font-size: 0.95rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.action-btn.tool-btn:hover span:first-child {
+  transform: scale(1.22) rotate(-4deg);
+}
+
+.action-btn.tool-btn:active {
+  transform: translateY(1px) scale(0.97) !important;
+}
+
+/* 1. Judge Guide - Radiant Amber with Subtle Ambient Beacon Pulse */
+@keyframes judgeGuideGlow {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25), 0 0 0 0 rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(217, 119, 6, 0.4), 0 0 0 3px rgba(245, 158, 11, 0.2);
+  }
+}
+
 #guideBtn, #btnGuide {
-  background: rgba(240, 179, 67, 0.1);
-  border-color: rgba(240, 179, 67, 0.32);
-  color: var(--accent-amber);
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
+  border: 1.5px solid #F59E0B !important;
+  color: #92400E !important;
+  animation: judgeGuideGlow 3s ease-in-out infinite;
 }
 #guideBtn:hover, #btnGuide:hover {
-  background: rgba(240, 179, 67, 0.18);
-  box-shadow: 0 0 12px var(--accent-amber-glow);
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%) !important;
+  border-color: #D97706 !important;
+  color: #78350F !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.38), 0 0 0 2px rgba(245, 158, 11, 0.25) !important;
+  animation: none;
 }
 
+/* 2. 128D Moat - Lush Sovereign Emerald */
 #moatBtn, #btnMoat {
-  background: rgba(69, 196, 139, 0.09);
-  border-color: rgba(69, 196, 139, 0.3);
-  color: var(--accent-emerald);
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%) !important;
+  border: 1.5px solid #10B981 !important;
+  color: #065F46 !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.22), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
 }
 #moatBtn:hover, #btnMoat:hover {
-  background: rgba(69, 196, 139, 0.16);
-  box-shadow: 0 0 12px var(--accent-emerald-glow);
+  background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%) !important;
+  border-color: #059669 !important;
+  color: #044E39 !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35), 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
 }
 
+/* 3. 250-User Funnel - Electric Royal Violet */
 #funnelBtn, #btnFunnel {
-  background: rgba(166, 151, 200, 0.09);
-  border-color: rgba(166, 151, 200, 0.28);
-  color: var(--accent-violet);
+  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%) !important;
+  border: 1.5px solid #A855F7 !important;
+  color: #581C87 !important;
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.22), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
 }
 #funnelBtn:hover, #btnFunnel:hover {
-  background: rgba(166, 151, 200, 0.16);
-  box-shadow: 0 0 12px var(--accent-violet-glow);
+  background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%) !important;
+  border-color: #9333EA !important;
+  color: #3B0764 !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(147, 51, 234, 0.35), 0 0 0 2px rgba(168, 85, 247, 0.25) !important;
 }
 
+/* 4. AirGap - Resilient Crimson Shield */
 #pentestBtn, #btnPentest {
-  background: rgba(220, 83, 83, 0.09);
-  border-color: rgba(220, 83, 83, 0.3);
-  color: var(--accent-rose);
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%) !important;
+  border: 1.5px solid #EF4444 !important;
+  color: #991B1B !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.22), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
 }
 #pentestBtn:hover, #btnPentest:hover {
-  background: rgba(220, 83, 83, 0.18);
-  box-shadow: 0 0 12px var(--accent-rose-glow);
+  background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%) !important;
+  border-color: #DC2626 !important;
+  color: #7F1D1D !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35), 0 0 0 2px rgba(239, 68, 68, 0.25) !important;
 }
 
 .speed-group {
@@ -3543,17 +3606,15 @@ body {
 }
 
 .controls-group {
-  gap: 0.45rem !important;
+  gap: 0.5rem !important;
 }
 
 .header-control-group {
-  gap: 0.3rem !important;
+  gap: 0.35rem !important;
 }
 
-.action-btn.tool-btn {
-  padding: 0.28rem 0.52rem !important;
-  font-size: 0.68rem !important;
-  gap: 0.28rem !important;
+.tools-group {
+  gap: 0.45rem !important;
 }
 
 .scenario-select {
@@ -3566,7 +3627,7 @@ body {
   }
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1120px) {
   .action-btn.tool-btn span:last-child {
     display: none !important;
   }
